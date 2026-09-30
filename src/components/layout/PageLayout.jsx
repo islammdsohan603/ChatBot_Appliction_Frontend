@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SEO from "../common/SEO";
+import BackgroundAnimation from "../background/BackgroundAnimation";
 
 /**
- * Standard PageLayout wrapper
+ * Standard PageLayout wrapper with Antigravity Space Background
  */
 export const PageLayout = ({
   title,
@@ -13,6 +14,7 @@ export const PageLayout = ({
   children,
   className = "",
   showFooter = true,
+  showBackground = true,
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -37,6 +39,9 @@ export const PageLayout = ({
       className={`min-h-screen bg-slate-50 dark:bg-[#060918] font-inter text-slate-800 dark:text-slate-200 transition-colors duration-300 relative flex flex-col ${className}`}
     >
       <SEO title={title} description={description} keywords={keywords} />
+
+      {/* Antigravity Space Background */}
+      {showBackground && <BackgroundAnimation />}
 
       <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-transparent">
         <div
