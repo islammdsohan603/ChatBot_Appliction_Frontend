@@ -84,7 +84,7 @@ export const AiChatBox = ({
   onNewChat,
   onDeleteConversation,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-3.8-flash",
+  model = "gemini-2.0-flash",
   className = "",
 }) => {
   const [currentModel, setCurrentModel] = useState(() => {
@@ -93,11 +93,11 @@ export const AiChatBox = ({
         localStorage.getItem("nexora_user_settings") || "{}",
       );
       if (saved.defaultModel && saved.defaultModel.startsWith("gemini")) {
-        return saved.defaultModel;
+        return saved.defaultModel === "gemini-3.8-flash" ? "gemini-2.0-flash" : saved.defaultModel;
       }
-      return "gemini-3.8-flash";
+      return "gemini-2.0-flash";
     } catch {
-      return "gemini-3.8-flash";
+      return "gemini-2.0-flash";
     }
   });
 
@@ -233,8 +233,9 @@ export const AiChatBox = ({
                   title="Select AI Model"
                   className="text-[10px] font-semibold tracking-wider pl-2 pr-5 py-0.5 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 outline-none cursor-pointer appearance-none hover:bg-violet-500/25 transition-all"
                 >
-                  <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
-                  <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                  <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                  <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
                   <option value="gemini-flash-latest">
                     Gemini Flash Latest
                   </option>

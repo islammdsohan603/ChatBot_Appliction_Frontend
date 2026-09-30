@@ -12,7 +12,7 @@ const DEFAULT_SERVER_URL =
 export const useAiChat = ({
   conversationId = null,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-3.8-flash",
+  model = "gemini-2.0-flash",
   onSessionCreated,
   onConversationUpdated,
   onError,
@@ -94,12 +94,18 @@ export const useAiChat = ({
     };
   }, [conversationId]);
 
-  // Cleanup abort controller and image preview on unmount
+  // Cleanup abort controller on unmount
   useEffect(() => {
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+    };
+  }, []);
+
+  // Cleanup image preview on unmount or when image changes
+  useEffect(() => {
+    return () => {
       if (selectedImage?.previewUrl) {
         URL.revokeObjectURL(selectedImage.previewUrl);
       }
@@ -181,7 +187,7 @@ export const useAiChat = ({
           headers["x-goog-api-key"] = customApiKey;
         }
 
-        const effectiveModel = model === "gemini-2.5-flash" ? "gemini-3.8-flash" : model || "gemini-3.8-flash";
+        const effectiveModel = model === "gemini-3.8-flash" || model === "gemini-2.5-flash" ? "gemini-2.0-flash" : model || "gemini-2.0-flash";
 
         const response = await fetch(`${DEFAULT_SERVER_URL}/api/conversations/stream`, {
           method: "POST",
