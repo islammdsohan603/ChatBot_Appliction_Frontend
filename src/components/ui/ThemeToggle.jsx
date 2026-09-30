@@ -84,8 +84,8 @@ const ThemeToggle = ({ className = "", showLabel = false }) => {
       title={isDark ? "Switch to Light Theme" : "Switch to Dark Theme"}
       className={`group relative flex items-center gap-2 p-2.5 rounded-xl border transition-all duration-300 cursor-pointer active:scale-95 ${
         isDark
-          ? "bg-[#111840]/80 border-purple-500/25 text-purple-300 hover:text-white hover:bg-purple-500/20 hover:border-purple-500/50 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
-          : "bg-white/80 border-purple-300/40 text-purple-700 hover:text-purple-900 hover:bg-purple-50 hover:border-purple-400 shadow-[0_2px_8px_rgba(139,92,246,0.1)]"
+          ? "bg-[#111840]/80 border-violet-500/25 text-violet-300 hover:text-white hover:bg-violet-500/20 hover:border-violet-500/50 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
+          : "bg-white/80 border-violet-300/40 text-violet-700 hover:text-violet-900 hover:bg-violet-50 hover:border-violet-400 shadow-[0_2px_8px_rgba(139,92,246,0.1)]"
       } ${className}`}
     >
       <div className="relative w-5 h-5 flex items-center justify-center">

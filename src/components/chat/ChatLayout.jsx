@@ -170,6 +170,14 @@ const ChatLayout = () => {
   // Handle deletion of an AI conversation
   const handleDeleteConversation = useCallback(
     async (id) => {
+      if (!id) return;
+
+      // Guard: Do not attempt to delete direct user contacts via conversations API
+      const isDirectUser = directUsers.some((u) => (u._id || u.id) === id);
+      if (isDirectUser) {
+        return;
+      }
+
       try {
         await axios.delete(`${serverUrl}/api/conversations/${id}`, {
           withCredentials: true,
@@ -181,11 +189,38 @@ const ChatLayout = () => {
           navigate("/chat");
         }
       } catch (error) {
-        console.error("Delete conversation error:", error);
-        toast.error("Failed to delete conversation");
+        // If 404 (already deleted or not found), remove from local state gracefully
+        if (error.response?.status === 404) {
+          setAiConversations((prev) => prev.filter((c) => (c._id || c.id) !== id));
+          toast.info("Conversation removed");
+          if (conversationId === id) {
+            navigate("/chat");
+          }
+        } else {
+          console.error("Delete conversation error:", error);
+          toast.error("Failed to delete conversation");
+        }
       }
     },
-    [conversationId, navigate, serverUrl]
+    [conversationId, directUsers, navigate, serverUrl]
+  );
+
+  // Handle renaming of an AI conversation
+  const handleRenameConversation = useCallback(
+    async (id, newTitle) => {
+      if (!id || !newTitle.trim()) return;
+      try {
+        await axios.put(`${serverUrl}/api/conversations/${id}`, { title: newTitle }, { withCredentials: true });
+        setAiConversations((prev) =>
+          prev.map((c) => ((c._id || c.id) === id ? { ...c, title: newTitle } : c))
+        );
+        toast.success("Conversation renamed");
+      } catch (error) {
+        console.error("Rename error:", error);
+        toast.error("Failed to rename conversation");
+      }
+    },
+    [serverUrl]
   );
 
   // Optimistic update when new session created during streaming
@@ -298,7 +333,7 @@ const ChatLayout = () => {
   const activeSidebarId = activeHumanId || conversationId || null;
 
   return (
-    <div className="h-screen w-full flex bg-slate-50 dark:bg-[#060918] overflow-hidden font-inter transition-colors duration-200">
+    <div className="h-screen max-h-screen h-[100dvh] w-full flex bg-slate-50 dark:bg-[#060918] overflow-hidden font-inter transition-colors duration-200">
       {/* ════ LEFT SIDEBAR ════ */}
       <ChatSidebar
         user={{
@@ -312,6 +347,7 @@ const ChatLayout = () => {
         onSelect={handleSelectConversation}
         onNewChat={handleNewChat}
         onDelete={handleDeleteConversation}
+        onRename={handleRenameConversation}
         onLogout={handleLogout}
         isLoading={isLoading}
         isOpen={sidebarOpen}
@@ -319,13 +355,13 @@ const ChatLayout = () => {
       />
 
       {/* ════ MAIN CHAT AREA ════ */}
-      <main className="flex-1 flex flex-col min-w-0 relative">
+      <main className="flex-1 min-h-0 min-w-0 flex flex-col h-full max-h-screen overflow-hidden relative">
         {/* Mobile top bar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-purple-500/10 bg-white/80 dark:bg-[#060918]/80 backdrop-blur-sm md:hidden shrink-0">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-violet-500/10 bg-white/80 dark:bg-[#060918]/80 backdrop-blur-sm md:hidden shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open sidebar"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white hover:bg-purple-500/10 transition-all cursor-pointer"
+            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white hover:bg-violet-500/10 transition-all cursor-pointer"
           >
             <HiOutlineBars3 className="w-5 h-5" />
           </button>
@@ -335,7 +371,7 @@ const ChatLayout = () => {
 
         {/* Direct Human Chat View */}
         {activeHumanContact ? (
-          <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <div className="flex-1 min-h-0 flex flex-col h-full max-h-full overflow-hidden">
             <ChatHeader
               contact={{
                 name: activeHumanContact.name,
@@ -359,7 +395,7 @@ const ChatLayout = () => {
           </div>
         ) : (
           /* Nexora AI Chat View (Both for /chat and /chat/:conversationId) */
-          <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <div className="flex-1 min-h-0 flex flex-col h-full max-h-full overflow-hidden">
             <AiChatBox
               conversationId={conversationId || null}
               activeConversation={activeAiConversation}
@@ -367,7 +403,7 @@ const ChatLayout = () => {
               onConversationUpdated={handleConversationUpdated}
               onNewChat={handleNewChat}
               onDeleteConversation={handleDeleteConversation}
-              className="flex-1 rounded-none border-0 shadow-none max-w-full bg-transparent dark:bg-transparent"
+              className="flex-1 min-h-0 rounded-none border-0 shadow-none max-w-full bg-transparent dark:bg-transparent"
             />
           </div>
         )}

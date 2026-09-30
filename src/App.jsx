@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import ChatLayout from "./components/chat/ChatLayout";
 import useCurrentUser from "./customHooks/getCurrentUser";
 import RouteTransitionWrapper from "./components/ui/RouteTransitionWrapper";
+import ErrorBoundary from "./components/ui/ErrorBoundary";
 import {
   AuthSkeleton,
   ChatSkeleton,
@@ -102,75 +103,77 @@ function App() {
 
   return (
     <>
-      <RouteTransitionWrapper>
-        <Routes>
-          {/* Public landing page */}
-          <Route path="/" element={<Home />} />
+      <ErrorBoundary>
+        <RouteTransitionWrapper>
+          <Routes>
+            {/* Public landing page */}
+            <Route path="/" element={<Home />} />
 
-          {/* Auth pages — redirect to /chat if already logged in */}
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PublicRoute>
-                <Signup />
-              </PublicRoute>
-            }
-          />
+            {/* Auth pages — redirect to /chat if already logged in */}
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              }
+            />
 
-          {/* Protected pages */}
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute>
-                <ChatLayout />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/chat/:conversationId"
-            element={
-              <ProtectedRoute>
-                <ChatLayout />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected pages */}
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <ChatLayout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat/:conversationId"
+              element={
+                <ProtectedRoute>
+                  <ChatLayout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </RouteTransitionWrapper>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </RouteTransitionWrapper>
+      </ErrorBoundary>
 
       <ToastContainer
         theme={currentTheme === "dark" ? "dark" : "light"}
         position="bottom-right"
         toastClassName={
           currentTheme === "dark"
-            ? "!bg-[#111840] !border !border-purple-500/20 !text-slate-200"
-            : "!bg-white !border !border-purple-300/60 !text-slate-800 !shadow-lg"
+            ? "!bg-[#111840] !border !border-violet-500/20 !text-slate-200"
+            : "!bg-white !border !border-violet-300/60 !text-slate-800 !shadow-lg"
         }
       />
     </>

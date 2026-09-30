@@ -12,7 +12,7 @@ const DEFAULT_SERVER_URL =
 export const useAiChat = ({
   conversationId = null,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-2.5-flash",
+  model = "gemini-3.8-flash",
   onSessionCreated,
   onConversationUpdated,
   onError,
@@ -162,18 +162,38 @@ export const useAiChat = ({
       setMessages((prev) => [...prev, userMessage, assistantPlaceholder]);
 
       try {
+        // Retrieve custom user API key from localStorage if set
+        const customApiKey =
+          localStorage.getItem("nexora_google_api_key") ||
+          (() => {
+            try {
+              const settings = JSON.parse(localStorage.getItem("nexora_user_settings") || "{}");
+              return settings.googleApiKey;
+            } catch {
+              return null;
+            }
+          })();
+
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        if (customApiKey) {
+          headers["x-goog-api-key"] = customApiKey;
+        }
+
+        const effectiveModel = model === "gemini-2.5-flash" ? "gemini-3.8-flash" : model || "gemini-3.8-flash";
+
         const response = await fetch(`${DEFAULT_SERVER_URL}/api/conversations/stream`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers,
           credentials: "include",
           body: JSON.stringify({
             conversationId: conversationId && conversationId !== "new" ? conversationId : undefined,
             prompt: promptText,
             imageUrl: imagePayload?.base64 || null,
             systemInstruction,
-            model,
+            model: effectiveModel,
+            apiKey: customApiKey || undefined,
           }),
           signal: controller.signal,
         });
@@ -212,9 +232,17 @@ export const useAiChat = ({
               break;
             }
 
+            let parsed = null;
             try {
-              const parsed = JSON.parse(dataContent);
+              parsed = JSON.parse(dataContent);
+            } catch (jsonErr) {
+              if (jsonErr.message && jsonErr.message !== "Unexpected end of JSON input") {
+                console.warn("SSE parse error:", jsonErr.message);
+              }
+              continue;
+            }
 
+            if (parsed) {
               if (parsed.type === "session_created" && parsed.conversation) {
                 // Instantly update parent/sidebar and URL without wiping streaming state
                 activeSessionIdRef.current = parsed.conversation._id;
@@ -222,7 +250,11 @@ export const useAiChat = ({
               }
 
               if (parsed.error) {
-                throw new Error(parsed.error);
+                const streamErrMsg =
+                  typeof parsed.error === "string"
+                    ? parsed.error
+                    : parsed.error.message || "AI generation failed";
+                throw new Error(streamErrMsg);
               }
 
               if (parsed.text) {
@@ -236,10 +268,6 @@ export const useAiChat = ({
                       : msg
                   )
                 );
-              }
-            } catch (jsonErr) {
-              if (jsonErr.message && jsonErr.message !== "Unexpected end of JSON input") {
-                console.warn("SSE parse error:", jsonErr.message);
               }
             }
           }

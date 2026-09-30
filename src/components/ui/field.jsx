@@ -24,7 +24,7 @@ function Field({
       data-slot="field"
       className={cn(
         orientation === "horizontal"
-          ? "flex items-center justify-end gap-3 pt-4 border-t border-purple-500/10"
+          ? "flex items-center justify-end gap-3 pt-4 border-t border-violet-500/10"
           : "space-y-2",
         className
       )}

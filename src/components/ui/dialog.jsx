@@ -55,7 +55,7 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border border-purple-200/80 dark:border-purple-500/20 bg-white/95 dark:bg-[#0d1230]/95 p-6 shadow-2xl shadow-purple-950/10 dark:shadow-purple-950/50 backdrop-blur-2xl duration-200 data-[state=open]:animate-scaleIn data-[state=closed]:scale-95 text-slate-800 dark:text-slate-200 outline-none",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border border-violet-200/80 dark:border-violet-500/20 bg-white/95 dark:bg-[#0d1230]/95 p-6 shadow-2xl shadow-violet-950/10 dark:shadow-violet-950/50 backdrop-blur-2xl duration-200 data-[state=open]:animate-scaleIn data-[state=closed]:scale-95 text-slate-800 dark:text-slate-200 outline-none",
           className
         )}
         {...props}
@@ -63,7 +63,7 @@ function DialogContent({
         {children}
         {showClose && (
           <DialogPrimitive.Close
-            className="absolute right-4 top-4 rounded-xl p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white opacity-70 transition-opacity hover:opacity-100 hover:bg-purple-500/10 focus:outline-none disabled:pointer-events-none"
+            className="absolute right-4 top-4 rounded-xl p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white opacity-70 transition-opacity hover:opacity-100 hover:bg-violet-500/10 focus:outline-none disabled:pointer-events-none"
             aria-label="Close"
           >
             <HiOutlineXMark className="h-5 w-5" />
@@ -96,7 +96,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 border-t border-purple-500/10",
+        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 border-t border-violet-500/10",
         className
       )}
       {...props}

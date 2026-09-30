@@ -28,13 +28,13 @@ const ChatHeader = ({
   const { name = "Select a chat", status = "offline", avatar = null } = contact;
 
   return (
-    <header className="flex items-center gap-3 px-4 py-3 border-b border-purple-500/10 bg-white/80 dark:bg-[#0d1230]/80 backdrop-blur-sm shrink-0 transition-colors">
+    <header className="flex items-center gap-3 px-4 py-3 border-b border-violet-500/10 bg-white/80 dark:bg-[#0d1230]/80 backdrop-blur-sm shrink-0 transition-colors">
       {/* Back button (mobile) */}
       {showBack && (
         <button
           onClick={onBack}
           aria-label="Back to conversations"
-          className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white hover:bg-purple-500/10 transition-all md:hidden shrink-0"
+          className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white hover:bg-violet-500/10 transition-all md:hidden shrink-0"
         >
           <HiOutlineArrowLeft className="w-5 h-5" />
         </button>
@@ -43,7 +43,7 @@ const ChatHeader = ({
       {/* User info — clickable to open profile panel */}
       <button
         onClick={onProfileToggle}
-        className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl p-1 -m-1 hover:bg-purple-500/5 transition-colors"
+        className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl p-1 -m-1 hover:bg-violet-500/5 transition-colors"
       >
         <UserAvatar name={name} src={avatar} size="md" online={status === "online"} />
         <div className="min-w-0">
@@ -57,7 +57,7 @@ const ChatHeader = ({
         <ThemeToggle className="!p-1.5 !rounded-xl" />
         <button
           aria-label="Voice call"
-          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-500/10 transition-all hidden sm:flex"
+          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/10 transition-all hidden sm:flex"
         >
           <HiOutlinePhone className="w-5 h-5" />
         </button>
@@ -69,20 +69,20 @@ const ChatHeader = ({
         </button>
         <button
           aria-label="Search messages"
-          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-purple-500/10 transition-all"
+          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-violet-500/10 transition-all"
         >
           <HiOutlineMagnifyingGlass className="w-5 h-5" />
         </button>
         <button
           onClick={onProfileToggle}
           aria-label="Contact info"
-          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-500/10 transition-all"
+          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/10 transition-all"
         >
           <HiOutlineInformationCircle className="w-5 h-5" />
         </button>
         <button
           aria-label="More options"
-          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-purple-500/10 transition-all"
+          className="p-2.5 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-violet-500/10 transition-all"
         >
           <HiOutlineEllipsisVertical className="w-5 h-5" />
         </button>

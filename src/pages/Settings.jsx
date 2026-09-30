@@ -43,7 +43,8 @@ const DEFAULT_SETTINGS = {
   customAbout: "",
   customResponseStyle: "Be concise, friendly, and provide helpful code examples when asked.",
   memoryEnabled: true,
-  defaultModel: "nexora-4o",
+  defaultModel: "gemini-3.8-flash",
+  googleApiKey: "",
   chatHistory: true,
   pushNotifications: true,
   readReceipts: true,
@@ -69,8 +70,8 @@ const Switch = ({ checked, onChange, disabled = false, id }) => (
     aria-checked={checked}
     disabled={disabled}
     onClick={() => onChange(!checked)}
-    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50 ${
-      checked ? "bg-gradient-to-r from-purple-500 to-cyan-500" : "bg-slate-700/60"
+    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 ${
+      checked ? "bg-gradient-to-r from-violet-500 to-cyan-500" : "bg-slate-700/60"
     } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
   >
     <span
@@ -85,14 +86,14 @@ const Switch = ({ checked, onChange, disabled = false, id }) => (
 const SettingRow = ({ title, description, children, badge = null, border = true }) => (
   <div
     className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 ${
-      border ? "border-b border-purple-500/10" : ""
+      border ? "border-b border-violet-500/10" : ""
     }`}
   >
     <div className="flex-1 min-w-0 pr-2">
       <div className="flex items-center gap-2">
         <h4 className="text-sm font-medium text-slate-900 dark:text-slate-200">{title}</h4>
         {badge && (
-          <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30">
+          <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-700 dark:text-violet-300 border border-violet-500/30">
             {badge}
           </span>
         )}
@@ -222,18 +223,18 @@ const Settings = () => {
       </div>
 
       {/* Top Header */}
-      <header className="sticky top-0 z-20 bg-white/85 dark:bg-[#060918]/85 backdrop-blur-xl border-b border-purple-500/10">
+      <header className="sticky top-0 z-20 bg-white/85 dark:bg-[#060918]/85 backdrop-blur-xl border-b border-violet-500/10">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link
             to="/chat"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white hover:bg-purple-500/10 transition-all"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white hover:bg-violet-500/10 transition-all"
           >
             <HiOutlineArrowLeft className="w-4 h-4" />
             <span>Back to Chat</span>
           </Link>
           <div className="flex items-center gap-2">
-            <HiOutlineCog6Tooth className="w-5 h-5 text-purple-500 dark:text-purple-400" />
-            <h1 className="text-base font-bold bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-200 dark:to-cyan-200 bg-clip-text text-transparent">
+            <HiOutlineCog6Tooth className="w-5 h-5 text-violet-500 dark:text-violet-400" />
+            <h1 className="text-base font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-200 dark:to-cyan-200 bg-clip-text text-transparent">
               Settings
             </h1>
           </div>
@@ -245,7 +246,7 @@ const Settings = () => {
                 localStorage.setItem("nexora_user_settings", JSON.stringify(DEFAULT_SETTINGS));
                 toast.info("Settings reset to default");
               }}
-              className="text-xs text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-300 transition-colors"
+              className="text-xs text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors"
             >
               Reset Defaults
             </button>
@@ -258,7 +259,7 @@ const Settings = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Navigation Tabs (ChatGPT/Gemini Style) */}
           <aside className="md:col-span-4 lg:col-span-3">
-            <div className="sticky top-24 rounded-2xl bg-white/80 dark:bg-[#0d1230]/80 border border-purple-300/40 dark:border-purple-500/15 p-2 backdrop-blur-xl shadow-lg dark:shadow-xl flex md:flex-col gap-1 overflow-x-auto no-scrollbar">
+            <div className="sticky top-24 rounded-2xl bg-white/80 dark:bg-[#0d1230]/80 border border-violet-300/40 dark:border-violet-500/15 p-2 backdrop-blur-xl shadow-lg dark:shadow-xl flex md:flex-col gap-1 overflow-x-auto no-scrollbar">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -268,11 +269,11 @@ const Settings = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-3 w-full px-3.5 py-3 rounded-xl text-left transition-all shrink-0 ${
                       isActive
-                        ? "bg-gradient-to-r from-purple-500/15 to-violet-500/10 dark:from-purple-600/30 dark:to-violet-600/20 text-purple-900 dark:text-white border border-purple-400/40 dark:border-purple-500/30 shadow-[0_2px_12px_rgba(139,92,246,0.15)] font-semibold"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-500/5"
+                        ? "bg-gradient-to-r from-violet-500/15 to-violet-500/10 dark:from-violet-600/30 dark:to-violet-600/20 text-violet-900 dark:text-white border border-violet-400/40 dark:border-violet-500/30 shadow-[0_2px_12px_rgba(139,92,246,0.15)] font-semibold"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-violet-50 dark:hover:bg-violet-500/5"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-purple-600 dark:text-purple-400" : "text-slate-400"}`} />
+                    <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-violet-600 dark:text-violet-400" : "text-slate-400"}`} />
                     <div className="min-w-0">
                       <p className="text-xs font-semibold truncate">{tab.label}</p>
                       <p className="text-[10px] text-slate-500 truncate hidden lg:block">
@@ -287,7 +288,7 @@ const Settings = () => {
 
           {/* Right Content Panel */}
           <div className="md:col-span-8 lg:col-span-9">
-            <div className="rounded-3xl bg-white/85 dark:bg-[#0f1430]/75 border border-purple-300/40 dark:border-purple-500/15 p-6 md:p-8 backdrop-blur-xl shadow-xl dark:shadow-2xl">
+            <div className="rounded-3xl bg-white/85 dark:bg-[#0f1430]/75 border border-violet-300/40 dark:border-violet-500/15 p-6 md:p-8 backdrop-blur-xl shadow-xl dark:shadow-2xl">
               {/* ════ TAB 1: GENERAL ════ */}
               {activeTab === "general" && (
                 <div className="space-y-6 animate-in fade-in-50 duration-200">
@@ -303,7 +304,7 @@ const Settings = () => {
                     title="Theme"
                     description="Choose your preferred interface appearance."
                   >
-                    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/20">
+                    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/20">
                       {[
                         { id: "dark", label: "Dark", icon: HiOutlineMoon },
                         { id: "light", label: "Light", icon: HiOutlineSun },
@@ -331,7 +332,7 @@ const Settings = () => {
                           }}
                           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                             settings.theme === t.id
-                              ? "bg-purple-600 text-white shadow-sm font-semibold"
+                              ? "bg-violet-600 text-white shadow-sm font-semibold"
                               : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                           }`}
                         >
@@ -350,7 +351,7 @@ const Settings = () => {
                     <select
                       value={settings.language}
                       onChange={(e) => updateSetting("language", e.target.value)}
-                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-purple-500/50 cursor-pointer"
+                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-violet-500/50 cursor-pointer"
                     >
                       <option value="en">English (US)</option>
                       <option value="es">Español</option>
@@ -370,7 +371,7 @@ const Settings = () => {
                       <select
                         value={settings.voiceModel}
                         onChange={(e) => updateSetting("voiceModel", e.target.value)}
-                        className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-purple-500/50 cursor-pointer"
+                        className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-violet-500/50 cursor-pointer"
                       >
                         <option value="Breeze">Breeze (Warm & Neutral)</option>
                         <option value="Ember">Ember (Deep & Calm)</option>
@@ -383,7 +384,7 @@ const Settings = () => {
                         onClick={() => handlePlayVoicePreview(settings.voiceModel)}
                         aria-label="Preview Voice"
                         title="Preview Voice Sample"
-                        className="p-2 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-600 dark:text-purple-300 hover:bg-purple-500/25 transition-all"
+                        className="p-2 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 hover:bg-violet-500/25 transition-all"
                       >
                         <HiOutlineSpeakerWave className="w-4 h-4" />
                       </button>
@@ -423,12 +424,37 @@ const Settings = () => {
                     <select
                       value={settings.defaultModel}
                       onChange={(e) => updateSetting("defaultModel", e.target.value)}
-                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-purple-500/50 cursor-pointer"
+                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-violet-500/50 cursor-pointer"
                     >
-                      <option value="nexora-4o">Nexora 4.5 Omni (Balanced & Smart)</option>
-                      <option value="nexora-flash">Nexora Flash 3.8 (Ultra-fast)</option>
-                      <option value="nexora-reason">Nexora Deep Reason (Complex Logic)</option>
+                      <option value="gemini-3.8-flash">Gemini 3.8 Flash (Fast & Smart - Recommended)</option>
+                      <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                      <option value="gemini-flash-latest">Gemini Flash Latest</option>
                     </select>
+                  </SettingRow>
+
+                  {/* Google Gemini API Key */}
+                  <SettingRow
+                    title="Google Gemini API Key"
+                    description="Optionally provide your own Google Gemini API key to override or configure custom access."
+                    badge="Google AI"
+                  >
+                    <div className="flex items-center gap-2 w-full sm:w-72">
+                      <input
+                        type="password"
+                        value={settings.googleApiKey || ""}
+                        onChange={(e) => {
+                          const val = e.target.value.trim();
+                          updateSetting("googleApiKey", val);
+                          if (val) {
+                            localStorage.setItem("nexora_google_api_key", val);
+                          } else {
+                            localStorage.removeItem("nexora_google_api_key");
+                          }
+                        }}
+                        placeholder="Paste your Google API key..."
+                        className="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/25 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 outline-none focus:border-violet-500/50"
+                      />
+                    </div>
                   </SettingRow>
 
                   {/* Cross-chat Memory */}
@@ -444,7 +470,7 @@ const Settings = () => {
                   </SettingRow>
 
                   {/* Custom Instructions */}
-                  <div className="pt-2 border-t border-purple-500/10">
+                  <div className="pt-2 border-t border-violet-500/10">
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-200">Custom Instructions</h4>
@@ -464,7 +490,7 @@ const Settings = () => {
                           value={settings.customAbout}
                           onChange={(e) => updateSetting("customAbout", e.target.value)}
                           placeholder="E.g., I'm a full-stack engineer building React & Node apps..."
-                          className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/20 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-purple-500/50 resize-none leading-relaxed"
+                          className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/20 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-violet-500/50 resize-none leading-relaxed"
                         />
                       </div>
 
@@ -477,7 +503,7 @@ const Settings = () => {
                           value={settings.customResponseStyle}
                           onChange={(e) => updateSetting("customResponseStyle", e.target.value)}
                           placeholder="E.g., Concise answers, clean TypeScript snippets, polite tone..."
-                          className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-[#0a0f25] border border-purple-300/40 dark:border-purple-500/20 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-purple-500/50 resize-none leading-relaxed"
+                          className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/20 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-violet-500/50 resize-none leading-relaxed"
                         />
                       </div>
                     </div>
@@ -514,7 +540,7 @@ const Settings = () => {
                     <button
                       type="button"
                       onClick={handleExportData}
-                      className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-600 dark:text-purple-300 hover:bg-purple-500/25 hover:text-purple-800 dark:hover:text-white transition-all text-xs font-medium"
+                      className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 hover:bg-violet-500/25 hover:text-violet-800 dark:hover:text-white transition-all text-xs font-medium"
                     >
                       <HiOutlineArrowDownTray className="w-4 h-4" />
                       <span>Export Data</span>
@@ -643,9 +669,9 @@ const Settings = () => {
                   </div>
 
                   {/* User Overview card */}
-                  <div className="p-4 rounded-2xl bg-slate-100/90 dark:bg-[#0a0f25] border border-purple-200/60 dark:border-purple-500/20 flex items-center justify-between">
+                  <div className="p-4 rounded-2xl bg-slate-100/90 dark:bg-[#0a0f25] border border-violet-200/60 dark:border-violet-500/20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
                         {(user.name || user.userName || "U")[0]?.toUpperCase()}
                       </div>
                       <div>
@@ -657,7 +683,7 @@ const Settings = () => {
                     </div>
                     <Link
                       to="/profile"
-                      className="px-3.5 py-1.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-600 dark:text-purple-300 hover:text-purple-900 dark:hover:text-white text-xs font-medium transition-all"
+                      className="px-3.5 py-1.5 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 hover:text-violet-900 dark:hover:text-white text-xs font-medium transition-all"
                     >
                       View Profile
                     </Link>

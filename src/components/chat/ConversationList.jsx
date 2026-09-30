@@ -43,6 +43,7 @@ const ConversationList = ({
   activeId = null,
   onSelect,
   onDelete,
+  onRename,
   isLoading = false,
   filter = "all",
 }) => {
@@ -59,9 +60,9 @@ const ConversationList = ({
   if (filtered.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-        <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-3">
+        <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-3">
           <svg
-            className="w-6 h-6 text-purple-400/60"
+            className="w-6 h-6 text-violet-400/60"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -111,6 +112,7 @@ const ConversationList = ({
                     isActive={id === activeId}
                     onClick={() => onSelect?.(id)}
                     onDelete={onDelete}
+                    onRename={onRename}
                   />
                 );
               })}
@@ -133,6 +135,7 @@ const ConversationList = ({
             isActive={id === activeId}
             onClick={() => onSelect?.(id)}
             onDelete={onDelete}
+            onRename={onRename}
           />
         );
       })}

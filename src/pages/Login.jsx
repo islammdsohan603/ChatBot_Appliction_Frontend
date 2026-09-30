@@ -207,9 +207,9 @@ const Login = () => {
         >
           {/* Logo */}
           <div className="flex items-center gap-3.5">
-            <div className="w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center shadow-[0_8px_32px_rgba(139,92,246,0.3)] relative">
+            <div className="w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center shadow-[0_8px_32px_rgba(139,92,246,0.3)] relative">
               {/* Glow ring behind logo icon */}
-              <div className="absolute -inset-0.5 rounded-[18px] bg-gradient-to-br from-purple-500/50 to-cyan-500/50 -z-[1] blur-[8px]" />
+              <div className="absolute -inset-0.5 rounded-[18px] bg-gradient-to-br from-violet-500/50 to-cyan-500/50 -z-[1] blur-[8px]" />
               <svg
                 className="w-7 h-7 text-white"
                 viewBox="0 0 24 24"
@@ -222,7 +222,7 @@ const Login = () => {
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
-            <span className="text-[32px] font-extrabold bg-gradient-to-br from-purple-600 via-indigo-600 to-cyan-600 dark:from-indigo-200 dark:via-purple-300 dark:to-cyan-300 bg-clip-text text-transparent tracking-[-0.5px]">
+            <span className="text-[32px] font-extrabold bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-600 dark:from-indigo-200 dark:via-violet-300 dark:to-cyan-300 bg-clip-text text-transparent tracking-[-0.5px]">
               NEXORA
             </span>
           </div>
@@ -230,7 +230,7 @@ const Login = () => {
           {/* Tagline */}
           <h1 className="text-[44px] font-bold leading-[1.15] text-slate-900 dark:text-slate-100 tracking-[-1.5px] max-[900px]:text-[32px] max-[480px]:text-[26px]">
             Welcome back to{" "}
-            <span className="bg-gradient-to-br from-purple-500 to-cyan-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-br from-violet-500 to-cyan-500 bg-clip-text text-transparent">
               your world
             </span>
           </h1>
@@ -261,8 +261,8 @@ const Login = () => {
                 key={i}
                 className="flex items-center gap-3 text-slate-700 dark:text-slate-300/90 text-sm font-medium"
               >
-                <div className="w-8 h-8 rounded-[10px] bg-purple-500/[0.12] border border-purple-500/20 flex items-center justify-center shrink-0">
-                  <span className="w-4 h-4 text-purple-500 dark:text-purple-400">{f.icon}</span>
+                <div className="w-8 h-8 rounded-[10px] bg-violet-500/[0.12] border border-violet-500/20 flex items-center justify-center shrink-0">
+                  <span className="w-4 h-4 text-violet-500 dark:text-violet-400">{f.icon}</span>
                 </div>
                 {f.text}
               </div>
@@ -275,8 +275,8 @@ const Login = () => {
           className={[
             "w-full max-w-[440px] relative animate-cardReveal",
             "bg-white/85 dark:bg-[rgba(15,20,50,0.65)] backdrop-blur-[40px] backdrop-saturate-150",
-            "border border-purple-200/80 dark:border-purple-500/[0.15] rounded-3xl",
-            "shadow-2xl shadow-purple-500/5 dark:shadow-none",
+            "border border-violet-200/80 dark:border-violet-500/[0.15] rounded-3xl",
+            "shadow-2xl shadow-violet-500/5 dark:shadow-none",
             "py-11 px-10",
             "max-[900px]:max-w-full max-[900px]:py-8 max-[900px]:px-6",
             "max-[480px]:py-7 max-[480px]:px-5 max-[480px]:rounded-[20px]",
@@ -331,7 +331,7 @@ const Login = () => {
                 Email
               </label>
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-slate-400/70 dark:text-slate-400/50 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400">
+                <span className="absolute left-4 flex items-center justify-center text-slate-400/70 dark:text-slate-400/50 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-violet-500 dark:group-focus-within:text-violet-400">
                   <HiOutlineEnvelope className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -348,8 +348,8 @@ const Login = () => {
                     "text-slate-900 dark:text-slate-200 text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
                     "placeholder:text-slate-400/60 dark:placeholder:text-slate-400/40",
-                    "hover:border-purple-500/40 hover:bg-slate-100 dark:hover:bg-[rgba(15,20,50,0.75)]",
-                    "focus:border-purple-500/60 focus:bg-white dark:focus:bg-[rgba(15,20,50,0.85)]",
+                    "hover:border-violet-500/40 hover:bg-slate-100 dark:hover:bg-[rgba(15,20,50,0.75)]",
+                    "focus:border-violet-500/60 focus:bg-white dark:focus:bg-[rgba(15,20,50,0.85)]",
                     "focus:shadow-[0_0_0_4px_rgba(139,92,246,0.1),0_0_20px_rgba(139,92,246,0.08)]",
                     "max-[480px]:py-3 max-[480px]:pr-3.5 max-[480px]:pl-11 max-[480px]:text-sm",
                   ].join(" ")}
@@ -368,14 +368,14 @@ const Login = () => {
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-[11px] text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 transition-colors"
+                  className="text-[11px] text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 transition-colors"
                 >
                   Forgot password?
                 </Link>
               </div>
 
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-slate-400/70 dark:text-slate-400/50 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-purple-500 dark:group-focus-within:text-purple-400">
+                <span className="absolute left-4 flex items-center justify-center text-slate-400/70 dark:text-slate-400/50 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-violet-500 dark:group-focus-within:text-violet-400">
                   <HiOutlineLockClosed className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -392,8 +392,8 @@ const Login = () => {
                     "text-slate-900 dark:text-slate-200 text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
                     "placeholder:text-slate-400/60 dark:placeholder:text-slate-400/40",
-                    "hover:border-purple-500/40 hover:bg-slate-100 dark:hover:bg-[rgba(15,20,50,0.75)]",
-                    "focus:border-purple-500/60 focus:bg-white dark:focus:bg-[rgba(15,20,50,0.85)]",
+                    "hover:border-violet-500/40 hover:bg-slate-100 dark:hover:bg-[rgba(15,20,50,0.75)]",
+                    "focus:border-violet-500/60 focus:bg-white dark:focus:bg-[rgba(15,20,50,0.85)]",
                     "focus:shadow-[0_0_0_4px_rgba(139,92,246,0.1),0_0_20px_rgba(139,92,246,0.08)]",
                     "max-[480px]:py-3 max-[480px]:pr-10 max-[480px]:pl-11 max-[480px]:text-sm",
                   ].join(" ")}
@@ -402,7 +402,7 @@ const Login = () => {
                   type="button"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-4 bg-transparent border-none text-slate-400 cursor-pointer flex items-center justify-center p-1 rounded-lg transition-all duration-200 z-[2] hover:text-purple-500 hover:bg-purple-500/10"
+                  className="absolute right-4 bg-transparent border-none text-slate-400 cursor-pointer flex items-center justify-center p-1 rounded-lg transition-all duration-200 z-[2] hover:text-violet-500 hover:bg-violet-500/10"
                 >
                   {showPassword ? (
                     <HiOutlineEyeSlash className="w-[18px] h-[18px]" />
@@ -431,7 +431,7 @@ const Login = () => {
               disabled={isLoading}
               className={[
                 "relative w-full py-[15px] px-6 mt-2 border-none rounded-[14px]",
-                "bg-gradient-to-br from-purple-500 via-purple-600 to-cyan-500",
+                "bg-gradient-to-br from-violet-500 via-violet-600 to-cyan-500",
                 "text-white text-base font-semibold font-inter cursor-pointer",
                 "overflow-hidden tracking-[0.3px]",
                 "shadow-[0_4px_24px_rgba(139,92,246,0.3)]",
@@ -443,7 +443,7 @@ const Login = () => {
                 "active:translate-y-0 active:shadow-[0_2px_12px_rgba(139,92,246,0.3)]",
                 // ::before — gradient overlay on hover
                 "before:content-[''] before:absolute before:inset-0",
-                "before:bg-gradient-to-br before:from-purple-600 before:via-purple-500 before:to-cyan-400",
+                "before:bg-gradient-to-br before:from-violet-600 before:via-violet-500 before:to-cyan-400",
                 "before:opacity-0 before:transition-opacity before:duration-[400ms]",
                 "hover:before:opacity-100",
                 // ::after — shimmer sweep
@@ -491,7 +491,7 @@ const Login = () => {
                 "relative",
                 "after:content-[''] after:absolute after:-bottom-0.5 after:left-0",
                 "after:w-0 after:h-[1.5px] after:rounded-sm",
-                "after:bg-gradient-to-r after:from-cyan-400 after:to-purple-500",
+                "after:bg-gradient-to-r after:from-cyan-400 after:to-violet-500",
                 "after:transition-[width] after:duration-300",
                 "hover:after:w-full",
               ].join(" ")}

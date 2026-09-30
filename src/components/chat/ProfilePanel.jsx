@@ -21,12 +21,12 @@ import {
 } from "react-icons/hi2";
 
 const MOCK_MEDIA = [
-  { id: 1, bg: "from-purple-500/30 to-violet-600/30" },
+  { id: 1, bg: "from-violet-500/30 to-violet-600/30" },
   { id: 2, bg: "from-cyan-500/30 to-blue-600/30" },
   { id: 3, bg: "from-pink-500/30 to-rose-600/30" },
   { id: 4, bg: "from-amber-500/30 to-orange-600/30" },
   { id: 5, bg: "from-emerald-500/30 to-teal-600/30" },
-  { id: 6, bg: "from-indigo-500/30 to-purple-600/30" },
+  { id: 6, bg: "from-indigo-500/30 to-violet-600/30" },
 ];
 
 const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
@@ -46,7 +46,7 @@ const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
       {/* Panel */}
       <aside
         className={`
-          flex flex-col h-full bg-white/95 dark:bg-[#0d1230] border-l border-purple-500/10
+          flex flex-col h-full bg-white/95 dark:bg-[#0d1230] border-l border-violet-500/10
           transition-all duration-300 ease-in-out overflow-y-auto no-scrollbar
           xl:w-72 xl:relative xl:translate-x-0
           fixed right-0 top-0 bottom-0 w-80 z-30
@@ -56,24 +56,24 @@ const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
         aria-label="Contact information panel"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-purple-500/10 shrink-0">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-violet-500/10 shrink-0">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-200">Contact Info</h2>
           <button
             onClick={onClose}
             aria-label="Close panel"
-            className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-purple-500/10 transition-all"
+            className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-violet-500/10 transition-all"
           >
             <HiOutlineXMark className="w-5 h-5" />
           </button>
         </div>
 
         {/* Avatar + name */}
-        <div className="flex flex-col items-center gap-3 px-4 py-6 border-b border-purple-500/10">
+        <div className="flex flex-col items-center gap-3 px-4 py-6 border-b border-violet-500/10">
           <UserAvatar name={name} src={avatar} size="2xl" online={status === "online"} />
           <div className="text-center">
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{name}</h3>
             {userName && (
-              <p className="text-xs text-purple-600 dark:text-purple-400/80 mt-0.5">@{userName}</p>
+              <p className="text-xs text-violet-600 dark:text-violet-400/80 mt-0.5">@{userName}</p>
             )}
             <div className="mt-2">
               <UserStatus status={status} />
@@ -83,20 +83,20 @@ const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
 
         {/* About */}
         {about && (
-          <div className="px-4 py-4 border-b border-purple-500/10">
+          <div className="px-4 py-4 border-b border-violet-500/10">
             <h4 className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">About</h4>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{about}</p>
           </div>
         )}
 
         {/* Shared Media */}
-        <div className="px-4 py-4 border-b border-purple-500/10">
+        <div className="px-4 py-4 border-b border-violet-500/10">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
               <HiOutlinePhoto className="w-3.5 h-3.5" />
               Shared Media
             </h4>
-            <button className="text-[11px] text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+            <button className="text-[11px] text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors">
               See all
             </button>
           </div>
@@ -104,17 +104,17 @@ const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
             {MOCK_MEDIA.map((item) => (
               <div
                 key={item.id}
-                className={`aspect-square rounded-lg bg-gradient-to-br ${item.bg} border border-purple-500/10 hover:scale-[1.03] transition-transform cursor-pointer`}
+                className={`aspect-square rounded-lg bg-gradient-to-br ${item.bg} border border-violet-500/10 hover:scale-[1.03] transition-transform cursor-pointer`}
               />
             ))}
           </div>
         </div>
 
         {/* Files / Links */}
-        <div className="px-4 py-4 border-b border-purple-500/10">
+        <div className="px-4 py-4 border-b border-violet-500/10">
           <div className="flex gap-2">
-            <button className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-purple-500/5 dark:bg-purple-500/8 border border-purple-500/15 text-xs text-slate-700 dark:text-slate-300 hover:bg-purple-500/15 transition-all">
-              <HiOutlineDocument className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            <button className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-violet-500/5 dark:bg-violet-500/8 border border-violet-500/15 text-xs text-slate-700 dark:text-slate-300 hover:bg-violet-500/15 transition-all">
+              <HiOutlineDocument className="w-4 h-4 text-violet-600 dark:text-violet-400" />
               Files
             </button>
             <button className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-cyan-500/5 dark:bg-cyan-500/8 border border-cyan-500/15 text-xs text-slate-700 dark:text-slate-300 hover:bg-cyan-500/15 transition-all">
@@ -135,7 +135,7 @@ const ProfilePanel = ({ contact = {}, isOpen, onClose }) => {
           ].map((action) => (
             <button
               key={action.label}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-purple-500/8 border border-transparent hover:border-purple-500/10 transition-all text-sm ${action.color}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-violet-500/8 border border-transparent hover:border-violet-500/10 transition-all text-sm ${action.color}`}
             >
               {action.icon}
               {action.label}

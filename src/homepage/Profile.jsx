@@ -26,7 +26,7 @@ import { EditProfile } from "../components/models/EditProfile";
 /* ── Stats row ── */
 const StatItem = ({ value, label }) => (
   <div className="flex flex-col items-center gap-1 px-6 py-4">
-    <span className="text-2xl font-extrabold bg-gradient-to-br from-purple-500 to-cyan-500 bg-clip-text text-transparent">
+    <span className="text-2xl font-extrabold bg-gradient-to-br from-violet-500 to-cyan-500 bg-clip-text text-transparent">
       {value}
     </span>
     <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">{label}</span>
@@ -35,8 +35,8 @@ const StatItem = ({ value, label }) => (
 
 /* ── Info row ── */
 const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-purple-500/5 transition-colors">
-    <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0">
+  <div className="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-violet-500/5 transition-colors">
+    <div className="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 shrink-0">
       {icon}
     </div>
     <div className="flex-1 min-w-0">
@@ -51,10 +51,10 @@ const InfoRow = ({ icon, label, value }) => (
 /* ── Section card ── */
 const Card = ({ title, children, className = "" }) => (
   <div
-    className={`glass rounded-2xl border border-purple-300/40 dark:border-purple-500/15 overflow-hidden ${className}`}
+    className={`glass rounded-2xl border border-violet-300/40 dark:border-violet-500/15 overflow-hidden ${className}`}
   >
     {title && (
-      <div className="px-5 py-4 border-b border-purple-500/10">
+      <div className="px-5 py-4 border-b border-violet-500/10">
         <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-200">{title}</h3>
       </div>
     )}
@@ -67,7 +67,7 @@ const ActionButton = ({ icon, label, href, onClick, variant = "default" }) => {
   const base =
     "flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all text-sm font-medium w-full text-left";
   const variants = {
-    default: "text-slate-700 dark:text-slate-300 hover:bg-purple-500/10 hover:text-purple-700 dark:hover:text-white",
+    default: "text-slate-700 dark:text-slate-300 hover:bg-violet-500/10 hover:text-violet-700 dark:hover:text-white",
     danger: "text-red-500 dark:text-red-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-300",
   };
 
@@ -126,7 +126,7 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-[#060918] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
       </div>
     );
   }
@@ -152,11 +152,11 @@ const Profile = () => {
       </div>
 
       {/* Top nav */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-[#060918]/80 backdrop-blur-xl border-b border-purple-500/10">
+      <header className="sticky top-0 z-10 bg-white/80 dark:bg-[#060918]/80 backdrop-blur-xl border-b border-violet-500/10">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link
             to="/chat"
-            className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white transition-colors"
           >
             <HiOutlineArrowLeft className="w-4 h-4" />
             <span>Back to Chat</span>
@@ -167,7 +167,7 @@ const Profile = () => {
             <button
               onClick={() => setIsModels(true)}
               aria-label="Edit profile"
-              className="p-2 cursor-pointer rounded-xl text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-300 hover:bg-purple-500/10 transition-all"
+              className="p-2 cursor-pointer rounded-xl text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/10 transition-all"
             >
               <HiOutlinePencilSquare className="w-4.5 h-4.5" />
             </button>
@@ -197,7 +197,7 @@ const Profile = () => {
                     {displayName}
                   </h2>
                   {userName && (
-                    <p className="text-sm text-purple-600 dark:text-purple-400/80 mt-0.5">
+                    <p className="text-sm text-violet-600 dark:text-violet-400/80 mt-0.5">
                       @{userName}
                     </p>
                   )}
@@ -219,14 +219,14 @@ const Profile = () => {
                 {/* Edit profile button */}
                 <button 
                   onClick={() => setIsModels(true)}
-                  className="w-full py-2.5 rounded-xl border border-purple-300/60 dark:border-purple-500/25 text-sm font-semibold text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-500/10 hover:border-purple-400 dark:hover:border-purple-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                  className="w-full py-2.5 rounded-xl border border-violet-300/60 dark:border-violet-500/25 text-sm font-semibold text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-400 dark:hover:border-violet-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs">
                   <HiOutlinePencilSquare className="w-4 h-4" />
                   Edit Profile
                 </button>
               </div>
 
               {/* Stats */}
-              <div className="border-t border-purple-500/10 grid grid-cols-3 divide-x divide-purple-500/10">
+              <div className="border-t border-violet-500/10 grid grid-cols-3 divide-x divide-violet-500/10">
                 <StatItem value="248" label="Messages" />
                 <StatItem value="12" label="Contacts" />
                 <StatItem value="3" label="Groups" />
@@ -322,7 +322,7 @@ const Profile = () => {
                     Active
                   </div>
                 </div>
-                <div className="px-4 py-3 mx-2 mb-2 rounded-xl bg-purple-500/5 border border-purple-500/10">
+                <div className="px-4 py-3 mx-2 mb-2 rounded-xl bg-violet-500/5 border border-violet-500/10">
                   <p className="text-xs text-slate-600 dark:text-slate-400">
                     Your password is encrypted using bcryptjs. Sessions are
                     managed with secure httpOnly cookies that expire in 7 days.
@@ -362,15 +362,15 @@ const Profile = () => {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className={`flex items-center gap-3 py-3 ${i < 3 ? "border-b border-purple-500/10" : ""}`}
+                    className={`flex items-center gap-3 py-3 ${i < 3 ? "border-b border-violet-500/10" : ""}`}
                   >
-                    <div className="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center text-sm shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-violet-500/10 flex items-center justify-center text-sm shrink-0">
                       {item.icon}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-slate-900 dark:text-slate-200">
                         <span className="font-medium">{item.action}</span>{" "}
-                        <span className="text-purple-600 dark:text-purple-400/80">
+                        <span className="text-violet-600 dark:text-violet-400/80">
                           {item.target}
                         </span>
                       </p>

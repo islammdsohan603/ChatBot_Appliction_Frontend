@@ -123,12 +123,12 @@ export function EditProfile({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && !isSubmitting && onClose?.()}>
-      <DialogContent className="max-w-lg p-0 overflow-hidden border-purple-200/80 dark:border-purple-500/20 bg-white/95 dark:bg-[#0d1230]/95 backdrop-blur-2xl">
+      <DialogContent className="max-w-lg p-0 overflow-hidden border-violet-200/80 dark:border-violet-500/20 bg-white/95 dark:bg-[#0d1230]/95 backdrop-blur-2xl">
         {/* Glow Header Accent */}
-        <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-cyan-400 to-indigo-500" />
+        <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-cyan-400 to-indigo-500" />
 
         {/* Modal Header */}
-        <DialogHeader className="px-6 pt-5 pb-3 border-b border-purple-500/10">
+        <DialogHeader className="px-6 pt-5 pb-3 border-b border-violet-500/10">
           <DialogTitle className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             Edit Profile
           </DialogTitle>
@@ -140,13 +140,13 @@ export function EditProfile({ isOpen, onClose }) {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-5">
           {/* Avatar Upload Section */}
-          <div className="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-2xl bg-purple-500/5 border border-purple-500/10">
+          <div className="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-2xl bg-violet-500/5 border border-violet-500/10">
             <div className="relative group">
               <UserAvatar
                 name={name || user.name || user.userName || "User"}
                 src={previewUrl}
                 size="2xl"
-                className="ring-4 ring-purple-500/20 shadow-lg"
+                className="ring-4 ring-violet-500/20 shadow-lg"
               />
               <button
                 type="button"
@@ -155,7 +155,7 @@ export function EditProfile({ isOpen, onClose }) {
                 className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs gap-1 backdrop-blur-xs cursor-pointer"
                 aria-label="Change profile photo"
               >
-                <HiOutlineCamera className="w-6 h-6 text-purple-300" />
+                <HiOutlineCamera className="w-6 h-6 text-violet-300" />
                 <span className="font-semibold text-[11px]">Change</span>
               </button>
             </div>
@@ -182,7 +182,7 @@ export function EditProfile({ isOpen, onClose }) {
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isSubmitting}
-                  className="border-purple-500/25 bg-purple-500/15 text-purple-600 dark:text-purple-300 hover:bg-purple-500/25 hover:text-purple-900 dark:hover:text-white"
+                  className="border-violet-500/25 bg-violet-500/15 text-violet-600 dark:text-violet-300 hover:bg-violet-500/25 hover:text-violet-900 dark:hover:text-white"
                 >
                   <HiOutlineCamera className="w-3.5 h-3.5 mr-1.5" />
                   Upload New
@@ -212,7 +212,7 @@ export function EditProfile({ isOpen, onClose }) {
                 htmlFor="edit-name"
                 className="flex items-center gap-1.5"
               >
-                <HiOutlineUser className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                <HiOutlineUser className="w-3.5 h-3.5 text-violet-500 dark:text-violet-400" />
                 Display Name <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -223,7 +223,7 @@ export function EditProfile({ isOpen, onClose }) {
                 placeholder="Enter your full name"
                 required
                 disabled={isSubmitting}
-                className="h-10 rounded-xl bg-purple-500/5 border-purple-500/20 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus-visible:border-purple-500/60 focus-visible:ring-purple-500/20"
+                className="h-10 rounded-xl bg-violet-500/5 border-violet-500/20 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus-visible:border-violet-500/60 focus-visible:ring-violet-500/20"
               />
             </div>
 
@@ -234,10 +234,10 @@ export function EditProfile({ isOpen, onClose }) {
                   htmlFor="edit-username"
                   className="flex items-center gap-1.5"
                 >
-                  <HiOutlineAtSymbol className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                  <HiOutlineAtSymbol className="w-3.5 h-3.5 text-violet-500 dark:text-violet-400" />
                   Username
                 </Label>
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/15">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider bg-violet-500/10 px-2 py-0.5 rounded-md border border-violet-500/15">
                   Permanent
                 </span>
               </div>
@@ -246,7 +246,7 @@ export function EditProfile({ isOpen, onClose }) {
                 type="text"
                 value={user.userName ? `@${user.userName}` : ""}
                 disabled
-                className="h-10 rounded-xl bg-purple-500/5 border-purple-500/10 text-slate-500 dark:text-slate-400 cursor-not-allowed opacity-80"
+                className="h-10 rounded-xl bg-violet-500/5 border-violet-500/10 text-slate-500 dark:text-slate-400 cursor-not-allowed opacity-80"
               />
             </div>
 
@@ -257,10 +257,10 @@ export function EditProfile({ isOpen, onClose }) {
                   htmlFor="edit-email"
                   className="flex items-center gap-1.5"
                 >
-                  <HiOutlineEnvelope className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                  <HiOutlineEnvelope className="w-3.5 h-3.5 text-violet-500 dark:text-violet-400" />
                   Email Address
                 </Label>
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/15">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider bg-violet-500/10 px-2 py-0.5 rounded-md border border-violet-500/15">
                   Verified
                 </span>
               </div>
@@ -269,7 +269,7 @@ export function EditProfile({ isOpen, onClose }) {
                 type="email"
                 value={user.email || ""}
                 disabled
-                className="h-10 rounded-xl bg-purple-500/5 border-purple-500/10 text-slate-500 dark:text-slate-400 cursor-not-allowed opacity-80"
+                className="h-10 rounded-xl bg-violet-500/5 border-violet-500/10 text-slate-500 dark:text-slate-400 cursor-not-allowed opacity-80"
               />
             </div>
 
@@ -280,7 +280,7 @@ export function EditProfile({ isOpen, onClose }) {
                   htmlFor="edit-bio"
                   className="flex items-center gap-1.5"
                 >
-                  <HiOutlineDocumentText className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />
+                  <HiOutlineDocumentText className="w-3.5 h-3.5 text-violet-500 dark:text-violet-400" />
                   Bio
                 </Label>
                 <span className="text-[11px] text-slate-500">
@@ -295,26 +295,26 @@ export function EditProfile({ isOpen, onClose }) {
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Tell us a little bit about yourself..."
                 disabled={isSubmitting}
-                className="rounded-xl bg-purple-500/5 border-purple-500/20 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-purple-500/60 focus:ring-purple-500/20"
+                className="rounded-xl bg-violet-500/5 border-violet-500/20 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-violet-500/60 focus:ring-violet-500/20"
               />
             </div>
           </div>
 
           {/* Modal Actions */}
-          <DialogFooter className="flex items-center justify-end gap-3 pt-4 border-t border-purple-500/10">
+          <DialogFooter className="flex items-center justify-end gap-3 pt-4 border-t border-violet-500/10">
             <Button
               type="button"
               variant="outline"
               onClick={() => !isSubmitting && onClose?.()}
               disabled={isSubmitting}
-              className="rounded-xl border-slate-300 dark:border-purple-500/20 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-purple-500/10 hover:text-slate-900 dark:hover:text-white"
+              className="rounded-xl border-slate-300 dark:border-violet-500/20 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-violet-500/10 hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="btn-accent rounded-xl text-white shadow-lg shadow-purple-500/25 cursor-pointer"
+              className="btn-accent rounded-xl text-white shadow-lg shadow-violet-500/25 cursor-pointer"
             >
               {isSubmitting ? (
                 <>
