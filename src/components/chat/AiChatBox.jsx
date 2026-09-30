@@ -15,11 +15,11 @@ import {
   FiAlertCircle,
   FiCopy,
   FiCheck,
-  FiRefreshCw
+  FiRefreshCw,
 } from "react-icons/fi";
 import { IoSparkles } from "react-icons/io5";
 
-const CodeBlock = ({ node, inline, className, children, ...props }) => {
+const CodeBlock = ({ inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
   const [copied, setCopied] = useState(false);
 
@@ -38,7 +38,11 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
             onClick={handleCopy}
             className="flex items-center gap-1.5 hover:text-white transition-colors"
           >
-            {copied ? <FiCheck className="w-3.5 h-3.5 text-green-400" /> : <FiCopy className="w-3.5 h-3.5" />}
+            {copied ? (
+              <FiCheck className="w-3.5 h-3.5 text-green-400" />
+            ) : (
+              <FiCopy className="w-3.5 h-3.5" />
+            )}
             {copied ? "Copied!" : "Copy"}
           </button>
         </div>
@@ -46,7 +50,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
           style={vscDarkPlus}
           language={match[1]}
           PreTag="div"
-          customStyle={{ margin: 0, padding: '1rem', background: '#1e1e1e' }}
+          customStyle={{ margin: 0, padding: "1rem", background: "#1e1e1e" }}
           {...props}
         >
           {String(children).replace(/\n$/, "")}
@@ -55,7 +59,10 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
     );
   }
   return (
-    <code className={`${className} bg-violet-500/10 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-md text-sm`} {...props}>
+    <code
+      className={`${className || ""} bg-violet-500/10 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-md text-sm`}
+      {...props}
+    >
       {children}
     </code>
   );
@@ -82,7 +89,9 @@ export const AiChatBox = ({
 }) => {
   const [currentModel, setCurrentModel] = useState(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem("nexora_user_settings") || "{}");
+      const saved = JSON.parse(
+        localStorage.getItem("nexora_user_settings") || "{}",
+      );
       if (saved.defaultModel && saved.defaultModel.startsWith("gemini")) {
         return saved.defaultModel;
       }
@@ -210,16 +219,25 @@ export const AiChatBox = ({
                     const newModel = e.target.value;
                     setCurrentModel(newModel);
                     try {
-                      const saved = JSON.parse(localStorage.getItem("nexora_user_settings") || "{}");
-                      localStorage.setItem("nexora_user_settings", JSON.stringify({ ...saved, defaultModel: newModel }));
-                    } catch {}
+                      const saved = JSON.parse(
+                        localStorage.getItem("nexora_user_settings") || "{}",
+                      );
+                      localStorage.setItem(
+                        "nexora_user_settings",
+                        JSON.stringify({ ...saved, defaultModel: newModel }),
+                      );
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                   title="Select AI Model"
                   className="text-[10px] font-semibold tracking-wider pl-2 pr-5 py-0.5 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 outline-none cursor-pointer appearance-none hover:bg-violet-500/25 transition-all"
                 >
                   <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
                   <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
-                  <option value="gemini-flash-latest">Gemini Flash Latest</option>
+                  <option value="gemini-flash-latest">
+                    Gemini Flash Latest
+                  </option>
                 </select>
                 <IoSparkles className="w-2.5 h-2.5 text-violet-500 dark:text-violet-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
@@ -228,8 +246,8 @@ export const AiChatBox = ({
               {isStreaming
                 ? "Streaming response..."
                 : isLoading
-                ? "Thinking..."
-                : "Real-time AI Chat & Vision"}
+                  ? "Thinking..."
+                  : "Real-time AI Chat & Vision"}
             </p>
           </div>
         </div>
@@ -277,7 +295,8 @@ export const AiChatBox = ({
                 How can I assist you today?
               </h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                Type a prompt, attach an image for visual analysis, and receive instant, real-time streamed responses.
+                Type a prompt, attach an image for visual analysis, and receive
+                instant, real-time streamed responses.
               </p>
             </div>
 
@@ -338,7 +357,7 @@ export const AiChatBox = ({
                   <div className="break-words">
                     {!isUser ? (
                       msg.content ? (
-                        <div className="prose prose-sm dark:prose-invert prose-purple max-w-none">
+                        <div className="prose prose-sm dark:prose-invert prose-violet max-w-none">
                           <ReactMarkdown components={{ code: CodeBlock }}>
                             {msg.content}
                           </ReactMarkdown>
@@ -363,19 +382,26 @@ export const AiChatBox = ({
                 </div>
 
                 {/* Regenerate Button (only for last AI message, when not streaming) */}
-                {!isUser && !msg.isStreaming && msg === messages[messages.length - 1] && (
-                  <div className="absolute -bottom-8 left-12">
-                    <button
-                      onClick={() => {
-                        const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
-                        if (lastUserMsg) sendMessage(lastUserMsg.content, { base64: lastUserMsg.imageUrl });
-                      }}
-                      className="flex items-center gap-1.5 px-2 py-1 text-[10px] rounded-lg text-slate-500 hover:text-violet-500 hover:bg-violet-500/10 transition-colors cursor-pointer"
-                    >
-                      <FiRefreshCw className="w-3 h-3" /> Regenerate
-                    </button>
-                  </div>
-                )}
+                {!isUser &&
+                  !msg.isStreaming &&
+                  msg === messages[messages.length - 1] && (
+                    <div className="absolute -bottom-8 left-12">
+                      <button
+                        onClick={() => {
+                          const lastUserMsg = [...messages]
+                            .reverse()
+                            .find((m) => m.role === "user");
+                          if (lastUserMsg)
+                            sendMessage(lastUserMsg.content, {
+                              base64: lastUserMsg.imageUrl,
+                            });
+                        }}
+                        className="flex items-center gap-1.5 px-2 py-1 text-[10px] rounded-lg text-slate-500 hover:text-violet-500 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                      >
+                        <FiRefreshCw className="w-3 h-3" /> Regenerate
+                      </button>
+                    </div>
+                  )}
 
                 {/* User Avatar */}
                 {isUser && (
@@ -395,9 +421,12 @@ export const AiChatBox = ({
             <div className="flex-1 space-y-1">
               <p className="font-semibold text-xs">AI Response Notice</p>
               <p className="text-[11px] opacity-90 leading-relaxed">{error}</p>
-              {(error.includes("GOOGLE_API_KEY") || error.includes("API key") || error.includes("quota")) && (
+              {(error.includes("GOOGLE_API_KEY") ||
+                error.includes("API key") ||
+                error.includes("quota")) && (
                 <p className="text-[11px] text-violet-700 dark:text-violet-300 font-medium pt-1">
-                  Tip: Verify your API key or configure your custom Google Gemini API Key in Settings &rarr; Personalization.
+                  Tip: Verify your API key or configure your custom Google
+                  Gemini API Key in Settings &rarr; Personalization.
                 </p>
               )}
             </div>
@@ -431,7 +460,9 @@ export const AiChatBox = ({
                 <span className="truncate text-xs font-medium text-slate-800 dark:text-slate-200">
                   {selectedImage.name}
                 </span>
-                <span className="text-[10px] text-slate-400">{selectedImage.size}</span>
+                <span className="text-[10px] text-slate-400">
+                  {selectedImage.size}
+                </span>
               </div>
               <button
                 type="button"
@@ -475,8 +506,8 @@ export const AiChatBox = ({
                 isStreaming
                   ? "AI is streaming response..."
                   : selectedImage
-                  ? "Add a prompt or question about this image..."
-                  : "Ask anything (Press Enter to send)..."
+                    ? "Add a prompt or question about this image..."
+                    : "Ask anything (Press Enter to send)..."
               }
               disabled={isLoading || isStreaming}
               className="flex-1 bg-transparent px-2.5 py-1 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-sm outline-none resize-none leading-relaxed min-h-[24px] max-h-[160px] overflow-y-auto no-scrollbar"
@@ -514,9 +545,19 @@ export const AiChatBox = ({
           {/* Bottom disclaimer & shortcut hint */}
           <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-slate-500 dark:text-slate-400/80 text-center select-none">
             <span>Nexora AI can make mistakes. Verify sensitive details.</span>
-            <span className="hidden sm:inline text-slate-400 dark:text-slate-600">·</span>
+            <span className="hidden sm:inline text-slate-400 dark:text-slate-600">
+              ·
+            </span>
             <span className="hidden sm:inline text-slate-400 dark:text-slate-500/70">
-              Press <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">Enter</kbd> to send, <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">Shift+Enter</kbd> for newline
+              Press{" "}
+              <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">
+                Enter
+              </kbd>{" "}
+              to send,{" "}
+              <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">
+                Shift+Enter
+              </kbd>{" "}
+              for newline
             </span>
           </div>
         </div>

@@ -6,7 +6,12 @@ import "./App.css";
 import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Home from "./homepage/Home";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Community from "./pages/Community";
+import Pricing from "./pages/Pricing";
+import Dashboard from "./pages/Dashboard";
+import Documentation from "./pages/Documentation";
 import Profile from "./homepage/Profile";
 import Settings from "./pages/Settings";
 import ChatLayout from "./components/chat/ChatLayout";
@@ -106,8 +111,13 @@ function App() {
       <ErrorBoundary>
         <RouteTransitionWrapper>
           <Routes>
-            {/* Public landing page */}
+            {/* Public marketing pages */}
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/docs" element={<Documentation />} />
+            <Route path="/documentation" element={<Documentation />} />
 
             {/* Auth pages — redirect to /chat if already logged in */}
             <Route
@@ -149,6 +159,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />
