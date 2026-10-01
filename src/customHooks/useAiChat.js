@@ -167,6 +167,8 @@ export const useAiChat = ({
       setSelectedImage(null);
       setMessages((prev) => [...prev, userMessage, assistantPlaceholder]);
 
+      let accumulatedContent = "";
+
       try {
         // Retrieve custom user API key from localStorage if set
         const customApiKey =
@@ -218,7 +220,7 @@ export const useAiChat = ({
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        let accumulatedContent = "";
+        accumulatedContent = "";
         let buffer = "";
 
         while (true) {

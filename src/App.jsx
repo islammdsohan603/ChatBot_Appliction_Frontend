@@ -14,6 +14,8 @@ import Dashboard from "./pages/Dashboard";
 import Documentation from "./pages/Documentation";
 import Profile from "./homepage/Profile";
 import Settings from "./pages/Settings";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancel from "./pages/PaymentCancel";
 import ChatLayout from "./components/chat/ChatLayout";
 import useCurrentUser from "./customHooks/getCurrentUser";
 import RouteTransitionWrapper from "./components/ui/RouteTransitionWrapper";
@@ -175,6 +177,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment/success"
+              element={
+                <ProtectedRoute>
+                  <PaymentSuccess />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment/cancel"
+              element={
+                <ProtectedRoute>
+                  <PaymentCancel />
                 </ProtectedRoute>
               }
             />

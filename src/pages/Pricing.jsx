@@ -11,10 +11,12 @@ import {
   FiChevronUp,
   FiHelpCircle,
   FiArrowRight,
+  FiLoader,
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { setUserData } from "../../redux/userSlice";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -139,6 +141,7 @@ const FAQS = [
  * Pricing & Plans Page Component
  */
 export const Pricing = () => {
+  const dispatch = useDispatch();
   const { isAuthenticated, userData } = useSelector((s) => s.user);
   const navigate = useNavigate();
   const [isYearly, setIsYearly] = useState(false);
@@ -178,21 +181,43 @@ export const Pricing = () => {
     }
 
     setSubscribingSlug(planSlug);
+
     try {
+      // Free plan — direct downgrade, no payment needed
+      if (planSlug === "free") {
+        const res = await axios.post(
+          `${SERVER_URL}/api/pricing/subscribe`,
+          { planSlug },
+          { withCredentials: true }
+        );
+
+        if (res.data?.success) {
+          if (res.data?.user) {
+            dispatch(setUserData(res.data.user));
+          }
+          toast.success(res.data.message || "Switched to the Free Starter plan.");
+        }
+        setSubscribingSlug(null);
+        return;
+      }
+
+      // Paid plans — create Stripe Checkout Session and redirect
+      const billingCycle = isYearly ? "yearly" : "monthly";
       const res = await axios.post(
-        `${SERVER_URL}/api/pricing/subscribe`,
-        { planSlug },
+        `${SERVER_URL}/api/pricing/create-checkout-session`,
+        { planSlug, billingCycle },
         { withCredentials: true }
       );
 
-      if (res.data?.success) {
-        toast.success(res.data.message || `Subscribed to ${planSlug.toUpperCase()} plan!`);
-        // Refresh page or update state
-        setTimeout(() => window.location.reload(), 800);
+      if (res.data?.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = res.data.url;
+      } else {
+        toast.error("Failed to start checkout process. Please try again.");
+        setSubscribingSlug(null);
       }
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to process subscription.");
-    } finally {
       setSubscribingSlug(null);
     }
   };
@@ -259,16 +284,24 @@ export const Pricing = () => {
               const price = isYearly ? Math.round(plan.priceYearly / 12) : plan.priceMonthly;
               const isCurrent = currentTier === plan.slug;
               const isSubmitting = subscribingSlug === plan.slug;
+              const isAnySubscribing = subscribingSlug !== null;
 
               return (
                 <div
                   key={plan.slug}
-                  className={`relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between ${
-                    plan.isPopular
+                  className={`relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between overflow-hidden ${
+                    isSubmitting
+                      ? "bg-white dark:bg-[#0d1230] border-2 border-violet-500 shadow-2xl shadow-violet-500/40 ring-4 ring-violet-500/20 scale-[1.02]"
+                      : plan.isPopular
                       ? "bg-white dark:bg-[#0d1230] border-2 border-violet-500 shadow-2xl shadow-violet-900/20 md:-translate-y-2"
                       : "bg-white/80 dark:bg-[#0a0f2a]/90 border border-violet-500/15 hover:border-violet-500/40 shadow-lg"
                   }`}
                 >
+                  {/* Subscribing loading bar indicator */}
+                  {isSubmitting && (
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500 animate-pulse" />
+                  )}
+
                   {/* Highlight pill */}
                   {plan.highlightBadge && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md">
@@ -320,23 +353,34 @@ export const Pricing = () => {
                   {/* Plan CTA button */}
                   <button
                     type="button"
-                    disabled={isCurrent || isSubmitting}
+                    disabled={isCurrent || isAnySubscribing}
                     onClick={() => handleSubscribe(plan.slug)}
-                    className={`w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer ${
-                      isCurrent
+                    className={`w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                      isSubmitting
+                        ? "bg-violet-600 text-white shadow-lg shadow-violet-500/30 opacity-95 cursor-wait"
+                        : isCurrent
                         ? "bg-slate-200 dark:bg-slate-800 text-slate-500 cursor-not-allowed"
                         : plan.isPopular
-                        ? "bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-900/30 hover:-translate-y-0.5"
-                        : "border border-violet-500/30 text-slate-800 dark:text-slate-200 hover:bg-violet-500/10"
+                        ? "bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-900/30 hover:-translate-y-0.5 cursor-pointer"
+                        : "border border-violet-500/30 text-slate-800 dark:text-slate-200 hover:bg-violet-500/10 cursor-pointer"
                     }`}
                   >
-                    {isSubmitting
-                      ? "Updating Plan..."
-                      : isCurrent
-                      ? "Current Plan"
-                      : plan.priceMonthly === 0
-                      ? "Get Started Free"
-                      : `Upgrade to ${plan.name}`}
+                    {isSubmitting ? (
+                      <>
+                        <FiLoader className="w-4 h-4 animate-spin text-white shrink-0" />
+                        <span>
+                          {plan.priceMonthly === 0
+                            ? "Switching Plan..."
+                            : "Redirecting to Stripe..."}
+                        </span>
+                      </>
+                    ) : isCurrent ? (
+                      "Current Active Plan"
+                    ) : plan.priceMonthly === 0 ? (
+                      "Get Started Free"
+                    ) : (
+                      `Upgrade to ${plan.name}`
+                    )}
                   </button>
                 </div>
               );

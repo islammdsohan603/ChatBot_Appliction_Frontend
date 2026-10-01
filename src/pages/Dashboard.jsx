@@ -16,6 +16,8 @@ import {
   FiShield,
   FiSettings,
   FiRefreshCw,
+  FiAward,
+  FiCheck,
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
@@ -25,6 +27,85 @@ const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
   import.meta.env.NEXT_PUBLIC_SERVER_URL ||
   "http://localhost:8000";
+
+const PLAN_CONFIG = {
+  free: {
+    title: "Free Starter Plan",
+    slug: "free",
+    badge: "Free Starter",
+    badgeColor: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+    price: "$0",
+    billingCycle: "Forever Free",
+    description: "Essential AI chat capabilities for casual users and beginners.",
+    features: [
+      "Access to Gemini 3.8 Flash model",
+      "Up to 50 conversations per day",
+      "Standard response streaming speeds",
+      "Multimodal image analysis (up to 5MB)",
+    ],
+    limits: {
+      messages: "50 / day",
+      models: "Gemini 3.8 Flash",
+      vision: "Up to 5MB",
+      support: "Community Forum",
+      export: "Disabled",
+    },
+    gradient: "from-slate-500/5 via-violet-500/5 to-transparent border-violet-500/15",
+    glowColor: "shadow-slate-500/10",
+  },
+  pro: {
+    title: "Pro Developer Plan",
+    slug: "pro",
+    badge: "Active Pro Plan",
+    badgeColor: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+    price: "$19",
+    billingCycle: "Monthly Billing",
+    description: "Enhanced power, higher limits, and priority model availability for developers.",
+    features: [
+      "Unlimited AI conversations & messages",
+      "Access to Gemini 3.8 Flash & Gemini 3.5 Pro",
+      "Priority response queue during peak hours",
+      "Unlimited image vision attachments",
+      "Full conversation history export (JSON & Markdown)",
+      "Direct Priority Support via Discord",
+    ],
+    limits: {
+      messages: "Unlimited",
+      models: "Gemini 3.8 Flash & 3.5 Pro",
+      vision: "Unlimited Attachments",
+      support: "Discord Priority Support",
+      export: "JSON & Markdown",
+    },
+    gradient: "from-violet-600/15 via-indigo-600/10 to-emerald-500/15 border-violet-500/30",
+    glowColor: "shadow-violet-500/20",
+  },
+  enterprise: {
+    title: "Enterprise Studio Plan",
+    slug: "enterprise",
+    badge: "Enterprise VIP",
+    badgeColor: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border-cyan-500/30",
+    price: "$79",
+    billingCycle: "Monthly Billing",
+    description: "Dedicated infrastructure, custom SLAs, and custom LLM tuning for organizations.",
+    features: [
+      "Everything in Pro included",
+      "Dedicated high-throughput Gemini quota",
+      "Custom system instructions & domain knowledge base",
+      "Team collaboration & shared workspace channels",
+      "Enterprise audit logs & SOC2 compliance docs",
+      "24/7 dedicated support engineer",
+    ],
+    limits: {
+      messages: "Unlimited VIP",
+      models: "All Gemini Models + Dedicated Quota",
+      vision: "Unlimited Attachments",
+      support: "24/7 Dedicated Engineer",
+      export: "Enterprise Audit Logs & History",
+    },
+    gradient: "from-cyan-600/15 via-violet-600/10 to-indigo-600/15 border-cyan-500/30",
+    glowColor: "shadow-cyan-500/20",
+  },
+};
 
 const QUICK_PROMPTS = [
   {
@@ -182,6 +263,119 @@ export const Dashboard = () => {
           <ErrorState message={error} onRetry={fetchDashboardData} />
         ) : (
           <>
+            {/* ══════════════════════════════════════════════
+                ACTIVE PURCHASED PLAN & SUBSCRIPTION DISPLAY
+                ══════════════════════════════════════════════ */}
+            {(() => {
+              const activePlanKey = (tier || "free").toLowerCase();
+              const activePlan = PLAN_CONFIG[activePlanKey] || PLAN_CONFIG.free;
+
+              return (
+                <div
+                  className={`p-6 sm:p-8 rounded-3xl bg-gradient-to-br ${activePlan.gradient} bg-white dark:bg-[#0a0f2a] border shadow-xl ${activePlan.glowColor} mb-10 transition-all duration-300`}
+                >
+                  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-violet-500/15">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                          <FiAward className="w-6 h-6 text-violet-500 shrink-0" />
+                          <span>{activePlan.title}</span>
+                        </h2>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ${activePlan.badgeColor}`}
+                        >
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          {activePlan.badge}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                        {activePlan.description}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-4 bg-violet-500/10 dark:bg-[#111840] px-5 py-3.5 rounded-2xl border border-violet-500/20 shrink-0 w-full lg:w-auto justify-between lg:justify-start">
+                      <div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
+                            {activePlan.price}
+                          </span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                            / month
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-violet-600 dark:text-violet-400 font-semibold">
+                          {activePlan.billingCycle}
+                        </p>
+                      </div>
+                      <Link
+                        to="/pricing"
+                        className="ml-2 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5 shrink-0 cursor-pointer"
+                      >
+                        <span>{activePlanKey === "free" ? "Upgrade Plan" : "Manage Plan"}</span>
+                        <FiArrowUpRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Plan Limits & Capabilities Specs */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-violet-500/10">
+                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
+                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        Daily Message Quota
+                      </p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1">
+                        {activePlan.limits.messages}
+                      </p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
+                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        Model Availability
+                      </p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 truncate">
+                        {activePlan.limits.models}
+                      </p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
+                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        Vision Attachments
+                      </p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1">
+                        {activePlan.limits.vision}
+                      </p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
+                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        Support Channel
+                      </p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 truncate">
+                        {activePlan.limits.support}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Unlocked Plan Features */}
+                  <div className="pt-6">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+                      Features Unlocked with Your {activePlan.title}
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      {activePlan.features.map((feat, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300"
+                        >
+                          <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <FiCheck className="w-3 h-3" />
+                          </div>
+                          <span className="font-medium">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* ══════════════════════════════════════════════
                 4-CARD KPI METRICS GRID
                 ══════════════════════════════════════════════ */}
