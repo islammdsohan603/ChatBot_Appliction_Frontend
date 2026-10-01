@@ -43,7 +43,7 @@ const DEFAULT_SETTINGS = {
   customAbout: "",
   customResponseStyle: "Be concise, friendly, and provide helpful code examples when asked.",
   memoryEnabled: true,
-  defaultModel: "gemini-3.8-flash",
+  defaultModel: "gemini-3.5-flash",
   googleApiKey: "",
   chatHistory: true,
   pushNotifications: true,
@@ -426,8 +426,9 @@ const Settings = () => {
                       onChange={(e) => updateSetting("defaultModel", e.target.value)}
                       className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#0a0f25] border border-violet-300/40 dark:border-violet-500/25 text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-violet-500/50 cursor-pointer"
                     >
-                      <option value="gemini-3.8-flash">Gemini 3.8 Flash (Fast & Smart - Recommended)</option>
-                      <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                      <option value="gemini-3.5-flash">Gemini 3.5 Flash (Fast & Stable - Recommended)</option>
+                      <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (High Speed)</option>
+                      <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
                       <option value="gemini-flash-latest">Gemini Flash Latest</option>
                     </select>
                   </SettingRow>

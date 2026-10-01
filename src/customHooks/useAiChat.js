@@ -12,7 +12,7 @@ const DEFAULT_SERVER_URL =
 export const useAiChat = ({
   conversationId = null,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-2.0-flash",
+  model = "gemini-3.5-flash",
   onSessionCreated,
   onConversationUpdated,
   onError,
@@ -189,7 +189,10 @@ export const useAiChat = ({
           headers["x-goog-api-key"] = customApiKey;
         }
 
-        const effectiveModel = model === "gemini-3.8-flash" || model === "gemini-2.5-flash" ? "gemini-2.0-flash" : model || "gemini-2.0-flash";
+        const effectiveModel =
+          model === "gemini-2.0-flash" || model === "gemini-1.5-flash"
+            ? "gemini-3.5-flash"
+            : model || "gemini-3.5-flash";
 
         const response = await fetch(`${DEFAULT_SERVER_URL}/api/conversations/stream`, {
           method: "POST",

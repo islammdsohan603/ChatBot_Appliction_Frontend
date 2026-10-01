@@ -18,10 +18,15 @@ import {
   FiRefreshCw,
   FiAward,
   FiCheck,
+  FiSearch,
+  FiEye,
+  FiChevronRight,
+  FiList,
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
+import PreviousChatViewer from "../components/chat/PreviousChatViewer";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -139,6 +144,12 @@ export const Dashboard = () => {
 
   const [stats, setStats] = useState(null);
   const [activity, setActivity] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [conversationsLoading, setConversationsLoading] = useState(false);
+  const [chatSearch, setChatSearch] = useState("");
+  const [selectedChatId, setSelectedChatId] = useState(null);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [sidebarCollapsedMobile, setSidebarCollapsedMobile] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(null);
@@ -166,27 +177,49 @@ export const Dashboard = () => {
     }
   };
 
+  const fetchConversations = async () => {
+    setConversationsLoading(true);
+    try {
+      const res = await axios.get(`${SERVER_URL}/api/conversations`, {
+        withCredentials: true,
+      });
+      if (Array.isArray(res.data)) {
+        setConversations(res.data);
+      }
+    } catch (err) {
+      console.warn("Dashboard conversations fetch error:", err);
+    } finally {
+      setConversationsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
       return;
     }
     fetchDashboardData();
+    fetchConversations();
   }, [isAuthenticated, navigate]);
 
   const handleDeleteConversation = async (convId, e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     if (!confirm("Are you sure you want to delete this session?")) return;
     setIsDeleting(convId);
     try {
       await axios.delete(`${SERVER_URL}/api/conversations/${convId}`, {
         withCredentials: true,
       });
+      setConversations((prev) => prev.filter((c) => (c._id || c.id) !== convId));
       setStats((prev) => ({
         ...prev,
-        recentConversations: prev.recentConversations.filter((c) => (c._id || c.id) !== convId),
+        recentConversations: (prev?.recentConversations || []).filter((c) => (c._id || c.id) !== convId),
         totalConversations: Math.max(0, (prev?.totalConversations || 1) - 1),
       }));
+      if (selectedChatId === convId) {
+        setIsViewerOpen(false);
+        setSelectedChatId(null);
+      }
       toast.success("Conversation deleted");
     } catch {
       toast.error("Failed to delete conversation");
@@ -195,9 +228,25 @@ export const Dashboard = () => {
     }
   };
 
+  const handleViewChat = (convId) => {
+    setSelectedChatId(convId);
+    setIsViewerOpen(true);
+  };
+
+  const handleOpenFullChat = (convId) => {
+    navigate(`/chat/${convId}`);
+  };
+
   const handleLaunchPrompt = (promptText) => {
     navigate("/chat", { state: { prefilledPrompt: promptText } });
   };
+
+  const filteredConversations = conversations.filter((c) => {
+    const title = (c.title || "").toLowerCase();
+    const lastMsg = (c.lastMessage || "").toLowerCase();
+    const query = chatSearch.toLowerCase();
+    return title.includes(query) || lastMsg.includes(query);
+  });
 
   const currentUser = stats?.user || userData?.user || userData || {};
   const tier = stats?.subscriptionTier || currentUser?.subscriptionTier || "free";
@@ -208,54 +257,246 @@ export const Dashboard = () => {
       description="Monitor chat metrics, model tokens, recent sessions, and storage in your Nexora AI dashboard."
     >
       <div className="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* ══════════════════════════════════════════════
-            TOP WELCOME & TIER BANNER
-            ══════════════════════════════════════════════ */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white font-extrabold text-xl flex items-center justify-center shadow-lg shadow-violet-500/20">
-              {currentUser.name ? currentUser.name[0].toUpperCase() : "U"}
+        {/* Mobile Toggle Button for Chat History Sidebar */}
+        <div className="lg:hidden mb-6 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+              <FiMessageSquare className="w-4 h-4" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
-                  Welcome back, {currentUser.name || currentUser.userName || "Developer"}
-                </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-                  {tier.toUpperCase()} TIER
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                {currentUser.email} • Connected to Gemini 3.8 Flash Cluster
+              <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                Chat History
+              </p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                {conversations.length} saved session{conversations.length === 1 ? "" : "s"}
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <Link
-              to="/chat"
-              className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-semibold shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <FiPlus className="w-4 h-4" />
-              New Conversation
-            </Link>
-            <Link
-              to="/settings"
-              className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors"
-              title="Account Settings"
-            >
-              <FiSettings className="w-4 h-4" />
-            </Link>
-            <button
-              type="button"
-              onClick={fetchDashboardData}
-              className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors cursor-pointer"
-              title="Refresh Stats"
-            >
-              <FiRefreshCw className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setSidebarCollapsedMobile(!sidebarCollapsedMobile)}
+            className="px-3.5 py-1.5 rounded-xl bg-violet-600/10 hover:bg-violet-600/20 text-violet-600 dark:text-violet-400 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+          >
+            <FiList className="w-3.5 h-3.5" />
+            <span>{sidebarCollapsedMobile ? "View History" : "Hide History"}</span>
+          </button>
         </div>
+
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          {/* ══════════════════════════════════════════════
+              DASHBOARD SIDEBAR: CHAT HISTORY
+              ══════════════════════════════════════════════ */}
+          <aside
+            className={`w-full lg:w-80 xl:w-88 shrink-0 lg:sticky lg:top-28 z-20 flex flex-col gap-4 ${
+              sidebarCollapsedMobile ? "hidden lg:flex" : "flex"
+            }`}
+          >
+            <div className="p-5 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl flex flex-col h-[740px]">
+              {/* Sidebar Header */}
+              <div className="flex items-center justify-between pb-3.5 border-b border-violet-500/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white flex items-center justify-center shadow-md">
+                    <FiMessageSquare className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                      <span>Chat History</span>
+                    </h2>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      {conversations.length} conversation{conversations.length === 1 ? "" : "s"}
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  to="/chat"
+                  className="px-3 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-sm transition-all flex items-center gap-1 cursor-pointer"
+                  title="Start New Chat"
+                >
+                  <FiPlus className="w-3.5 h-3.5" />
+                  <span>New</span>
+                </Link>
+              </div>
+
+              {/* Search Bar */}
+              <div className="pt-3 pb-2">
+                <div className="relative">
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                  <input
+                    type="text"
+                    value={chatSearch}
+                    onChange={(e) => setChatSearch(e.target.value)}
+                    placeholder="Search previous chats..."
+                    className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 dark:bg-[#111840] border border-violet-500/15 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Conversation List Scrollable */}
+              <div className="flex-1 overflow-y-auto space-y-2 pr-1 py-1">
+                {conversationsLoading ? (
+                  <div className="h-48 flex items-center justify-center">
+                    <LoadingSpinner label="Loading history..." />
+                  </div>
+                ) : filteredConversations.length === 0 ? (
+                  <div className="h-48 flex flex-col items-center justify-center text-center p-4">
+                    <FiMessageSquare className="w-8 h-8 opacity-30 text-slate-400 mb-2" />
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                      {chatSearch ? "No matching chats found." : "No previous chats yet."}
+                    </p>
+                    <Link
+                      to="/chat"
+                      className="mt-3 px-3 py-1.5 rounded-xl bg-violet-600 text-white text-[11px] font-semibold"
+                    >
+                      Start First Chat
+                    </Link>
+                  </div>
+                ) : (
+                  filteredConversations.map((conv) => {
+                    const id = conv._id || conv.id;
+                    const isSelected = selectedChatId === id && isViewerOpen;
+                    const dateStr = conv.updatedAt || conv.createdAt;
+                    const formattedDate = dateStr
+                      ? new Date(dateStr).toLocaleDateString([], {
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : "";
+
+                    return (
+                      <div
+                        key={id}
+                        onClick={() => handleViewChat(id)}
+                        className={`group relative p-3 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1 ${
+                          isSelected
+                            ? "bg-violet-500/15 border-violet-500/40 shadow-sm"
+                            : "bg-slate-50/70 dark:bg-[#111840]/70 border-violet-500/10 hover:border-violet-500/30 hover:bg-violet-500/5"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors flex-1">
+                            {conv.title || "Untitled Chat"}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-medium shrink-0">
+                            {formattedDate}
+                          </span>
+                        </div>
+
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 break-words">
+                          {conv.lastMessage || "No messages recorded"}
+                        </p>
+
+                        {/* Action buttons on hover */}
+                        <div className="flex items-center justify-between pt-1 border-t border-violet-500/5 mt-0.5">
+                          <span className="text-[9px] uppercase tracking-wider font-extrabold text-violet-500/80">
+                            {conv.model?.includes("flash") ? "Gemini Flash" : "AI"}
+                          </span>
+
+                          <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleViewChat(id);
+                              }}
+                              className="px-2 py-0.5 rounded-lg bg-violet-600/10 hover:bg-violet-600/20 text-violet-600 dark:text-violet-400 text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                              title="View chat in preview"
+                            >
+                              <FiEye className="w-3 h-3" />
+                              <span>View</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenFullChat(id);
+                              }}
+                              className="p-1 rounded-lg hover:bg-violet-500/15 text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer"
+                              title="Open in Full Chat"
+                            >
+                              <FiArrowUpRight className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={isDeleting === id}
+                              onClick={(e) => handleDeleteConversation(id, e)}
+                              className="p-1 rounded-lg hover:bg-rose-500/15 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
+                              title="Delete Chat"
+                            >
+                              <FiTrash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Sidebar Footer Hint */}
+              <div className="pt-3 border-t border-violet-500/10 text-center">
+                <p className="text-[11px] text-slate-400">
+                  Click any chat to view previous messages
+                </p>
+              </div>
+            </div>
+          </aside>
+
+          {/* ══════════════════════════════════════════════
+              MAIN DASHBOARD CONTENT
+              ══════════════════════════════════════════════ */}
+          <div className="flex-1 min-w-0 w-full space-y-8">
+            {/* ══════════════════════════════════════════════
+                TOP WELCOME & TIER BANNER
+                ══════════════════════════════════════════════ */}
+            <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white font-extrabold text-xl flex items-center justify-center shadow-lg shadow-violet-500/20">
+                  {currentUser.name ? currentUser.name[0].toUpperCase() : "U"}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
+                      Welcome back, {currentUser.name || currentUser.userName || "Developer"}
+                    </h1>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+                      {tier.toUpperCase()} TIER
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    {currentUser.email} • Connected to Gemini Cluster
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <Link
+                  to="/chat"
+                  className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-semibold shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  <FiPlus className="w-4 h-4" />
+                  New Conversation
+                </Link>
+                <Link
+                  to="/settings"
+                  className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors"
+                  title="Account Settings"
+                >
+                  <FiSettings className="w-4 h-4" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    fetchDashboardData();
+                    fetchConversations();
+                  }}
+                  className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors cursor-pointer"
+                  title="Refresh Stats"
+                >
+                  <FiRefreshCw className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
 
         {isLoading ? (
           <LoadingSpinner label="Loading dashboard metrics & recent history..." />
@@ -583,7 +824,7 @@ export const Dashboard = () => {
                     return (
                       <div
                         key={id}
-                        onClick={() => navigate(`/chat/${id}`)}
+                        onClick={() => handleViewChat(id)}
                         className="py-3.5 px-3 rounded-xl hover:bg-violet-500/5 transition-colors flex items-center justify-between gap-4 cursor-pointer group"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
@@ -600,11 +841,36 @@ export const Dashboard = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-4 shrink-0 text-xs">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 text-xs">
                           <span className="text-slate-400 hidden sm:inline flex items-center gap-1">
                             <FiClock className="w-3 h-3" />
                             {dateFormatted}
                           </span>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewChat(id);
+                            }}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                            title="View Chat Messages"
+                          >
+                            <FiEye className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenFullChat(id);
+                            }}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                            title="Open in Full Chat Room"
+                          >
+                            <FiArrowUpRight className="w-4 h-4" />
+                          </button>
+
                           <button
                             type="button"
                             disabled={isDeleting === id}
@@ -623,6 +889,23 @@ export const Dashboard = () => {
             </div>
           </>
         )}
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════════
+            PREVIOUS CHAT VIEWER MODAL / DRAWER
+            ══════════════════════════════════════════════ */}
+        <PreviousChatViewer
+          conversationId={selectedChatId}
+          isOpen={isViewerOpen}
+          onClose={() => {
+            setIsViewerOpen(false);
+            setSelectedChatId(null);
+          }}
+          onDelete={handleDeleteConversation}
+          onOpenFullChat={handleOpenFullChat}
+          serverUrl={SERVER_URL}
+        />
       </div>
     </PageLayout>
   );
