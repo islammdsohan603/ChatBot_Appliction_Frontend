@@ -54,7 +54,7 @@ const PublicRoute = ({ children }) => {
   if (isLoading) {
     return <AuthSkeleton type={location.pathname === "/login" ? "login" : "signup"} />;
   }
-  if (isAuthenticated) return <Navigate to="/chat" replace />;
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
   return children;
 };

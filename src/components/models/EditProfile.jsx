@@ -1,6 +1,6 @@
 import React,{ useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import api from "../../lib/api";
 import { toast } from "react-toastify";
 import { setUserData } from "../../../redux/userSlice";
 import UserAvatar from "../ui/UserAvatar";
@@ -87,9 +87,6 @@ export function EditProfile({ isOpen, onClose }) {
     setIsSubmitting(true);
 
     try {
-      const serverUrl =
-        import.meta.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
-
       const formData = new FormData();
       formData.append("name", name.trim());
       formData.append("bio", bio.trim());
@@ -98,13 +95,9 @@ export function EditProfile({ isOpen, onClose }) {
         formData.append("image", selectedFile);
       }
 
-      const response = await axios.put(
-        `${serverUrl}/api/user/profile`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await api.put("/api/user/profile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const updatedUser = response.data;
       dispatch(setUserData(updatedUser));

@@ -11,8 +11,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../lib/api";
 import { clearUser } from "../../redux/userSlice";
-import axios from "axios";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import { Reveal } from "../components/motion";
 import { motion } from "framer-motion";
@@ -191,13 +191,15 @@ const Settings = () => {
   // Logout
   const handleLogout = async () => {
     try {
-      const serverUrl =
-        import.meta.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
-      await axios.get(`${serverUrl}/api/auth/logout`, {
-        withCredentials: true,
-      });
+      await api.get("/api/auth/logout");
     } catch {
       // Ignore error
+    }
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    } catch {
+      // ignore
     }
     dispatch(clearUser());
     toast.success("Logged out successfully");

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import api from "../lib/api";
 import { toast } from "react-toastify";
 import { FiCheckCircle, FiArrowRight, FiLoader, FiAlertTriangle } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
@@ -46,9 +46,8 @@ export const PaymentSuccess = () => {
 
     const verifyPayment = async () => {
       try {
-        const res = await axios.get(
-          `${SERVER_URL}/api/pricing/verify-session?session_id=${sessionId}`,
-          { withCredentials: true }
+        const res = await api.get(
+          `/api/pricing/verify-session?session_id=${sessionId}`
         );
 
         if (res.data?.success) {

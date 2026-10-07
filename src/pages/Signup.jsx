@@ -11,7 +11,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineChatBubbleLeftRight,
 } from "react-icons/hi2";
-import axios from "axios";
+import api from "../lib/api";
 
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -162,28 +162,40 @@ const Signup = () => {
     // ── API call placeholder ──
 
     try {
-      const serverUrl =
-        import.meta.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
-
       const payload = {
-        userName: formData.username,
-        email: formData.email,
+        userName: formData.username.trim(),
+        email: formData.email.trim(),
         password: formData.password,
       };
 
-      const response = await axios.post(
-        `${serverUrl}/api/auth/signup`,
-        payload,
-        { withCredentials: true },
-      );
+      const response = await api.post("/api/auth/signup", payload);
+      console.log(response)
+      const data = response.data;
+      const user = data?.user || data;
+      const token = data?.token;
 
-      console.log("Signup success:", response.data);
-      dispatch(setUserData(response.data));
-      toast.success("Signup successful!");
-      navigate("/login");
+      if (token) {
+        try {
+          localStorage.setItem("token", token);
+          toast.success("Account Create Sucessfully!")
+        } catch (error){
+          toast.error(`Account Creation Failed! ${error.message}`)
+        }
+      }
+      if (user) {
+        try {
+          localStorage.setItem("user", JSON.stringify(user));
+        } catch {
+          // ignore storage error
+        }
+      }
+
+      dispatch(setUserData(user));
+      toast.success("Account created successfully!");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       const errorMessage =
-        err.response?.data?.message || err.message || "Something went wrong.";
+        err.response?.data?.message || err.message || "Failed to create account.";
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {

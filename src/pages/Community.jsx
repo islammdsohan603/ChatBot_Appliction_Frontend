@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import api from "../lib/api";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -123,14 +123,13 @@ export const Community = () => {
     setError(null);
     try {
       const [postsRes, statsRes] = await Promise.all([
-        axios.get(`${SERVER_URL}/api/community/posts`, {
+        api.get("/api/community/posts", {
           params: {
             category: selectedCategory !== "All" ? selectedCategory : undefined,
             search: searchQuery.trim() || undefined,
           },
-          withCredentials: true,
         }),
-        axios.get(`${SERVER_URL}/api/community/stats`, { withCredentials: true }),
+        api.get("/api/community/stats"),
       ]);
 
       if (postsRes.data?.posts) {
@@ -163,11 +162,7 @@ export const Community = () => {
       return;
     }
     try {
-      const res = await axios.post(
-        `${SERVER_URL}/api/community/posts/${postId}/like`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/community/posts/${postId}/like`, {});
       if (res.data?.success) {
         setPosts((prev) =>
           prev.map((p) =>
@@ -196,16 +191,12 @@ export const Community = () => {
     }
     setIsSubmitting(true);
     try {
-      const res = await axios.post(
-        `${SERVER_URL}/api/community/posts`,
-        {
-          title: newTitle,
-          content: newContent,
-          category: newCategory,
-          tags: newTags ? newTags.split(",").map((t) => t.trim()) : [],
-        },
-        { withCredentials: true }
-      );
+      const res = await api.post("/api/community/posts", {
+        title: newTitle,
+        content: newContent,
+        category: newCategory,
+        tags: newTags ? newTags.split(",").map((t) => t.trim()) : [],
+      });
 
       if (res.data?.post) {
         setPosts([res.data.post, ...posts]);

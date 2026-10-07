@@ -11,7 +11,7 @@ import { useRef, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
 import SkeletonLoader from "../ui/SkeletonLoader";
-import { ScrollReveal } from "../common/ScrollReveal";
+import { Reveal } from "../motion";
 
 const formatDateLabel = (dateStr) => {
   const d = new Date(dateStr);
@@ -67,9 +67,9 @@ const MessageList = ({
 
   if (messages.length === 0) {
     return (
-      <ScrollReveal
+      <Reveal
         animation="fade-up"
-        distance="20px"
+        distance={20}
         className="flex-1 flex flex-col items-center justify-center gap-3 text-center px-6"
       >
         <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-line-strong flex items-center justify-center">
@@ -81,7 +81,7 @@ const MessageList = ({
           <p className="text-sm font-medium text-fg-secondary">No messages yet</p>
           <p className="text-xs text-fg-muted mt-1">Start the conversation below</p>
         </div>
-      </ScrollReveal>
+      </Reveal>
     );
   }
 

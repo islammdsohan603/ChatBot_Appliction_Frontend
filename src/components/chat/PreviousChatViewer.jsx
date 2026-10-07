@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -93,9 +93,7 @@ export const PreviousChatViewer = ({
       setIsLoading(true);
       setError(null);
       try {
-        const res = await axios.get(`${serverUrl}/api/conversations/${conversationId}`, {
-          withCredentials: true,
-        });
+        const res = await api.get(`/api/conversations/${conversationId}`);
 
         if (isMounted) {
           setConversation(res.data.conversation || null);

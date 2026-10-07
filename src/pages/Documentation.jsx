@@ -10,9 +10,8 @@ import {
   FiCpu,
   FiKey,
   FiRadio,
-  FiLayers,
 } from "react-icons/fi";
-import axios from "axios";
+import api from "../lib/api";
 import { toast } from "react-toastify";
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";

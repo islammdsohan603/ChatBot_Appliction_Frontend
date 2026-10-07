@@ -8,7 +8,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api, { API_BASE_URL } from "../../lib/api";
 import { clearUser } from "../../../redux/userSlice";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
@@ -39,10 +39,7 @@ const ChatLayout = () => {
   const currentUserId = currentUser._id || "me";
   const currentUserName = currentUser.name || currentUser.userName || "You";
 
-  const serverUrl =
-    import.meta.env.VITE_SERVER_URL ||
-    import.meta.env.NEXT_PUBLIC_SERVER_URL ||
-    "http://localhost:8000";
+  const serverUrl = API_BASE_URL;
 
   // 1. Fetch AI Conversations for the sidebar
   const fetchAiConversations = useCallback(async () => {
@@ -313,9 +310,15 @@ const ChatLayout = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${serverUrl}/api/auth/logout`, { withCredentials: true });
+      await api.get("/api/auth/logout");
     } catch {
       // Logout anyway
+    }
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    } catch {
+      // ignore
     }
     dispatch(clearUser());
     toast.success("Logged out successfully");

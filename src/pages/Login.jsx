@@ -13,7 +13,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineChatBubbleLeftRight,
 } from "react-icons/hi2";
-import axios from "axios";
+import api from "../lib/api";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import { Reveal, RevealGroup, RevealItem } from "../components/motion";
 
@@ -121,17 +121,33 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const serverUrl =
-        import.meta.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
-      const response = await axios.post(
-        `${serverUrl}/api/auth/login`,
-        formData,
-        { withCredentials: true },
-      );
-      console.log("Login success:", response.data);
-      dispatch(setUserData(response.data));
+      const payload = {
+        email: formData.email.trim(),
+        password: formData.password,
+      };
+      const response = await api.post("/api/auth/login", payload);
+      const data = response.data;
+      const user = data?.user || data;
+      const token = data?.token;
+
+      if (token) {
+        try {
+          localStorage.setItem("token", token);
+        } catch {
+          // ignore
+        }
+      }
+      if (user) {
+        try {
+          localStorage.setItem("user", JSON.stringify(user));
+        } catch {
+          // ignore
+        }
+      }
+
+      dispatch(setUserData(user));
       toast.success("Welcome back!");
-      navigate("/");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || err.message || "Invalid credentials.";

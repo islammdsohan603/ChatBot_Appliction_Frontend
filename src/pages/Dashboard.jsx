@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import api, { API_BASE_URL } from "../lib/api";
 import { toast } from "react-toastify";
 import {
   FiMessageSquare,
@@ -31,10 +31,7 @@ import { motion } from "framer-motion";
 import { buttonMotion, cardHoverMotion } from "../lib/motion";
 import PreviousChatViewer from "../components/chat/PreviousChatViewer";
 
-const SERVER_URL =
-  import.meta.env.VITE_SERVER_URL ||
-  import.meta.env.NEXT_PUBLIC_SERVER_URL ||
-  "http://localhost:8000";
+const SERVER_URL = API_BASE_URL;
 
 const PLAN_CONFIG = {
   free: {
@@ -162,8 +159,8 @@ export const Dashboard = () => {
     setError(null);
     try {
       const [statsRes, activityRes] = await Promise.all([
-        axios.get(`${SERVER_URL}/api/dashboard/stats`, { withCredentials: true }),
-        axios.get(`${SERVER_URL}/api/dashboard/activity`, { withCredentials: true }),
+        api.get("/api/dashboard/stats"),
+        api.get("/api/dashboard/activity"),
       ]);
 
       if (statsRes.data?.stats) {
@@ -183,9 +180,7 @@ export const Dashboard = () => {
   const fetchConversations = async () => {
     setConversationsLoading(true);
     try {
-      const res = await axios.get(`${SERVER_URL}/api/conversations`, {
-        withCredentials: true,
-      });
+      const res = await api.get("/api/conversations");
       if (Array.isArray(res.data)) {
         setConversations(res.data);
       }
@@ -210,9 +205,7 @@ export const Dashboard = () => {
     if (!confirm("Are you sure you want to delete this session?")) return;
     setIsDeleting(convId);
     try {
-      await axios.delete(`${SERVER_URL}/api/conversations/${convId}`, {
-        withCredentials: true,
-      });
+      await api.delete(`/api/conversations/${convId}`);
       setConversations((prev) => prev.filter((c) => (c._id || c.id) !== convId));
       setStats((prev) => ({
         ...prev,

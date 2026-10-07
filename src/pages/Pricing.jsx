@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import api from "../lib/api";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -161,7 +161,7 @@ export const Pricing = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await axios.get(`${SERVER_URL}/api/pricing/plans`);
+        const res = await api.get("/api/pricing/plans");
         if (Array.isArray(res.data) && res.data.length > 0) {
           setPlans(res.data);
         }
@@ -188,11 +188,7 @@ export const Pricing = () => {
 
     try {
       if (planSlug === "free") {
-        const res = await axios.post(
-          `${SERVER_URL}/api/pricing/subscribe`,
-          { planSlug },
-          { withCredentials: true }
-        );
+        const res = await api.post("/api/pricing/subscribe", { planSlug });
 
         if (res.data?.success) {
           if (res.data?.user) {
@@ -205,11 +201,10 @@ export const Pricing = () => {
       }
 
       const billingCycle = isYearly ? "yearly" : "monthly";
-      const res = await axios.post(
-        `${SERVER_URL}/api/pricing/create-checkout-session`,
-        { planSlug, billingCycle },
-        { withCredentials: true }
-      );
+      const res = await api.post("/api/pricing/create-checkout-session", {
+        planSlug,
+        billingCycle,
+      });
 
       if (res.data?.url) {
         window.location.href = res.data.url;

@@ -1,11 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getInitialUser = () => {
+  try {
+    const raw = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const initialUser = getInitialUser();
+const hasStoredToken =
+  typeof window !== "undefined" && Boolean(localStorage.getItem("token"));
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    userData: null,
-    isAuthenticated: false,
-    isLoading: true,
+    userData: initialUser,
+    isAuthenticated: Boolean(initialUser && hasStoredToken),
+    isLoading: hasStoredToken, // Only start loading if there's a stored session to verify
     error: null,
   },
   reducers: {
