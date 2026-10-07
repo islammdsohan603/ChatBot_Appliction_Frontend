@@ -260,15 +260,59 @@
 }
 
 /* ═══════════════════════════════════════════
+   Scroll Reveal Animation System (Upward from bottom)
+   ═══════════════════════════════════════════ */
+:root {
+  --reveal-distance: 36px;
+}
+
+.scroll-reveal,
+[data-scroll-reveal],
+[data-scroll-up] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance, 36px), 0);
+  transition-property: opacity, transform, filter;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.is-revealed,
+[data-scroll-reveal].is-revealed,
+[data-scroll-up].is-revealed,
+.scroll-reveal-container.is-visible {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1) !important;
+}
+
+/* Stagger delay classes for upward scroll animations */
+.reveal-delay-50 { transition-delay: 50ms !important; }
+.reveal-delay-100 { transition-delay: 100ms !important; }
+.reveal-delay-150 { transition-delay: 150ms !important; }
+.reveal-delay-200 { transition-delay: 200ms !important; }
+.reveal-delay-250 { transition-delay: 250ms !important; }
+.reveal-delay-300 { transition-delay: 300ms !important; }
+.reveal-delay-400 { transition-delay: 400ms !important; }
+.reveal-delay-500 { transition-delay: 500ms !important; }
+
+/* ═══════════════════════════════════════════
    prefers-reduced-motion
    ═══════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .scroll-reveal,
+  [data-scroll-reveal],
+  [data-scroll-up],
+  .scroll-reveal-container {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

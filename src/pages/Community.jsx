@@ -21,6 +21,7 @@ import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
+import { ScrollReveal } from "../components/common/ScrollReveal";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -259,64 +260,71 @@ export const Community = () => {
       {/* ══════════════════════════════════════════════
           COMMUNITY STATS BANNER
           ══════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════
+          COMMUNITY STATS BANNER
+          ══════════════════════════════════════════════ */}
       <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Active Developers", value: stats?.activeMembers || "1,250+" },
-            { label: "Community Threads", value: stats?.totalDiscussions || "480+" },
-            { label: "GitHub Stars", value: stats?.githubStars || "4.8k" },
-            { label: "Discord Online", value: stats?.discordMembers || "8,920" },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center"
-            >
-              <p className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
-                {item.value}
-              </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
-                {item.label}
-              </p>
-            </div>
-          ))}
-        </div>
+        <ScrollReveal animation="fade-up" delay={80}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: "Active Developers", value: stats?.activeMembers || "1,250+" },
+              { label: "Community Threads", value: stats?.totalDiscussions || "480+" },
+              { label: "GitHub Stars", value: stats?.githubStars || "4.8k" },
+              { label: "Discord Online", value: stats?.discordMembers || "8,920" },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center"
+              >
+                <p className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+                  {item.value}
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                  {item.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* ══════════════════════════════════════════════
           MAIN CONTENT: DISCUSSIONS FEED & SEARCH
           ══════════════════════════════════════════════ */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-          {/* Category tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? "bg-violet-600 text-white shadow-xs"
-                    : "bg-white dark:bg-[#0d1230] border border-violet-500/15 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+        <ScrollReveal animation="fade-up" delay={120}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+            {/* Category tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    selectedCategory === cat
+                      ? "bg-violet-600 text-white shadow-xs"
+                      : "bg-white dark:bg-[#0d1230] border border-violet-500/15 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
 
-          {/* Search bar */}
-          <form onSubmit={handleSearchSubmit} className="relative w-full md:w-72">
-            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search discussions or tags..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white dark:bg-[#0d1230] border border-violet-500/20 focus:border-violet-500 outline-none transition-all placeholder:text-slate-400"
-            />
-          </form>
-        </div>
+            {/* Search bar */}
+            <form onSubmit={handleSearchSubmit} className="relative w-full md:w-72">
+              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search discussions or tags..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white dark:bg-[#0d1230] border border-violet-500/20 focus:border-violet-500 outline-none transition-all placeholder:text-slate-400"
+              />
+            </form>
+          </div>
+        </ScrollReveal>
 
         {/* Discussions Listing */}
         {isLoading ? (
@@ -331,7 +339,7 @@ export const Community = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {posts.map((post) => {
+            {posts.map((post, pIdx) => {
               const likesCount = Array.isArray(post.likes) ? post.likes.length : 0;
               const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
               const hasLiked =
@@ -340,90 +348,96 @@ export const Community = () => {
                 post.likes.some((id) => id.toString() === (userData?.user?._id || "me"));
 
               return (
-                <article
+                <ScrollReveal
                   key={post._id}
-                  className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 hover:border-violet-500/35 transition-all shadow-xs"
+                  animation="fade-up"
+                  delay={(pIdx % 6) * 60}
+                  distance={30}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
-                          {post.category}
-                        </span>
-                        {post.isPinned && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                            Pinned
+                  <article
+                    className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 hover:border-violet-500/35 transition-all shadow-xs"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+                            {post.category}
                           </span>
+                          {post.isPinned && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                              Pinned
+                            </span>
+                          )}
+                          <span className="text-xs text-slate-400">
+                            by {post.authorName || "Member"} •{" "}
+                            {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Recent"}
+                          </span>
+                        </div>
+
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors mb-2">
+                          {post.title}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">
+                          {post.content}
+                        </p>
+
+                        {/* Tags */}
+                        {Array.isArray(post.tags) && post.tags.length > 0 && (
+                          <div className="flex items-center gap-1.5 flex-wrap mb-4">
+                            {post.tags.map((tag, tIdx) => (
+                              <span
+                                key={tIdx}
+                                className="px-2 py-0.5 rounded-md text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
                         )}
-                        <span className="text-xs text-slate-400">
-                          by {post.authorName || "Member"} •{" "}
-                          {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Recent"}
-                        </span>
+                      </div>
+                    </div>
+
+                    {/* Actions row */}
+                    <div className="flex items-center justify-between pt-3 border-t border-violet-500/10 text-xs text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center gap-4">
+                        <button
+                          type="button"
+                          onClick={() => handleLike(post._id)}
+                          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
+                            hasLiked
+                              ? "text-rose-500 bg-rose-500/10"
+                              : "hover:text-rose-500 hover:bg-rose-500/10"
+                          }`}
+                        >
+                          <FiHeart className={`w-3.5 h-3.5 ${hasLiked ? "fill-rose-500" : ""}`} />
+                          <span>{likesCount}</span>
+                        </button>
+
+                        <div className="flex items-center gap-1.5">
+                          <FiMessageSquare className="w-3.5 h-3.5" />
+                          <span>{commentsCount} comments</span>
+                        </div>
+
+                        <div className="hidden sm:block text-slate-400">
+                          {post.views || 0} views
+                        </div>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors mb-2">
-                        {post.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">
-                        {post.content}
-                      </p>
-
-                      {/* Tags */}
-                      {Array.isArray(post.tags) && post.tags.length > 0 && (
-                        <div className="flex items-center gap-1.5 flex-wrap mb-4">
-                          {post.tags.map((tag, tIdx) => (
-                            <span
-                              key={tIdx}
-                              className="px-2 py-0.5 rounded-md text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Actions row */}
-                  <div className="flex items-center justify-between pt-3 border-t border-violet-500/10 text-xs text-slate-500 dark:text-slate-400">
-                    <div className="flex items-center gap-4">
                       <button
                         type="button"
-                        onClick={() => handleLike(post._id)}
-                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
-                          hasLiked
-                            ? "text-rose-500 bg-rose-500/10"
-                            : "hover:text-rose-500 hover:bg-rose-500/10"
-                        }`}
+                        onClick={() => {
+                          navigator.clipboard.writeText(window.location.href);
+                          toast.success("Link copied to clipboard!");
+                        }}
+                        className="p-1.5 rounded-lg hover:bg-violet-500/10 transition-colors"
+                        title="Share discussion"
                       >
-                        <FiHeart className={`w-3.5 h-3.5 ${hasLiked ? "fill-rose-500" : ""}`} />
-                        <span>{likesCount}</span>
+                        <FiShare2 className="w-3.5 h-3.5" />
                       </button>
-
-                      <div className="flex items-center gap-1.5">
-                        <FiMessageSquare className="w-3.5 h-3.5" />
-                        <span>{commentsCount} comments</span>
-                      </div>
-
-                      <div className="hidden sm:block text-slate-400">
-                        {post.views || 0} views
-                      </div>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText(window.location.href);
-                        toast.success("Link copied to clipboard!");
-                      }}
-                      className="p-1.5 rounded-lg hover:bg-violet-500/10 transition-colors"
-                      title="Share discussion"
-                    >
-                      <FiShare2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </article>
+                  </article>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -434,7 +448,7 @@ export const Community = () => {
           TOP CONTRIBUTORS SECTION
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-violet-500/10">
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
             Hall of Fame
           </h2>
@@ -444,40 +458,46 @@ export const Community = () => {
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
             Acknowledging the open-source developers helping refine prompt parsers, tools, and UI modules.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {TOP_CONTRIBUTORS.map((c, idx) => (
-            <div
+            <ScrollReveal
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center flex flex-col items-center justify-between"
+              animation="fade-up"
+              delay={(idx % 4) * 80}
+              distance={35}
             >
-              <div>
-                <img
-                  src={c.avatar}
-                  alt={c.name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-violet-500/30 mb-3"
-                />
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{c.name}</h4>
-                <p className="text-xs text-slate-500 mb-2">{c.role}</p>
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/10 text-violet-600 dark:text-violet-300 border border-violet-500/20 mb-3">
-                  {c.badge}
-                </span>
-                <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  {c.contributions} Pull Requests & Commits
-                </p>
-              </div>
-
-              <a
-                href={c.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-1.5 text-xs text-violet-600 dark:text-violet-400 hover:underline"
+              <div
+                className="h-full p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center flex flex-col items-center justify-between"
               >
-                <FiGithub className="w-3.5 h-3.5" />
-                View GitHub
-              </a>
-            </div>
+                <div>
+                  <img
+                    src={c.avatar}
+                    alt={c.name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-violet-500/30 mb-3"
+                  />
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{c.name}</h4>
+                  <p className="text-xs text-slate-500 mb-2">{c.role}</p>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/10 text-violet-600 dark:text-violet-300 border border-violet-500/20 mb-3">
+                    {c.badge}
+                  </span>
+                  <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    {c.contributions} Pull Requests & Commits
+                  </p>
+                </div>
+
+                <a
+                  href={c.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex items-center gap-1.5 text-xs text-violet-600 dark:text-violet-400 hover:underline"
+                >
+                  <FiGithub className="w-3.5 h-3.5" />
+                  View GitHub
+                </a>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -488,33 +508,39 @@ export const Community = () => {
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-violet-500/10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SOCIAL_CHANNELS.map((ch, idx) => (
-            <div
+            <ScrollReveal
               key={idx}
-              className="p-7 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 flex flex-col justify-between"
+              animation="fade-up"
+              delay={idx * 100}
+              distance={35}
             >
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4">
-                  {ch.icon}
-                </div>
-                <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{ch.name}</h4>
-                <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 mb-2">
-                  {ch.members}
-                </p>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                  {ch.desc}
-                </p>
-              </div>
-
-              <a
-                href={ch.url}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-2.5 rounded-xl border border-violet-500/25 hover:bg-violet-500/10 text-slate-800 dark:text-slate-200 text-xs font-semibold text-center transition-all flex items-center justify-center gap-2"
+              <div
+                className="h-full p-7 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 flex flex-col justify-between"
               >
-                <span>{ch.btnText}</span>
-                <FiExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4">
+                    {ch.icon}
+                  </div>
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{ch.name}</h4>
+                  <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 mb-2">
+                    {ch.members}
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    {ch.desc}
+                  </p>
+                </div>
+
+                <a
+                  href={ch.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-2.5 rounded-xl border border-violet-500/25 hover:bg-violet-500/10 text-slate-800 dark:text-slate-200 text-xs font-semibold text-center transition-all flex items-center justify-center gap-2"
+                >
+                  <span>{ch.btnText}</span>
+                  <FiExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>

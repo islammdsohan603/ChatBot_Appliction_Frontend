@@ -18,6 +18,7 @@ import {
   FiRefreshCw,
 } from "react-icons/fi";
 import { IoSparkles } from "react-icons/io5";
+import { ScrollReveal, ScrollRevealGroup } from "../common/ScrollReveal";
 
 const CodeBlock = ({ inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -293,7 +294,11 @@ export const AiChatBox = ({
             Loading conversation history...
           </div>
         ) : messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 my-auto">
+          <ScrollReveal
+            animation="fade-up"
+            distance="24px"
+            className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 my-auto"
+          >
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-violet-500/30 flex items-center justify-center shadow-lg">
               <IoSparkles className="w-7 h-7 text-violet-400" />
             </div>
@@ -308,7 +313,12 @@ export const AiChatBox = ({
             </div>
 
             {/* Quick Starters */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md pt-2">
+            <ScrollRevealGroup
+              stagger={0.06}
+              animation="fade-up"
+              distance="16px"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md pt-2"
+            >
               {[
                 "Explain quantum computing simply",
                 "How do Server-Sent Events (SSE) work?",
@@ -324,8 +334,8 @@ export const AiChatBox = ({
                   {starter} →
                 </button>
               ))}
-            </div>
-          </div>
+            </ScrollRevealGroup>
+          </ScrollReveal>
         ) : (
           messages.map((msg) => {
             const isUser = msg.role === "user";

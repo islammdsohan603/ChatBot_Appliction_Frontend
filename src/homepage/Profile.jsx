@@ -22,6 +22,7 @@ import {
 } from "react-icons/hi2";
 import { useState } from "react";
 import { EditProfile } from "../components/models/EditProfile";
+import { ScrollReveal } from "../components/common/ScrollReveal";
 
 /* ── Stats row ── */
 const StatItem = ({ value, label }) => (
@@ -179,7 +180,12 @@ const Profile = () => {
       <main className="relative max-w-4xl mx-auto px-4 py-8 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* ── Left column: avatar + basic info ── */}
-          <div className="lg:col-span-1 flex flex-col gap-5">
+          <ScrollReveal
+            animation="fade-up"
+            delay={0.06}
+            distance="28px"
+            className="lg:col-span-1 flex flex-col gap-5"
+          >
             {/* Profile card */}
             <Card>
               <div className="flex flex-col items-center gap-4 px-6 py-8">
@@ -259,10 +265,15 @@ const Profile = () => {
                 />
               </div>
             </Card>
-          </div>
+          </ScrollReveal>
 
           {/* ── Right column: account info + activity ── */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
+          <ScrollReveal
+            animation="fade-up"
+            delay={0.14}
+            distance="32px"
+            className="lg:col-span-2 flex flex-col gap-5"
+          >
             {/* Account information */}
             <Card title="Account Information">
               <div className="px-2 py-2">
@@ -382,7 +393,7 @@ const Profile = () => {
                 ))}
               </div>
             </Card>
-          </div>
+          </ScrollReveal>
         </div>
       </main>
 

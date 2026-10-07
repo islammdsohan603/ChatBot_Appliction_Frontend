@@ -6,6 +6,7 @@ import {
   ChatSkeleton,
   ProfileSkeleton,
 } from "./PageSkeletons";
+import useGlobalScrollAnimation from "../../customHooks/useGlobalScrollAnimation";
 
 /**
  * RouteTransitionWrapper
@@ -14,6 +15,7 @@ import {
  */
 const RouteTransitionWrapper = ({ children }) => {
   const location = useLocation();
+  useGlobalScrollAnimation();
   const [isLoading, setIsLoading] = useState(true);
   const [currentPath, setCurrentPath] = useState(location.pathname);
   const [progress, setProgress] = useState(0);

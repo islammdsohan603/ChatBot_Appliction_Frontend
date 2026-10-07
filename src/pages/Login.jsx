@@ -15,6 +15,7 @@ import {
 } from "react-icons/hi2";
 import axios from "axios";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import { ScrollReveal, ScrollRevealGroup } from "../components/common/ScrollReveal";
 
 /* ── Particle configuration ── */
 const PARTICLES = [
@@ -199,7 +200,10 @@ const Login = () => {
         ].join(" ")}
       >
         {/* ════════════ Left branding panel ════════════ */}
-        <div
+        <ScrollReveal
+          animation="fade-up"
+          delay={0.06}
+          distance="28px"
           className={[
             "flex-1 flex flex-col items-start gap-8 max-w-[480px]",
             "max-[900px]:items-center max-[900px]:text-center max-[900px]:max-w-full",
@@ -242,7 +246,12 @@ const Login = () => {
           </p>
 
           {/* Feature list */}
-          <div className="flex flex-col gap-4 mt-2 max-[900px]:items-center">
+          <ScrollRevealGroup
+            animation="fade-up"
+            stagger={0.08}
+            distance="20px"
+            className="flex flex-col gap-4 mt-2 max-[900px]:items-center w-full"
+          >
             {[
               {
                 icon: <HiOutlineBolt />,
@@ -267,11 +276,14 @@ const Login = () => {
                 {f.text}
               </div>
             ))}
-          </div>
-        </div>
+          </ScrollRevealGroup>
+        </ScrollReveal>
 
         {/* ════════════ Glassmorphism login card ════════════ */}
-        <div
+        <ScrollReveal
+          animation="fade-up"
+          delay={0.16}
+          distance="32px"
           className={[
             "w-full max-w-[440px] relative animate-cardReveal",
             "bg-white/85 dark:bg-[rgba(15,20,50,0.65)] backdrop-blur-[40px] backdrop-saturate-150",
@@ -499,7 +511,7 @@ const Login = () => {
               Sign up
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );

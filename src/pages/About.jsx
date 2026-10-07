@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import {
-  FiTarget,
+  
   FiCompass,
   FiShield,
   FiCpu,
   FiUsers,
-  FiHeart,
+ 
   FiGithub,
   FiTwitter,
   FiLinkedin,
-  FiArrowRight,
-  FiCheckCircle,
+   
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
+ import { ScrollReveal } from "../components/common/ScrollReveal";
 
 const CORE_VALUES = [
   {

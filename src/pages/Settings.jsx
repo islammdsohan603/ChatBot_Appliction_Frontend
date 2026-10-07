@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { clearUser } from "../../redux/userSlice";
 import axios from "axios";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import { ScrollReveal } from "../components/common/ScrollReveal";
 import {
   HiOutlineArrowLeft,
   HiOutlineCog6Tooth,
@@ -258,7 +259,12 @@ const Settings = () => {
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Navigation Tabs (ChatGPT/Gemini Style) */}
-          <aside className="md:col-span-4 lg:col-span-3">
+          <ScrollReveal
+            animation="fade-up"
+            delay={0.04}
+            distance="24px"
+            className="md:col-span-4 lg:col-span-3"
+          >
             <div className="sticky top-24 rounded-2xl bg-white/80 dark:bg-[#0d1230]/80 border border-violet-300/40 dark:border-violet-500/15 p-2 backdrop-blur-xl shadow-lg dark:shadow-xl flex md:flex-col gap-1 overflow-x-auto no-scrollbar">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
@@ -284,10 +290,15 @@ const Settings = () => {
                 );
               })}
             </div>
-          </aside>
+          </ScrollReveal>
 
           {/* Right Content Panel */}
-          <div className="md:col-span-8 lg:col-span-9">
+          <ScrollReveal
+            animation="fade-up"
+            delay={0.12}
+            distance="30px"
+            className="md:col-span-8 lg:col-span-9"
+          >
             <div className="rounded-3xl bg-white/85 dark:bg-[#0f1430]/75 border border-violet-300/40 dark:border-violet-500/15 p-6 md:p-8 backdrop-blur-xl shadow-xl dark:shadow-2xl">
               {/* ════ TAB 1: GENERAL ════ */}
               {activeTab === "general" && (
@@ -734,7 +745,7 @@ const Settings = () => {
                 </div>
               )}
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </main>
     </div>
