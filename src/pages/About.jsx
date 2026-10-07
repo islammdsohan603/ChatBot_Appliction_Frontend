@@ -17,22 +17,22 @@ import { PageHeader } from "../components/layout/PageHeader";
 
 const CORE_VALUES = [
   {
-    icon: <FiCpu className="w-6 h-6 text-violet-500" />,
+    icon: <FiCpu className="w-6 h-6 text-primary-text" />,
     title: "Intelligence Without Latency",
     desc: "We believe conversations with AI should feel as fluid and immediate as natural human dialogue. We prioritize sub-second streaming over bloated abstraction layers.",
   },
   {
-    icon: <FiShield className="w-6 h-6 text-emerald-500" />,
+    icon: <FiShield className="w-6 h-6 text-success-text" />,
     title: "Privacy First & User Ownership",
     desc: "Your prompts and thoughts are your intellectual property. We implement strict JWT security, bcrypt encryption, and isolated sessions with zero secret harvesting.",
   },
   {
-    icon: <FiCompass className="w-6 h-6 text-cyan-500" />,
+    icon: <FiCompass className="w-6 h-6 text-accent-text" />,
     title: "Multimodal Native",
     desc: "Thinking is visual as well as textual. Nexora integrates image understanding seamlessly into standard chat streams without requiring special modes or plugins.",
   },
   {
-    icon: <FiUsers className="w-6 h-6 text-pink-500" />,
+    icon: <FiUsers className="w-6 h-6 text-primary-text" />,
     title: "Human + Machine Collaboration",
     desc: "AI is an amplifier, not a replacement. We unite AI generation with real-time human peer-to-peer messaging inside a unified, distraction-free environment.",
   },
@@ -122,13 +122,13 @@ export const About = () => {
           THE STORY BEHIND NEXORA
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl">
+        <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-4">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight mb-4">
                 The Story Behind Nexora
               </h2>
-              <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div className="space-y-4 text-sm sm:text-base text-fg-secondary leading-relaxed">
                 <p>
                   In early 2025, our team grew frustrated with sluggish chatbot interfaces that required constant page refreshes, lost conversation context, and locked users into restrictive walled gardens.
                 </p>
@@ -142,21 +142,21 @@ export const About = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl bg-violet-500/10 border border-violet-500/20 text-center">
-                <p className="text-3xl font-extrabold text-violet-600 dark:text-violet-300">100%</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">JavaScript Full-Stack</p>
+              <div className="p-5 rounded-2xl bg-primary/10 border border-line-strong text-center">
+                <p className="text-3xl font-extrabold text-primary-text">100%</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">JavaScript Full-Stack</p>
               </div>
-              <div className="p-5 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-center">
-                <p className="text-3xl font-extrabold text-cyan-600 dark:text-cyan-300">&lt;500ms</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Average Response Start</p>
+              <div className="p-5 rounded-2xl bg-accent/10 border border-accent/20 text-center">
+                <p className="text-3xl font-extrabold text-accent-text">&lt;500ms</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">Average Response Start</p>
               </div>
-              <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center">
-                <p className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-300">24/7</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">MongoDB Sync</p>
+              <div className="p-5 rounded-2xl bg-success/10 border border-success/20 text-center">
+                <p className="text-3xl font-extrabold text-success-text">24/7</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">MongoDB Sync</p>
               </div>
-              <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-center">
-                <p className="text-3xl font-extrabold text-amber-600 dark:text-amber-300">0</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Data Selling</p>
+              <div className="p-5 rounded-2xl bg-warning/10 border border-warning/20 text-center">
+                <p className="text-3xl font-extrabold text-warning-text">0</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">Data Selling</p>
               </div>
             </div>
           </div>
@@ -168,10 +168,10 @@ export const About = () => {
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             What Drives Us
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Our Architectural & Ethical Pillars
           </h3>
         </div>
@@ -180,15 +180,15 @@ export const About = () => {
           {CORE_VALUES.map((val, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 hover:border-violet-500/35 transition-all shadow-sm"
+              className="p-8 rounded-2xl bg-surface border border-line hover:border-primary/35 transition-all shadow-sm"
             >
-              <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-5">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center mb-5">
                 {val.icon}
               </div>
-              <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+              <h4 className="text-lg font-bold text-fg mb-2">
                 {val.title}
               </h4>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-sm text-fg-secondary leading-relaxed">
                 {val.desc}
               </p>
             </div>
@@ -199,15 +199,15 @@ export const About = () => {
       {/* ══════════════════════════════════════════════
           LEADERSHIP & CORE TEAM
           ══════════════════════════════════════════════ */}
-      <section id="team" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-violet-500/10">
+      <section id="team" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Meet the Builders
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             The Team Behind the AI Experience
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+          <p className="text-sm text-fg-secondary mt-2">
             Engineers, designers, and researchers passionate about high-impact generative tools.
           </p>
         </div>
@@ -216,7 +216,7 @@ export const About = () => {
           {TEAM.map((member, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm hover:shadow-xl hover:border-violet-500/40 transition-all flex flex-col justify-between group"
+              className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:shadow-xl hover:border-primary/40 transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="relative mb-5 overflow-hidden rounded-xl aspect-square">
@@ -225,37 +225,37 @@ export const About = () => {
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                    <div className="flex gap-2 text-white">
-                      <a href={member.socials.github} target="_blank" rel="noreferrer" className="p-1 hover:text-violet-400">
+                  <div className="absolute inset-0 bg-gradient-to-t from-scrim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                    <div className="flex gap-2 text-primary-contrast">
+                      <a href={member.socials.github} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
                         <FiGithub className="w-4 h-4" />
                       </a>
-                      <a href={member.socials.twitter} target="_blank" rel="noreferrer" className="p-1 hover:text-cyan-400">
+                      <a href={member.socials.twitter} target="_blank" rel="noreferrer" className="p-1 hover:text-accent-text">
                         <FiTwitter className="w-4 h-4" />
                       </a>
-                      <a href={member.socials.linkedin} target="_blank" rel="noreferrer" className="p-1 hover:text-indigo-400">
+                      <a href={member.socials.linkedin} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
                         <FiLinkedin className="w-4 h-4" />
                       </a>
                     </div>
                   </div>
                 </div>
 
-                <h4 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                <h4 className="text-base font-bold text-fg">
                   {member.name}
                 </h4>
-                <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 mb-3">
+                <p className="text-xs font-semibold text-primary-text mb-3">
                   {member.role}
                 </p>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                <p className="text-xs text-fg-secondary leading-relaxed mb-4">
                   {member.bio}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-violet-500/10">
+              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-line">
                 {member.skills.map((skill, i) => (
                   <span
                     key={i}
-                    className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                    className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-surface-hover text-fg-secondary"
                   >
                     {skill}
                   </span>
@@ -269,50 +269,50 @@ export const About = () => {
       {/* ══════════════════════════════════════════════
           ROADMAP TIMELINE
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-violet-500/10">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Looking Ahead
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Product Evolution & Milestones
           </h3>
         </div>
 
-        <div className="relative border-l-2 border-violet-500/20 ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
+        <div className="relative border-l-2 border-line-strong ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
           {ROADMAP.map((item, idx) => (
             <div key={idx} className="relative group">
               {/* Dot */}
               <div
                 className={`absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full border-2 ${
                   item.status === "Completed"
-                    ? "bg-emerald-500 border-emerald-400"
+                    ? "bg-success border-success"
                     : item.status === "In Progress"
-                    ? "bg-violet-500 border-violet-400 animate-pulse"
-                    : "bg-slate-400 border-slate-500 dark:bg-slate-700"
+                    ? "bg-primary border-primary animate-pulse"
+                    : "bg-fg-muted border-line-strong"
                 }`}
               />
 
               <div className="flex items-center gap-3 mb-1">
-                <span className="text-xs font-extrabold text-violet-600 dark:text-violet-400">
+                <span className="text-xs font-extrabold text-primary-text">
                   {item.quarter}
                 </span>
                 <span
                   className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                     item.status === "Completed"
-                      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                      ? "bg-success/15 text-success-text"
                       : item.status === "In Progress"
-                      ? "bg-violet-500/15 text-violet-600 dark:text-violet-300"
-                      : "bg-slate-200 dark:bg-slate-800 text-slate-500"
+                      ? "bg-primary/15 text-primary-text"
+                      : "bg-surface-hover text-fg-muted"
                   }`}
                 >
                   {item.status}
                 </span>
               </div>
-              <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">
+              <h4 className="text-lg font-bold text-fg mb-1">
                 {item.title}
               </h4>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-sm text-fg-secondary leading-relaxed">
                 {item.desc}
               </p>
             </div>
@@ -324,23 +324,23 @@ export const About = () => {
           JOIN THE JOURNEY CTA
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
-        <div className="p-8 sm:p-12 rounded-3xl bg-violet-600/10 border border-violet-500/25">
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-3">
+        <div className="p-8 sm:p-12 rounded-3xl bg-primary/10 border border-primary/25">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3">
             Want to help shape Nexora AI?
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto mb-6">
+          <p className="text-sm text-fg-secondary max-w-lg mx-auto mb-6">
             We are always looking for open-source contributors, community moderators, and developer feedback.
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
               to="/community"
-              className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm shadow-md transition-all"
+              className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-sm shadow-md transition-all"
             >
               Join Our Community
             </Link>
             <Link
               to="/docs"
-              className="px-6 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-sm transition-all"
+              className="px-6 py-3 rounded-xl border border-line-strong text-fg-secondary hover:bg-surface-hover font-semibold text-sm transition-all"
             >
               Read Documentation
             </Link>

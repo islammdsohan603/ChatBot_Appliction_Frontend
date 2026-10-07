@@ -87,14 +87,14 @@ export const PaymentSuccess = () => {
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
         {status === "verifying" && (
           <ScrollReveal animation="fade-up" distance="30px">
-            <div className="text-center p-12 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl">
-              <div className="w-20 h-20 rounded-full bg-violet-500/10 flex items-center justify-center mx-auto mb-6">
-                <FiLoader className="w-10 h-10 text-violet-500 animate-spin" />
+            <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
+              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                <FiLoader className="w-10 h-10 text-primary-text animate-spin" />
               </div>
-              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mb-3">
+              <h1 className="text-2xl font-extrabold text-fg mb-3">
                 Verifying Your Payment...
               </h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-fg-muted">
                 Please wait while we confirm your payment with Stripe.
               </p>
             </div>
@@ -103,32 +103,32 @@ export const PaymentSuccess = () => {
 
         {status === "success" && (
           <ScrollReveal animation="fade-up" distance="30px">
-            <div className="text-center p-12 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl">
+            <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
               {/* Animated success icon */}
               <div className="relative w-24 h-24 mx-auto mb-8">
-                <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping" />
-                <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                  <FiCheckCircle className="w-12 h-12 text-white" />
+                <div className="absolute inset-0 rounded-full bg-success/20 animate-ping" />
+                <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-success to-success flex items-center justify-center shadow-lg shadow-success/30">
+                  <FiCheckCircle className="w-12 h-12 text-primary-contrast" />
                 </div>
               </div>
 
-              <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-3">
+              <h1 className="text-3xl font-extrabold text-fg mb-3">
                 Payment Successful!
               </h1>
-              <p className="text-base text-slate-600 dark:text-slate-400 mb-2">
+              <p className="text-base text-fg-secondary mb-2">
                 You've been upgraded to the{" "}
-                <span className="font-bold text-violet-600 dark:text-violet-400">
+                <span className="font-bold text-primary-text">
                   {planName}
                 </span>{" "}
                 plan.
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-8">
+              <p className="text-xs text-fg-muted mb-8">
                 All premium features are now active on your account.
               </p>
 
               {/* Plan benefit highlights */}
-              <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/15 mb-8 text-left max-w-sm mx-auto">
-                <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-3">
+              <div className="p-5 rounded-2xl bg-success/5 border border-success/15 mb-8 text-left max-w-sm mx-auto">
+                <p className="text-xs font-bold text-success-text uppercase tracking-wider mb-3">
                   What's unlocked
                 </p>
                 <div className="space-y-2">
@@ -138,8 +138,8 @@ export const PaymentSuccess = () => {
                     "Full conversation export",
                     "Priority Support access",
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
-                      <FiCheckCircle className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    <div key={idx} className="flex items-center gap-2 text-xs text-fg-secondary">
+                      <FiCheckCircle className="w-3.5 h-3.5 text-success-text shrink-0" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -149,14 +149,14 @@ export const PaymentSuccess = () => {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   to="/dashboard"
-                  className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Go to Dashboard
                   <FiArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/chat"
-                  className="px-6 py-3 rounded-xl border border-violet-500/30 text-slate-800 dark:text-slate-200 font-bold text-sm hover:bg-violet-500/10 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="px-6 py-3 rounded-xl border border-primary/30 text-fg font-bold text-sm hover:bg-primary/10 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Start a Conversation
                 </Link>
@@ -167,27 +167,27 @@ export const PaymentSuccess = () => {
 
         {status === "error" && (
           <ScrollReveal animation="fade-up" distance="30px">
-            <div className="text-center p-12 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-rose-500/20 shadow-xl">
-              <div className="w-20 h-20 rounded-full bg-rose-500/10 flex items-center justify-center mx-auto mb-6">
-                <FiAlertTriangle className="w-10 h-10 text-rose-500" />
+            <div className="text-center p-12 rounded-3xl bg-surface border border-error/20 shadow-xl">
+              <div className="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center mx-auto mb-6">
+                <FiAlertTriangle className="w-10 h-10 text-error-text" />
               </div>
-              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 mb-3">
+              <h1 className="text-2xl font-extrabold text-fg mb-3">
                 Verification Failed
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
+              <p className="text-sm text-fg-secondary mb-8 max-w-md mx-auto">
                 {errorMsg}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   to="/pricing"
-                  className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Return to Pricing
                   <FiArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="px-6 py-3 rounded-xl border border-violet-500/30 text-slate-800 dark:text-slate-200 font-bold text-sm hover:bg-violet-500/10 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="px-6 py-3 rounded-xl border border-primary/30 text-fg font-bold text-sm hover:bg-primary/10 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   Go to Dashboard
                 </Link>

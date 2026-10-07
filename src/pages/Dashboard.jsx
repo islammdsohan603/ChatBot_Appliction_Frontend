@@ -39,7 +39,7 @@ const PLAN_CONFIG = {
     title: "Free Starter Plan",
     slug: "free",
     badge: "Free Starter",
-    badgeColor: "bg-slate-500/10 text-slate-400 border-slate-500/20",
+    badgeColor: "bg-fg-muted/10 text-fg-muted border-line-strong",
     price: "$0",
     billingCycle: "Forever Free",
     description: "Essential AI chat capabilities for casual users and beginners.",
@@ -56,14 +56,14 @@ const PLAN_CONFIG = {
       support: "Community Forum",
       export: "Disabled",
     },
-    gradient: "from-slate-500/5 via-violet-500/5 to-transparent border-violet-500/15",
-    glowColor: "shadow-slate-500/10",
+    gradient: "from-fg-muted/5 via-brand-violet/5 to-transparent border-line",
+    glowColor: "shadow-scrim/10",
   },
   pro: {
     title: "Pro Developer Plan",
     slug: "pro",
     badge: "Active Pro Plan",
-    badgeColor: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+    badgeColor: "bg-success/15 text-success-text border-success/30",
     price: "$19",
     billingCycle: "Monthly Billing",
     description: "Enhanced power, higher limits, and priority model availability for developers.",
@@ -82,14 +82,14 @@ const PLAN_CONFIG = {
       support: "Discord Priority Support",
       export: "JSON & Markdown",
     },
-    gradient: "from-violet-600/15 via-indigo-600/10 to-emerald-500/15 border-violet-500/30",
-    glowColor: "shadow-violet-500/20",
+    gradient: "from-brand-violet/15 via-brand-indigo/10 to-success/15 border-primary/30",
+    glowColor: "shadow-primary/20",
   },
   enterprise: {
     title: "Enterprise Studio Plan",
     slug: "enterprise",
     badge: "Enterprise VIP",
-    badgeColor: "bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border-cyan-500/30",
+    badgeColor: "bg-accent/15 text-accent-text border-accent/30",
     price: "$79",
     billingCycle: "Monthly Billing",
     description: "Dedicated infrastructure, custom SLAs, and custom LLM tuning for organizations.",
@@ -108,8 +108,8 @@ const PLAN_CONFIG = {
       support: "24/7 Dedicated Engineer",
       export: "Enterprise Audit Logs & History",
     },
-    gradient: "from-cyan-600/15 via-violet-600/10 to-indigo-600/15 border-cyan-500/30",
-    glowColor: "shadow-cyan-500/20",
+    gradient: "from-brand-cyan/15 via-brand-violet/10 to-brand-indigo/15 border-accent/30",
+    glowColor: "shadow-accent/20",
   },
 };
 
@@ -259,16 +259,16 @@ export const Dashboard = () => {
     >
       <div className="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Mobile Toggle Button for Chat History Sidebar */}
-        <div className="lg:hidden mb-6 flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm">
+        <div className="lg:hidden mb-6 flex items-center justify-between p-4 rounded-2xl bg-surface border border-line shadow-sm">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
               <FiMessageSquare className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              <p className="text-xs font-bold text-fg">
                 Chat History
               </p>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400">
+              <p className="text-[10px] text-fg-muted">
                 {conversations.length} saved session{conversations.length === 1 ? "" : "s"}
               </p>
             </div>
@@ -276,7 +276,7 @@ export const Dashboard = () => {
           <button
             type="button"
             onClick={() => setSidebarCollapsedMobile(!sidebarCollapsedMobile)}
-            className="px-3.5 py-1.5 rounded-xl bg-violet-600/10 hover:bg-violet-600/20 text-violet-600 dark:text-violet-400 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-3.5 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary-text text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
           >
             <FiList className="w-3.5 h-3.5" />
             <span>{sidebarCollapsedMobile ? "View History" : "Hide History"}</span>
@@ -292,18 +292,18 @@ export const Dashboard = () => {
               sidebarCollapsedMobile ? "hidden lg:flex" : "flex"
             }`}
           >
-            <div className="p-5 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl flex flex-col h-[740px]">
+            <div className="p-5 rounded-3xl bg-surface border border-line shadow-xl flex flex-col h-[740px]">
               {/* Sidebar Header */}
-              <div className="flex items-center justify-between pb-3.5 border-b border-violet-500/10">
+              <div className="flex items-center justify-between pb-3.5 border-b border-line">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white flex items-center justify-center shadow-md">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan text-primary-contrast flex items-center justify-center shadow-md">
                     <FiMessageSquare className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                    <h2 className="text-sm font-bold text-fg flex items-center gap-1.5">
                       <span>Chat History</span>
                     </h2>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <p className="text-[11px] text-fg-muted">
                       {conversations.length} conversation{conversations.length === 1 ? "" : "s"}
                     </p>
                   </div>
@@ -311,7 +311,7 @@ export const Dashboard = () => {
 
                 <Link
                   to="/chat"
-                  className="px-3 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-sm transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs font-semibold shadow-sm transition-all flex items-center gap-1 cursor-pointer"
                   title="Start New Chat"
                 >
                   <FiPlus className="w-3.5 h-3.5" />
@@ -322,13 +322,13 @@ export const Dashboard = () => {
               {/* Search Bar */}
               <div className="pt-3 pb-2">
                 <div className="relative">
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-fg-muted" />
                   <input
                     type="text"
                     value={chatSearch}
                     onChange={(e) => setChatSearch(e.target.value)}
                     placeholder="Search previous chats..."
-                    className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 dark:bg-[#111840] border border-violet-500/15 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:border-violet-500 transition-colors"
+                    className="w-full pl-8 pr-3 py-2 rounded-xl bg-canvas border border-line text-xs text-fg placeholder-fg-muted outline-none focus:border-primary transition-colors"
                   />
                 </div>
               </div>
@@ -341,13 +341,13 @@ export const Dashboard = () => {
                   </div>
                 ) : filteredConversations.length === 0 ? (
                   <div className="h-48 flex flex-col items-center justify-center text-center p-4">
-                    <FiMessageSquare className="w-8 h-8 opacity-30 text-slate-400 mb-2" />
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <FiMessageSquare className="w-8 h-8 opacity-30 text-fg-muted mb-2" />
+                    <p className="text-xs text-fg-muted font-medium">
                       {chatSearch ? "No matching chats found." : "No previous chats yet."}
                     </p>
                     <Link
                       to="/chat"
-                      className="mt-3 px-3 py-1.5 rounded-xl bg-violet-600 text-white text-[11px] font-semibold"
+                      className="mt-3 px-3 py-1.5 rounded-xl bg-primary text-primary-contrast text-[11px] font-semibold"
                     >
                       Start First Chat
                     </Link>
@@ -370,26 +370,26 @@ export const Dashboard = () => {
                         onClick={() => handleViewChat(id)}
                         className={`group relative p-3 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1 ${
                           isSelected
-                            ? "bg-violet-500/15 border-violet-500/40 shadow-sm"
-                            : "bg-slate-50/70 dark:bg-[#111840]/70 border-violet-500/10 hover:border-violet-500/30 hover:bg-violet-500/5"
+                            ? "bg-primary/15 border-primary/40 shadow-sm"
+                            : "bg-canvas/70 border-line hover:border-primary/30 hover:bg-primary/5"
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors flex-1">
+                          <span className="text-xs font-bold text-fg truncate group-hover:text-primary-text transition-colors flex-1">
                             {conv.title || "Untitled Chat"}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-medium shrink-0">
+                          <span className="text-[10px] text-fg-muted font-medium shrink-0">
                             {formattedDate}
                           </span>
                         </div>
 
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 break-words">
+                        <p className="text-[11px] text-fg-muted line-clamp-1 break-words">
                           {conv.lastMessage || "No messages recorded"}
                         </p>
 
                         {/* Action buttons on hover */}
-                        <div className="flex items-center justify-between pt-1 border-t border-violet-500/5 mt-0.5">
-                          <span className="text-[9px] uppercase tracking-wider font-extrabold text-violet-500/80">
+                        <div className="flex items-center justify-between pt-1 border-t border-line mt-0.5">
+                          <span className="text-[9px] uppercase tracking-wider font-extrabold text-primary-text/80">
                             {conv.model?.includes("flash") ? "Gemini Flash" : "AI"}
                           </span>
 
@@ -400,7 +400,7 @@ export const Dashboard = () => {
                                 e.stopPropagation();
                                 handleViewChat(id);
                               }}
-                              className="px-2 py-0.5 rounded-lg bg-violet-600/10 hover:bg-violet-600/20 text-violet-600 dark:text-violet-400 text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                              className="px-2 py-0.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary-text text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               title="View chat in preview"
                             >
                               <FiEye className="w-3 h-3" />
@@ -412,7 +412,7 @@ export const Dashboard = () => {
                                 e.stopPropagation();
                                 handleOpenFullChat(id);
                               }}
-                              className="p-1 rounded-lg hover:bg-violet-500/15 text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer"
+                              className="p-1 rounded-lg hover:bg-primary/15 text-fg-muted hover:text-primary-text transition-colors cursor-pointer"
                               title="Open in Full Chat"
                             >
                               <FiArrowUpRight className="w-3.5 h-3.5" />
@@ -421,7 +421,7 @@ export const Dashboard = () => {
                               type="button"
                               disabled={isDeleting === id}
                               onClick={(e) => handleDeleteConversation(id, e)}
-                              className="p-1 rounded-lg hover:bg-rose-500/15 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
+                              className="p-1 rounded-lg hover:bg-error/15 text-fg-muted hover:text-error-text transition-colors cursor-pointer"
                               title="Delete Chat"
                             >
                               <FiTrash2 className="w-3.5 h-3.5" />
@@ -435,8 +435,8 @@ export const Dashboard = () => {
               </div>
 
               {/* Sidebar Footer Hint */}
-              <div className="pt-3 border-t border-violet-500/10 text-center">
-                <p className="text-[11px] text-slate-400">
+              <div className="pt-3 border-t border-line text-center">
+                <p className="text-[11px] text-fg-muted">
                   Click any chat to view previous messages
                 </p>
               </div>
@@ -451,21 +451,21 @@ export const Dashboard = () => {
                 TOP WELCOME & TIER BANNER
                 ══════════════════════════════════════════════ */}
             <ScrollReveal animation="fade-up" delay={60}>
-              <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-line shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 text-white font-extrabold text-xl flex items-center justify-center shadow-lg shadow-violet-500/20">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-violet to-brand-cyan text-primary-contrast font-extrabold text-xl flex items-center justify-center shadow-lg shadow-primary/20">
                     {currentUser.name ? currentUser.name[0].toUpperCase() : "U"}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
+                      <h1 className="text-xl sm:text-2xl font-bold text-fg">
                         Welcome back, {currentUser.name || currentUser.userName || "Developer"}
                       </h1>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-primary/10 text-primary-text border border-line-strong">
                         {tier.toUpperCase()} TIER
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    <p className="text-xs sm:text-sm text-fg-muted mt-0.5">
                       {currentUser.email} • Connected to Gemini Cluster
                     </p>
                   </div>
@@ -474,14 +474,14 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-3 w-full md:w-auto">
                   <Link
                     to="/chat"
-                    className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-semibold shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs sm:text-sm font-semibold shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
                     <FiPlus className="w-4 h-4" />
                     New Conversation
                   </Link>
                   <Link
                     to="/settings"
-                    className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors"
+                    className="p-2.5 rounded-xl border border-line-strong text-fg-secondary hover:text-primary-contrast hover:bg-primary/10 transition-colors"
                     title="Account Settings"
                   >
                     <FiSettings className="w-4 h-4" />
@@ -492,7 +492,7 @@ export const Dashboard = () => {
                       fetchDashboardData();
                       fetchConversations();
                     }}
-                    className="p-2.5 rounded-xl border border-violet-500/20 text-slate-600 dark:text-slate-400 hover:text-white hover:bg-violet-500/10 transition-colors cursor-pointer"
+                    className="p-2.5 rounded-xl border border-line-strong text-fg-secondary hover:text-primary-contrast hover:bg-primary/10 transition-colors cursor-pointer"
                     title="Refresh Stats"
                   >
                     <FiRefreshCw className="w-4 h-4" />
@@ -517,44 +517,44 @@ export const Dashboard = () => {
               return (
                 <ScrollReveal animation="fade-up" delay={100} distance={35}>
                   <div
-                    className={`p-6 sm:p-8 rounded-3xl bg-gradient-to-br ${activePlan.gradient} bg-white dark:bg-[#0a0f2a] border shadow-xl ${activePlan.glowColor} mb-10 transition-all duration-300`}
+                    className={`p-6 sm:p-8 rounded-3xl bg-gradient-to-br ${activePlan.gradient} bg-surface border shadow-xl ${activePlan.glowColor} mb-10 transition-all duration-300`}
                   >
-                  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-violet-500/15">
+                  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-line">
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-3 flex-wrap">
-                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                          <FiAward className="w-6 h-6 text-violet-500 shrink-0" />
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-fg flex items-center gap-2">
+                          <FiAward className="w-6 h-6 text-primary-text shrink-0" />
                           <span>{activePlan.title}</span>
                         </h2>
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ${activePlan.badgeColor}`}
                         >
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
                           {activePlan.badge}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                      <p className="text-xs sm:text-sm text-fg-secondary">
                         {activePlan.description}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-4 bg-violet-500/10 dark:bg-[#111840] px-5 py-3.5 rounded-2xl border border-violet-500/20 shrink-0 w-full lg:w-auto justify-between lg:justify-start">
+                    <div className="flex items-center gap-4 bg-primary/10 px-5 py-3.5 rounded-2xl border border-line-strong shrink-0 w-full lg:w-auto justify-between lg:justify-start">
                       <div>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
+                          <span className="text-2xl sm:text-3xl font-black text-fg">
                             {activePlan.price}
                           </span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                          <span className="text-xs text-fg-muted font-medium">
                             / month
                           </span>
                         </div>
-                        <p className="text-[10px] text-violet-600 dark:text-violet-400 font-semibold">
+                        <p className="text-[10px] text-primary-text font-semibold">
                           {activePlan.billingCycle}
                         </p>
                       </div>
                       <Link
                         to="/pricing"
-                        className="ml-2 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5 shrink-0 cursor-pointer"
+                        className="ml-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs font-bold transition-all shadow-md flex items-center gap-1.5 shrink-0 cursor-pointer"
                       >
                         <span>{activePlanKey === "free" ? "Upgrade Plan" : "Manage Plan"}</span>
                         <FiArrowUpRight className="w-4 h-4" />
@@ -563,36 +563,36 @@ export const Dashboard = () => {
                   </div>
 
                   {/* Plan Limits & Capabilities Specs */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-violet-500/10">
-                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
-                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-line">
+                    <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
+                      <p className="text-[11px] font-semibold text-fg-muted">
                         Daily Message Quota
                       </p>
-                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1">
+                      <p className="text-sm font-bold text-fg mt-1">
                         {activePlan.limits.messages}
                       </p>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
-                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                    <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
+                      <p className="text-[11px] font-semibold text-fg-muted">
                         Model Availability
                       </p>
-                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 truncate">
+                      <p className="text-sm font-bold text-fg mt-1 truncate">
                         {activePlan.limits.models}
                       </p>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
-                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                    <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
+                      <p className="text-[11px] font-semibold text-fg-muted">
                         Vision Attachments
                       </p>
-                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1">
+                      <p className="text-sm font-bold text-fg mt-1">
                         {activePlan.limits.vision}
                       </p>
                     </div>
-                    <div className="p-3.5 rounded-xl bg-slate-500/5 border border-violet-500/10">
-                      <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                    <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
+                      <p className="text-[11px] font-semibold text-fg-muted">
                         Support Channel
                       </p>
-                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 truncate">
+                      <p className="text-sm font-bold text-fg mt-1 truncate">
                         {activePlan.limits.support}
                       </p>
                     </div>
@@ -600,16 +600,16 @@ export const Dashboard = () => {
 
                   {/* Unlocked Plan Features */}
                   <div className="pt-6">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-fg-muted mb-3">
                       Features Unlocked with Your {activePlan.title}
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                       {activePlan.features.map((feat, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300"
+                          className="flex items-center gap-2.5 text-xs text-fg-secondary"
                         >
-                          <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                          <div className="w-4 h-4 rounded-full bg-success/20 text-success-text flex items-center justify-center shrink-0">
                             <FiCheck className="w-3 h-3" />
                           </div>
                           <span className="font-medium">{feat}</span>
@@ -627,71 +627,71 @@ export const Dashboard = () => {
                 ══════════════════════════════════════════════ */}
             <ScrollReveal animation="fade-up" delay={120} distance={30}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-                <div className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm hover:border-violet-500/40 transition-all">
+                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold text-fg-muted">
                       Total Conversations
                     </span>
-                    <div className="w-9 h-9 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
                       <FiMessageSquare className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
                     {stats?.totalConversations || 0}
                   </p>
-                  <p className="text-[11px] text-emerald-500 font-medium mt-1 flex items-center gap-1">
+                  <p className="text-[11px] text-success-text font-medium mt-1 flex items-center gap-1">
                     <FiTrendingUp className="w-3 h-3" />
                     Active thread sessions
                   </p>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm hover:border-violet-500/40 transition-all">
+                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold text-fg-muted">
                       Total Messages
                     </span>
-                    <div className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent-text flex items-center justify-center">
                       <FiZap className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
                     {stats?.totalMessages || 0}
                   </p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-[11px] text-fg-muted mt-1">
                     Prompts + Streamed replies
                   </p>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm hover:border-violet-500/40 transition-all">
+                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold text-fg-muted">
                       Estimated Tokens
                     </span>
-                    <div className="w-9 h-9 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
                       <FiCpu className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
                     {stats?.estimatedTokens ? Number(stats.estimatedTokens).toLocaleString() : "0"}
                   </p>
-                  <p className="text-[11px] text-violet-500 font-medium mt-1">
+                  <p className="text-[11px] text-primary-text font-medium mt-1">
                     Gemini 3.8 Flash quota
                   </p>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm hover:border-violet-500/40 transition-all">
+                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold text-fg-muted">
                       Storage Allocated
                     </span>
-                    <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-xl bg-success/10 text-success-text flex items-center justify-center">
                       <FiDatabase className="w-4 h-4" />
                     </div>
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
                     {stats?.estimatedStorageMb || "0 MB"}
                   </p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-[11px] text-fg-muted mt-1">
                     MongoDB Atlas encrypted
                   </p>
                 </div>
@@ -704,24 +704,24 @@ export const Dashboard = () => {
             <ScrollReveal animation="fade-up" delay={180} distance={30}>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
                 {/* Activity Bar Visualization */}
-                <div className="lg:col-span-2 p-7 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm">
+                <div className="lg:col-span-2 p-7 rounded-3xl bg-surface border border-line shadow-sm">
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                      <h3 className="text-base font-bold text-fg">
                         7-Day Message Activity
                       </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      <p className="text-xs text-fg-muted mt-0.5">
                         Daily conversational message volume
                       </p>
                     </div>
-                    <span className="text-xs font-bold text-violet-600 dark:text-violet-400">
+                    <span className="text-xs font-bold text-primary-text">
                       Last 7 Days
                     </span>
                   </div>
 
                   <div className="h-48 flex items-end justify-between gap-2 pt-6 pb-2">
                     {activity.length === 0 ? (
-                      <div className="w-full text-center text-xs text-slate-400 self-center">
+                      <div className="w-full text-center text-xs text-fg-muted self-center">
                         No activity recorded for this period yet.
                       </div>
                     ) : (
@@ -731,16 +731,16 @@ export const Dashboard = () => {
 
                         return (
                           <div key={idx} className="flex-1 flex flex-col items-center gap-2 group">
-                            <span className="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-[10px] font-bold text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
                               {item.messages}
                             </span>
-                            <div className="w-full max-w-[42px] bg-violet-500/15 group-hover:bg-violet-500/30 rounded-t-xl h-36 flex items-end p-1 transition-all">
+                            <div className="w-full max-w-[42px] bg-primary/15 group-hover:bg-primary/30 rounded-t-xl h-36 flex items-end p-1 transition-all">
                               <div
-                                className="w-full rounded-lg bg-gradient-to-t from-violet-600 to-cyan-500 transition-all duration-500"
+                                className="w-full rounded-lg bg-gradient-to-t from-brand-violet to-brand-cyan transition-all duration-500"
                                 style={{ height: `${heightPercent}%` }}
                               />
                             </div>
-                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            <span className="text-xs font-medium text-fg-muted">
                               {item.day}
                             </span>
                           </div>
@@ -751,12 +751,12 @@ export const Dashboard = () => {
                 </div>
 
                 {/* Quick Prompt Launchers */}
-                <div className="p-7 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm flex flex-col justify-between">
+                <div className="p-7 rounded-3xl bg-surface border border-line shadow-sm flex flex-col justify-between">
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-1">
+                    <h3 className="text-base font-bold text-fg mb-1">
                       Quick AI Launchers
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                    <p className="text-xs text-fg-muted mb-4">
                       Pre-configured starter prompts
                     </p>
 
@@ -766,13 +766,13 @@ export const Dashboard = () => {
                           key={idx}
                           type="button"
                           onClick={() => handleLaunchPrompt(qp.prompt)}
-                          className="w-full p-3 rounded-xl text-left bg-slate-50 dark:bg-[#111840] border border-violet-500/10 hover:border-violet-500/40 hover:shadow-xs transition-all text-xs cursor-pointer group"
+                          className="w-full p-3 rounded-xl text-left bg-canvas border border-line hover:border-primary/40 hover:shadow-xs transition-all text-xs cursor-pointer group"
                         >
-                          <p className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-violet-600 dark:group-hover:text-violet-400 flex items-center justify-between">
+                          <p className="font-bold text-fg group-hover:text-primary-text flex items-center justify-between">
                             <span>{qp.title}</span>
                             <FiArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                           </p>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                          <p className="text-[11px] text-fg-muted truncate mt-0.5">
                             {qp.desc}
                           </p>
                         </button>
@@ -782,7 +782,7 @@ export const Dashboard = () => {
 
                   <Link
                     to="/docs"
-                    className="mt-4 pt-3 border-t border-violet-500/10 text-xs text-center text-violet-600 dark:text-violet-400 font-semibold hover:underline block"
+                    className="mt-4 pt-3 border-t border-line text-xs text-center text-primary-text font-semibold hover:underline block"
                   >
                     View Developer Guides & Examples →
                   </Link>
@@ -794,19 +794,19 @@ export const Dashboard = () => {
                 RECENT CHAT SESSIONS TABLE
                 ══════════════════════════════════════════════ */}
             <ScrollReveal animation="fade-up" delay={240} distance={30}>
-              <div className="p-7 rounded-3xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm">
+              <div className="p-7 rounded-3xl bg-surface border border-line shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                    <h3 className="text-base font-bold text-fg">
                       Recent Chat Sessions
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    <p className="text-xs text-fg-muted mt-0.5">
                       Jump right back into active conversations
                     </p>
                   </div>
                   <Link
                     to="/chat"
-                    className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
+                    className="text-xs font-semibold text-primary-text hover:underline"
                   >
                     Open Chatbox →
                   </Link>
@@ -814,17 +814,17 @@ export const Dashboard = () => {
 
 
               {!stats?.recentConversations || stats.recentConversations.length === 0 ? (
-                <div className="p-8 text-center border border-dashed border-violet-500/20 rounded-2xl">
-                  <p className="text-xs text-slate-500">No conversations created yet.</p>
+                <div className="p-8 text-center border border-dashed border-line-strong rounded-2xl">
+                  <p className="text-xs text-fg-muted">No conversations created yet.</p>
                   <Link
                     to="/chat"
-                    className="mt-3 inline-block px-4 py-2 rounded-xl bg-violet-600 text-white text-xs font-semibold"
+                    className="mt-3 inline-block px-4 py-2 rounded-xl bg-primary text-primary-contrast text-xs font-semibold"
                   >
                     Start First Chat
                   </Link>
                 </div>
               ) : (
-                <div className="divide-y divide-violet-500/10">
+                <div className="divide-y divide-line">
                   {stats.recentConversations.map((conv) => {
                     const id = conv._id || conv.id;
                     const dateFormatted = new Date(conv.updatedAt || conv.createdAt).toLocaleString(
@@ -836,24 +836,24 @@ export const Dashboard = () => {
                       <div
                         key={id}
                         onClick={() => handleViewChat(id)}
-                        className="py-3.5 px-3 rounded-xl hover:bg-violet-500/5 transition-colors flex items-center justify-between gap-4 cursor-pointer group"
+                        className="py-3.5 px-3 rounded-xl hover:bg-primary/5 transition-colors flex items-center justify-between gap-4 cursor-pointer group"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-8 h-8 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center shrink-0">
+                          <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center shrink-0">
                             <FiMessageSquare className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                            <p className="text-sm font-bold text-fg truncate group-hover:text-primary-text transition-colors">
                               {conv.title || "Untitled Session"}
                             </p>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 truncate max-w-md mt-0.5">
+                            <p className="text-xs text-fg-muted truncate max-w-md mt-0.5">
                               {conv.lastMessage || "No messages"}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-3 shrink-0 text-xs">
-                          <span className="text-slate-400 hidden sm:inline flex items-center gap-1">
+                          <span className="text-fg-muted hidden sm:inline flex items-center gap-1">
                             <FiClock className="w-3 h-3" />
                             {dateFormatted}
                           </span>
@@ -864,7 +864,7 @@ export const Dashboard = () => {
                               e.stopPropagation();
                               handleViewChat(id);
                             }}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-colors cursor-pointer"
                             title="View Chat Messages"
                           >
                             <FiEye className="w-4 h-4" />
@@ -876,7 +876,7 @@ export const Dashboard = () => {
                               e.stopPropagation();
                               handleOpenFullChat(id);
                             }}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-colors cursor-pointer"
                             title="Open in Full Chat Room"
                           >
                             <FiArrowUpRight className="w-4 h-4" />
@@ -886,7 +886,7 @@ export const Dashboard = () => {
                             type="button"
                             disabled={isDeleting === id}
                             onClick={(e) => handleDeleteConversation(id, e)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-fg-muted hover:text-error-text hover:bg-error/10 transition-colors cursor-pointer"
                             title="Delete Conversation"
                           >
                             <FiTrash2 className="w-4 h-4" />

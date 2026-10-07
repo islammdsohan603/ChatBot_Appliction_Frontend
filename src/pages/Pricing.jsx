@@ -241,7 +241,7 @@ export const Pricing = () => {
         <div className="flex items-center justify-center gap-3 mb-14 px-4">
           <span
             className={`text-sm font-semibold cursor-pointer ${
-              !isYearly ? "text-violet-600 dark:text-violet-400" : "text-slate-500"
+              !isYearly ? "text-primary-text" : "text-fg-muted"
             }`}
             onClick={() => setIsYearly(false)}
           >
@@ -251,11 +251,11 @@ export const Pricing = () => {
           <button
             type="button"
             onClick={() => setIsYearly((v) => !v)}
-            className="relative w-14 h-8 rounded-full bg-slate-200 dark:bg-[#111840] border border-violet-500/25 p-1 transition-colors cursor-pointer"
+            className="relative w-14 h-8 rounded-full bg-surface-hover border border-primary/25 p-1 transition-colors cursor-pointer"
             aria-label="Toggle Monthly and Yearly billing"
           >
             <div
-              className={`w-6 h-6 rounded-full bg-violet-600 transition-transform shadow-md ${
+              className={`w-6 h-6 rounded-full bg-primary transition-transform shadow-md ${
                 isYearly ? "translate-x-6" : "translate-x-0"
               }`}
             />
@@ -263,12 +263,12 @@ export const Pricing = () => {
 
           <span
             className={`text-sm font-semibold cursor-pointer flex items-center gap-2 ${
-              isYearly ? "text-violet-600 dark:text-violet-400" : "text-slate-500"
+              isYearly ? "text-primary-text" : "text-fg-muted"
             }`}
             onClick={() => setIsYearly(true)}
           >
             <span>Annual Billing</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-success/15 text-success-text border border-success/30">
               Save 20%
             </span>
           </span>
@@ -300,58 +300,58 @@ export const Pricing = () => {
                   <div
                     className={`h-full relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between overflow-hidden ${
                       isSubmitting
-                        ? "bg-white dark:bg-[#0d1230] border-2 border-violet-500 shadow-2xl shadow-violet-500/40 ring-4 ring-violet-500/20 scale-[1.02]"
+                        ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/40 ring-4 ring-primary/20 scale-[1.02]"
                         : plan.isPopular
-                        ? "bg-white dark:bg-[#0d1230] border-2 border-violet-500 shadow-2xl shadow-violet-900/20 md:-translate-y-2"
-                        : "bg-white/80 dark:bg-[#0a0f2a]/90 border border-violet-500/15 hover:border-violet-500/40 shadow-lg"
+                        ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/20 md:-translate-y-2"
+                        : "bg-surface/80 border border-line hover:border-primary/40 shadow-lg"
                     }`}
                   >
                     {/* Subscribing loading bar indicator */}
                     {isSubmitting && (
-                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500 animate-pulse" />
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan animate-pulse" />
                     )}
 
                     {/* Highlight pill */}
                     {plan.highlightBadge && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md">
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast shadow-md">
                         {plan.highlightBadge}
                       </div>
                     )}
 
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                        <h3 className="text-xl font-bold text-fg">
                           {plan.name}
                         </h3>
                         {isCurrent && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-success/15 text-success-text border border-success/30">
                             Active Plan
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 min-h-[36px]">
+                      <p className="text-xs text-fg-muted mb-6 min-h-[36px]">
                         {plan.description}
                       </p>
 
                       {/* Price display */}
                       <div className="flex items-baseline gap-1 mb-6">
-                        <span className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-slate-100">
+                        <span className="text-4xl sm:text-5xl font-extrabold text-fg">
                           ${price}
                         </span>
-                        <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+                        <span className="text-xs sm:text-sm text-fg-muted font-medium">
                           / month {isYearly && plan.priceMonthly > 0 && "(billed annually)"}
                         </span>
                       </div>
 
                       {/* Feature bullet list */}
-                      <div className="space-y-3 mb-8 pt-4 border-t border-violet-500/10">
+                      <div className="space-y-3 mb-8 pt-4 border-t border-line">
                         {plan.features.map((feat, fIdx) => (
                           <div key={fIdx} className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center shrink-0 mt-0.5">
+                            <div className="w-5 h-5 rounded-full bg-primary/10 text-primary-text flex items-center justify-center shrink-0 mt-0.5">
                               <FiCheck className="w-3.5 h-3.5" />
                             </div>
-                            <span className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                            <span className="text-xs sm:text-sm text-fg-secondary">
                               {feat}
                             </span>
                           </div>
@@ -366,17 +366,17 @@ export const Pricing = () => {
                       onClick={() => handleSubscribe(plan.slug)}
                       className={`w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
                         isSubmitting
-                          ? "bg-violet-600 text-white shadow-lg shadow-violet-500/30 opacity-95 cursor-wait"
+                          ? "bg-primary text-primary-contrast shadow-lg shadow-primary/30 opacity-95 cursor-wait"
                           : isCurrent
-                          ? "bg-slate-200 dark:bg-slate-800 text-slate-500 cursor-not-allowed"
+                          ? "bg-surface-hover text-fg-muted cursor-not-allowed"
                           : plan.isPopular
-                          ? "bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-900/30 hover:-translate-y-0.5 cursor-pointer"
-                          : "border border-violet-500/30 text-slate-800 dark:text-slate-200 hover:bg-violet-500/10 cursor-pointer"
+                          ? "bg-primary hover:bg-primary-hover text-primary-contrast shadow-md shadow-primary/30 hover:-translate-y-0.5 cursor-pointer"
+                          : "border border-primary/30 text-fg hover:bg-primary/10 cursor-pointer"
                       }`}
                     >
                       {isSubmitting ? (
                         <>
-                          <FiLoader className="w-4 h-4 animate-spin text-white shrink-0" />
+                          <FiLoader className="w-4 h-4 animate-spin text-primary-contrast shrink-0" />
                           <span>
                             {plan.priceMonthly === 0
                               ? "Switching Plan..."
@@ -404,62 +404,62 @@ export const Pricing = () => {
           ══════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Detailed Breakdown
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Compare Plan Capabilities
           </h3>
         </ScrollReveal>
 
         <ScrollReveal animation="fade-up" distance={35}>
-          <div className="rounded-2xl border border-violet-500/15 bg-white dark:bg-[#0a0f2a] shadow-lg overflow-x-auto">
+          <div className="rounded-2xl border border-line bg-surface shadow-lg overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead>
-                <tr className="border-b border-violet-500/10 bg-slate-50 dark:bg-[#0d1230]">
-                  <th className="p-4 font-bold text-slate-900 dark:text-slate-100">Capability</th>
-                  <th className="p-4 font-bold text-center text-slate-700 dark:text-slate-300">Free</th>
-                  <th className="p-4 font-bold text-center text-violet-600 dark:text-violet-400">Pro</th>
-                  <th className="p-4 font-bold text-center text-cyan-600 dark:text-cyan-400">Enterprise</th>
+                <tr className="border-b border-line bg-canvas">
+                  <th className="p-4 font-bold text-fg">Capability</th>
+                  <th className="p-4 font-bold text-center text-fg-secondary">Free</th>
+                  <th className="p-4 font-bold text-center text-primary-text">Pro</th>
+                  <th className="p-4 font-bold text-center text-accent-text">Enterprise</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-violet-500/10">
+              <tbody className="divide-y divide-line">
                 {COMPARISON_ROWS.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-violet-500/5 transition-colors">
-                    <td className="p-4 font-medium text-slate-800 dark:text-slate-200">
+                  <tr key={idx} className="hover:bg-primary/5 transition-colors">
+                    <td className="p-4 font-medium text-fg">
                       {row.feature}
                     </td>
                     <td className="p-4 text-center">
                       {typeof row.free === "boolean" ? (
                         row.free ? (
-                          <FiCheck className="w-4 h-4 text-emerald-500 mx-auto" />
+                          <FiCheck className="w-4 h-4 text-success-text mx-auto" />
                         ) : (
-                          <FiX className="w-4 h-4 text-slate-400 mx-auto" />
+                          <FiX className="w-4 h-4 text-fg-muted mx-auto" />
                         )
                       ) : (
-                        <span className="text-slate-600 dark:text-slate-400 font-semibold">{row.free}</span>
+                        <span className="text-fg-secondary font-semibold">{row.free}</span>
                       )}
                     </td>
                     <td className="p-4 text-center">
                       {typeof row.pro === "boolean" ? (
                         row.pro ? (
-                          <FiCheck className="w-4 h-4 text-emerald-500 mx-auto" />
+                          <FiCheck className="w-4 h-4 text-success-text mx-auto" />
                         ) : (
-                          <FiX className="w-4 h-4 text-slate-400 mx-auto" />
+                          <FiX className="w-4 h-4 text-fg-muted mx-auto" />
                         )
                       ) : (
-                        <span className="text-violet-600 dark:text-violet-400 font-bold">{row.pro}</span>
+                        <span className="text-primary-text font-bold">{row.pro}</span>
                       )}
                     </td>
                     <td className="p-4 text-center">
                       {typeof row.enterprise === "boolean" ? (
                         row.enterprise ? (
-                          <FiCheck className="w-4 h-4 text-emerald-500 mx-auto" />
+                          <FiCheck className="w-4 h-4 text-success-text mx-auto" />
                         ) : (
-                          <FiX className="w-4 h-4 text-slate-400 mx-auto" />
+                          <FiX className="w-4 h-4 text-fg-muted mx-auto" />
                         )
                       ) : (
-                        <span className="text-cyan-600 dark:text-cyan-400 font-bold">{row.enterprise}</span>
+                        <span className="text-accent-text font-bold">{row.enterprise}</span>
                       )}
                     </td>
                   </tr>
@@ -473,12 +473,12 @@ export const Pricing = () => {
       {/* ══════════════════════════════════════════════
           FREQUENTLY ASKED QUESTIONS (ACCORDION)
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-violet-500/10">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
         <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Got Questions?
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Frequently Asked Questions
           </h3>
         </ScrollReveal>
@@ -494,22 +494,22 @@ export const Pricing = () => {
                 distance={25}
               >
                 <div
-                  className="rounded-2xl border border-violet-500/15 bg-white dark:bg-[#0a0f2a] overflow-hidden transition-all shadow-xs"
+                  className="rounded-2xl border border-line bg-surface overflow-hidden transition-all shadow-xs"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenFaq(isOpen ? -1 : idx)}
-                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-slate-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors cursor-pointer text-sm sm:text-base"
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-fg hover:text-primary-text transition-colors cursor-pointer text-sm sm:text-base"
                   >
                     <span>{faq.q}</span>
                     {isOpen ? (
-                      <FiChevronUp className="w-5 h-5 text-violet-500 shrink-0" />
+                      <FiChevronUp className="w-5 h-5 text-primary-text shrink-0" />
                     ) : (
-                      <FiChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
+                      <FiChevronDown className="w-5 h-5 text-fg-muted shrink-0" />
                     )}
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-violet-500/10 pt-3">
+                    <div className="px-5 pb-5 text-xs sm:text-sm text-fg-secondary leading-relaxed border-t border-line pt-3">
                       {faq.a}
                     </div>
                   )}
@@ -525,18 +525,18 @@ export const Pricing = () => {
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
         <ScrollReveal animation="fade-up" distance={35}>
-          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-violet-600/15 to-cyan-500/15 border border-violet-500/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-violet/15 to-brand-cyan/15 border border-primary/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
             <div>
-              <h4 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1">
+              <h4 className="text-xl sm:text-2xl font-bold text-fg mb-1">
                 Need custom LLM fine-tuning or private on-prem hosting?
               </h4>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-xs sm:text-sm text-fg-secondary">
                 Speak with our solutions engineering team for bespoke SLAs and security evaluations.
               </p>
             </div>
             <Link
               to="/about"
-              className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all"
+              className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all"
             >
               Contact Sales Team →
             </Link>

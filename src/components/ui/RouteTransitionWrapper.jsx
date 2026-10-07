@@ -120,7 +120,7 @@ const RouteTransitionWrapper = ({ children }) => {
       {isLoading && (
         <div className="fixed top-0 left-0 right-0 z-[9999] h-[3px] bg-transparent">
           <div
-            className="h-full bg-gradient-to-r from-violet-500 via-cyan-400 to-violet-500 transition-all duration-300 ease-out shadow-[0_0_12px_rgba(139,92,246,0.8)]"
+            className="h-full bg-gradient-to-r from-brand-violet via-brand-cyan to-brand-violet transition-all duration-300 ease-out shadow-[0_0_12px_rgb(var(--primary-rgb)/0.8)]"
             style={{ width: `${progress}%` }}
           />
         </div>

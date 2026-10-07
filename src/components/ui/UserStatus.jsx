@@ -8,23 +8,23 @@
  */
 const statusConfig = {
   online: {
-    dot: "bg-green-500",
-    text: "text-green-400",
+    dot: "bg-success",
+    text: "text-success-text",
     label: "Online",
   },
   offline: {
-    dot: "bg-slate-500",
-    text: "text-slate-400",
+    dot: "bg-fg-muted",
+    text: "text-fg-muted",
     label: "Offline",
   },
   away: {
-    dot: "bg-amber-500",
-    text: "text-amber-400",
+    dot: "bg-warning",
+    text: "text-warning-text",
     label: "Away",
   },
   busy: {
-    dot: "bg-red-500",
-    text: "text-red-400",
+    dot: "bg-error",
+    text: "text-error-text",
     label: "Busy",
   },
 };

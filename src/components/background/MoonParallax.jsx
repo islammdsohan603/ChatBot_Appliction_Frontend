@@ -33,13 +33,13 @@ export const MoonParallax = ({ scrollY = 0, mouseX = 0, mouseY = 0 }) => {
         className="absolute -inset-4 sm:-inset-6 rounded-full blur-2xl opacity-40 dark:opacity-60 transition-opacity"
         style={{
           background:
-            "radial-gradient(circle, rgba(168,85,247,0.4) 0%, rgba(6,182,212,0.2) 60%, transparent 80%)",
+            "radial-gradient(circle, rgb(var(--primary-rgb)/0.4) 0%, rgb(var(--accent-rgb)/0.2) 60%, transparent 80%)",
         }}
       />
 
       {/* 3D Moon Surface SVG */}
       <motion.div
-        className="w-full h-full rounded-full shadow-[inset_-12px_-12px_24px_rgba(0,0,0,0.6)] relative overflow-hidden"
+        className="w-full h-full rounded-full shadow-[inset_-12px_-12px_24px_rgb(var(--scrim-rgb)/0.6)] relative overflow-hidden"
         style={{
           rotate: rotationAngle,
         }}

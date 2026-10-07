@@ -60,9 +60,9 @@ const ConversationList = ({
   if (filtered.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-        <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-3">
+        <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-line-strong flex items-center justify-center mb-3">
           <svg
-            className="w-6 h-6 text-violet-400/60"
+            className="w-6 h-6 text-primary-text/60"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -75,14 +75,14 @@ const ConversationList = ({
             />
           </svg>
         </div>
-        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+        <p className="text-sm font-medium text-fg-secondary">
           {filter === "unread"
             ? "No unread messages"
             : filter === "groups"
             ? "No group or direct chats"
             : "No previous conversations"}
         </p>
-        <p className="text-xs text-slate-400 dark:text-slate-600 mt-1">
+        <p className="text-xs text-fg-muted mt-1">
           {filter === "all" ? "Type a message to start a new chat" : ""}
         </p>
       </div>
@@ -98,7 +98,7 @@ const ConversationList = ({
         {grouped.map((group) => (
           <div key={group.label} className="space-y-1">
             <div className="px-2 pt-1 pb-0.5">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <span className="text-[10px] font-bold text-fg-muted uppercase tracking-wider">
                 {group.label}
               </span>
             </div>

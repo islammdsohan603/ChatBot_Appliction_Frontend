@@ -272,7 +272,7 @@ const ChatInput = ({
                 textareaRef.current?.focus();
                 adjustTextareaHeight();
               }}
-              className="text-xs px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#111840]/90 border border-violet-300/40 dark:border-violet-500/20 text-slate-700 dark:text-slate-300 hover:text-violet-900 dark:hover:text-white hover:border-violet-400 dark:hover:border-violet-500/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-all shadow-xs"
+              className="text-xs px-3.5 py-1.5 rounded-full bg-surface/90 border border-line-strong text-fg-secondary hover:text-primary-text hover:border-primary hover:bg-primary/10 transition-all shadow-xs"
             >
               {starter.label}
             </button>
@@ -287,10 +287,10 @@ const ChatInput = ({
         onDrop={handleDrop}
         className={`w-full relative rounded-[28px] transition-all duration-300 ${
           isDragging
-            ? "border-2 border-dashed border-cyan-400 bg-cyan-950/20 shadow-[0_0_24px_rgba(6,182,212,0.25)]"
+            ? "border-2 border-dashed border-accent bg-accent/20 shadow-[0_0_24px_rgb(var(--accent-rgb)/0.25)]"
             : isFocused
-            ? "border border-violet-500/60 bg-white/95 dark:bg-[#0f1430]/95 shadow-[0_8px_32px_rgba(139,92,246,0.15)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(168,85,247,0.25)]"
-            : "border border-violet-300/40 dark:border-violet-500/20 bg-white/90 dark:bg-[#0d1230]/90 hover:border-violet-400/60 dark:hover:border-violet-500/35 shadow-md dark:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
+            ? "border border-primary/60 bg-surface/95 shadow-[0_8px_32px_rgb(var(--primary-rgb)/0.15)] dark:shadow-[0_8px_32px_rgb(var(--scrim-rgb)/0.4),0_0_0_1px_rgb(var(--primary-rgb)/0.25)]"
+            : "border border-line-strong bg-surface/90 hover:border-primary/60 shadow-md dark:shadow-[0_8px_24px_rgb(var(--scrim-rgb)/0.3)]"
         } ${disabled ? "opacity-60 pointer-events-none" : ""}`}
       >
         {/* Hidden File Input */}
@@ -304,34 +304,34 @@ const ChatInput = ({
 
         {/* Attachment preview chips */}
         {attachments.length > 0 && (
-          <div className="flex items-center gap-2 p-3 pb-1 overflow-x-auto no-scrollbar border-b border-violet-500/10">
+          <div className="flex items-center gap-2 p-3 pb-1 overflow-x-auto no-scrollbar border-b border-line">
             {attachments.map((file) => (
               <div
                 key={file.id}
-                className="relative group flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl bg-violet-50 dark:bg-[#171e4a] border border-violet-300/40 dark:border-violet-500/20 text-slate-800 dark:text-slate-200 text-xs shrink-0 max-w-[200px]"
+                className="relative group flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl bg-primary/10 border border-line-strong text-fg text-xs shrink-0 max-w-[200px]"
               >
                 {file.isImage && file.previewUrl ? (
                   <img
                     src={file.previewUrl}
                     alt={file.name}
-                    className="w-7 h-7 rounded-lg object-cover border border-violet-500/30"
+                    className="w-7 h-7 rounded-lg object-cover border border-primary/30"
                   />
                 ) : file.isImage ? (
-                  <FiImage className="w-4 h-4 text-violet-500 dark:text-violet-400 shrink-0" />
+                  <FiImage className="w-4 h-4 text-primary-text shrink-0" />
                 ) : (
-                  <FiFileText className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
+                  <FiFileText className="w-4 h-4 text-accent-text shrink-0" />
                 )}
                 <div className="flex flex-col min-w-0">
-                  <span className="truncate text-xs font-medium text-slate-800 dark:text-slate-200">
+                  <span className="truncate text-xs font-medium text-fg">
                     {file.name}
                   </span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400">{file.size}</span>
+                  <span className="text-[10px] text-fg-muted">{file.size}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => removeAttachment(file.id)}
                   aria-label="Remove attachment"
-                  className="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors ml-1 cursor-pointer"
+                  className="p-1 rounded-full text-fg-muted hover:text-fg-secondary hover:bg-scrim/5 transition-colors ml-1 cursor-pointer"
                 >
                   <FiX className="w-3.5 h-3.5" />
                 </button>
@@ -355,7 +355,7 @@ const ChatInput = ({
             placeholder={placeholder}
             disabled={disabled || isLoading}
             aria-label="Prompt input"
-            className="w-full bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500/70 text-[15px] resize-none outline-none leading-relaxed min-h-[26px] max-h-[180px] overflow-y-auto no-scrollbar"
+            className="w-full bg-transparent text-fg placeholder:text-fg-muted text-[15px] resize-none outline-none leading-relaxed min-h-[26px] max-h-[180px] overflow-y-auto no-scrollbar"
             style={{ height: "auto" }}
           />
         </div>
@@ -370,7 +370,7 @@ const ChatInput = ({
               onClick={() => fileInputRef.current?.click()}
               aria-label="Attach files or images"
               title="Attach files or photos"
-              className="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-violet-500/15 border border-transparent hover:border-violet-500/20 transition-all shrink-0 active:scale-95 cursor-pointer"
+              className="p-2 rounded-full text-fg-muted hover:text-fg hover:bg-primary/15 border border-transparent hover:border-line-strong transition-all shrink-0 active:scale-95 cursor-pointer"
             >
               <FiPaperclip className="w-4 h-4" />
             </button>
@@ -383,8 +383,8 @@ const ChatInput = ({
               title="Search the web"
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                 webSearchActive
-                  ? "bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-violet-500/10 border border-transparent"
+                  ? "bg-accent/20 text-accent-text border border-accent/40 shadow-[0_0_12px_rgb(var(--accent-rgb)/0.2)]"
+                  : "text-fg-muted hover:text-fg hover:bg-primary/10 border border-transparent"
               }`}
             >
               <FiGlobe className="w-3.5 h-3.5" />
@@ -399,8 +399,8 @@ const ChatInput = ({
               title="Deep Think mode"
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                 deepThinkActive
-                  ? "bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 shadow-[0_0_12px_rgba(168,85,247,0.2)]"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-violet-500/10 border border-transparent"
+                  ? "bg-primary/20 text-primary-text border border-primary/40 shadow-[0_0_12px_rgb(var(--primary-rgb)/0.2)]"
+                  : "text-fg-muted hover:text-fg hover:bg-primary/10 border border-transparent"
               }`}
             >
               <IoSparkles className="w-3.5 h-3.5" />
@@ -416,8 +416,8 @@ const ChatInput = ({
                 title="Add emoji"
                 className={`p-2 rounded-full transition-all shrink-0 cursor-pointer ${
                   showEmojiPicker
-                    ? "text-violet-600 dark:text-violet-400 bg-violet-500/20"
-                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-violet-500/15"
+                    ? "text-primary-text bg-primary/20"
+                    : "text-fg-muted hover:text-fg hover:bg-primary/15"
                 }`}
               >
                 <FiSmile className="w-4 h-4" />
@@ -425,8 +425,8 @@ const ChatInput = ({
 
               {/* Emoji Picker Popup */}
               {showEmojiPicker && (
-                <div className="absolute bottom-full left-0 mb-2 p-2.5 rounded-2xl bg-white dark:bg-[#111840] border border-violet-300/40 dark:border-violet-500/30 shadow-[0_12px_36px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-xl z-50 w-64 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5 px-1 uppercase tracking-wider">
+                <div className="absolute bottom-full left-0 mb-2 p-2.5 rounded-2xl bg-surface border border-line-strong shadow-[0_12px_36px_rgb(var(--scrim-rgb)/0.15)] dark:shadow-[0_12px_36px_rgb(var(--scrim-rgb)/0.6)] backdrop-blur-xl z-50 w-64 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="text-[11px] font-semibold text-fg-muted mb-1.5 px-1 uppercase tracking-wider">
                     Quick Reactions
                   </div>
                   <div className="grid grid-cols-6 gap-1">
@@ -435,7 +435,7 @@ const ChatInput = ({
                         key={emoji}
                         type="button"
                         onClick={() => insertEmoji(emoji)}
-                        className="w-8 h-8 rounded-lg hover:bg-violet-500/15 flex items-center justify-center text-lg hover:scale-125 transition-transform cursor-pointer"
+                        className="w-8 h-8 rounded-lg hover:bg-primary/15 flex items-center justify-center text-lg hover:scale-125 transition-transform cursor-pointer"
                       >
                         {emoji}
                       </button>
@@ -456,8 +456,8 @@ const ChatInput = ({
               title={isRecording ? "Stop recording" : "Dictate message"}
               className={`p-2 rounded-full transition-all shrink-0 cursor-pointer ${
                 isRecording
-                  ? "bg-red-500/20 text-red-500 dark:text-red-400 border border-red-500/40 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.3)]"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-violet-500/15"
+                  ? "bg-error/20 text-error-text border border-error/40 animate-pulse shadow-[0_0_12px_rgb(var(--error-rgb)/0.3)]"
+                  : "text-fg-muted hover:text-fg hover:bg-primary/15"
               }`}
             >
               <FiMic className="w-4 h-4" />
@@ -470,7 +470,7 @@ const ChatInput = ({
                 onClick={onStop}
                 aria-label="Stop generating"
                 title="Stop generating"
-                className="w-8 h-8 rounded-full bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 flex items-center justify-center hover:opacity-90 transition-all shadow-md active:scale-95 cursor-pointer"
+                className="w-8 h-8 rounded-full bg-surface text-primary-contrast flex items-center justify-center hover:opacity-90 transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 <FiSquare className="w-3.5 h-3.5 fill-current" />
               </button>
@@ -484,8 +484,8 @@ const ChatInput = ({
                 title={canSend ? "Send message (Enter)" : "Type a message to send"}
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shrink-0 cursor-pointer ${
                   canSend
-                    ? "bg-gradient-to-tr from-violet-500 to-cyan-500 text-white shadow-[0_2px_14px_rgba(139,92,246,0.45)] hover:scale-105 active:scale-95"
-                    : "bg-black/10 dark:bg-white/10 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-60"
+                    ? "bg-gradient-to-tr from-brand-violet to-brand-cyan text-primary-contrast shadow-[0_2px_14px_rgb(var(--primary-rgb)/0.45)] hover:scale-105 active:scale-95"
+                    : "bg-scrim/10 text-fg-muted cursor-not-allowed opacity-60"
                 }`}
               >
                 <FiSend className="w-3.5 h-3.5 translate-x-[-1px] translate-y-[1px]" />
@@ -496,15 +496,15 @@ const ChatInput = ({
       </div>
 
       {/* Bottom disclaimer & shortcut hint */}
-      <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-slate-500 dark:text-slate-500/80 text-center select-none">
+      <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-fg-muted text-center select-none">
         <span>Nexora can make mistakes. Verify sensitive details.</span>
-        <span className="hidden sm:inline text-slate-400 dark:text-slate-600">·</span>
-        <span className="hidden sm:inline text-slate-400 dark:text-slate-500/60">
-          <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700/50 text-[10px] font-mono text-slate-700 dark:text-slate-400">
+        <span className="hidden sm:inline text-fg-muted">·</span>
+        <span className="hidden sm:inline text-fg-muted">
+          <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono text-fg-secondary">
             Enter
           </kbd>{" "}
           send,{" "}
-          <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700/50 text-[10px] font-mono text-slate-700 dark:text-slate-400">
+          <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono text-fg-secondary">
             Shift+Enter
           </kbd>{" "}
           newline

@@ -7,7 +7,7 @@ export const TiltCard = ({
   children,
   className = "",
   maxTilt = 10,
-  glowColor = "rgba(139, 92, 246, 0.25)",
+  glowColor = "rgb(var(--primary-rgb)/0.25)",
 }) => {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });

@@ -34,12 +34,12 @@ const getInitials = (name = "") => {
 };
 
 const GRADIENT_COLORS = [
-  "from-violet-500 to-violet-600",
-  "from-cyan-500 to-blue-600",
-  "from-pink-500 to-rose-600",
-  "from-amber-500 to-orange-600",
-  "from-emerald-500 to-teal-600",
-  "from-indigo-500 to-violet-600",
+  "from-brand-violet to-brand-violet",
+  "from-brand-cyan to-info",
+  "from-brand-violet to-error",
+  "from-warning to-warning",
+  "from-success to-brand-cyan",
+  "from-brand-indigo to-brand-violet",
 ];
 
 const getGradient = (name = "") => {
@@ -65,11 +65,11 @@ const UserAvatar = ({
         <img
           src={src}
           alt={name}
-          className={`${sizeClass} rounded-full object-cover ring-2 ring-violet-500/20`}
+          className={`${sizeClass} rounded-full object-cover ring-2 ring-primary/20`}
         />
       ) : (
         <div
-          className={`${sizeClass} rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center font-semibold text-white ring-2 ring-violet-500/20 select-none`}
+          className={`${sizeClass} rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center font-semibold text-primary-contrast ring-2 ring-primary/20 select-none`}
           aria-label={`Avatar for ${name}`}
         >
           {initials}
@@ -77,7 +77,7 @@ const UserAvatar = ({
       )}
       {online && (
         <span
-          className={`absolute bottom-0 right-0 ${indicatorClass} rounded-full bg-green-500 border-white dark:border-[#0d1230]`}
+          className={`absolute bottom-0 right-0 ${indicatorClass} rounded-full bg-success border-line-strong`}
           role="status"
           aria-label="Online"
         />

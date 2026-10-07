@@ -36,7 +36,7 @@ export const PageLayout = ({
 
   return (
     <div
-      className={`min-h-screen bg-slate-50 dark:bg-[#060918] font-inter text-slate-800 dark:text-slate-200 transition-colors duration-300 relative flex flex-col ${className}`}
+      className={`min-h-screen bg-canvas font-inter text-fg transition-colors duration-300 relative flex flex-col ${className}`}
     >
       <SEO title={title} description={description} keywords={keywords} />
 
@@ -45,7 +45,7 @@ export const PageLayout = ({
 
       <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-transparent">
         <div
-          className="h-full bg-gradient-to-r from-violet-500 via-violet-600 to-cyan-400 shadow-[0_0_10px_rgba(139,92,246,0.7)] transition-[width] duration-150 ease-out"
+          className="h-full bg-gradient-to-r from-brand-violet via-brand-violet to-brand-cyan shadow-[0_0_10px_rgb(var(--primary-rgb)/0.7)] transition-[width] duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>

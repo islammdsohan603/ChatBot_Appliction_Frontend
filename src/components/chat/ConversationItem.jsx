@@ -72,14 +72,14 @@ const ConversationItem = ({
       }}
       className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${
         isActive
-          ? "bg-violet-500/20 border border-violet-500/40 text-violet-900 dark:text-white font-medium shadow-[0_2px_12px_rgba(139,92,246,0.15)]"
-          : "hover:bg-violet-500/8 border border-transparent hover:border-violet-500/15 text-slate-700 dark:text-slate-300"
+          ? "bg-primary/20 border border-primary/40 text-primary-text font-medium shadow-[0_2px_12px_rgb(var(--primary-rgb)/0.15)]"
+          : "hover:bg-primary/8 border border-transparent hover:border-line-strong text-fg-secondary"
       }`}
       aria-selected={isActive}
     >
       {/* Active accent pill */}
       {isActive && (
-        <span className="absolute left-1 top-2.5 bottom-2.5 w-1 rounded-full bg-gradient-to-b from-violet-500 to-cyan-400" />
+        <span className="absolute left-1 top-2.5 bottom-2.5 w-1 rounded-full bg-gradient-to-b from-brand-violet to-brand-cyan" />
       )}
 
       {/* Avatar / Icon */}
@@ -94,8 +94,8 @@ const ConversationItem = ({
         <div
           className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
             isActive
-              ? "bg-gradient-to-tr from-violet-600 to-cyan-500 text-white shadow-md shadow-violet-500/30"
-              : "bg-violet-500/10 text-violet-600 dark:text-violet-300 group-hover:bg-violet-500/15"
+              ? "bg-gradient-to-tr from-brand-violet to-brand-cyan text-primary-contrast shadow-md shadow-primary/30"
+              : "bg-primary/10 text-primary-text group-hover:bg-primary/15"
           }`}
         >
           <HiOutlineChatBubbleLeftRight className="w-4 h-4" />
@@ -113,15 +113,15 @@ const ConversationItem = ({
                 onChange={(e) => setEditTitle(e.target.value)}
                 onBlur={handleRenameSubmit}
                 autoFocus
-                className="w-full bg-white dark:bg-black/20 border border-violet-500/30 rounded px-1.5 py-0.5 text-xs text-slate-900 dark:text-slate-100 outline-none focus:border-violet-500/60"
+                className="w-full bg-surface border border-primary/30 rounded px-1.5 py-0.5 text-xs text-fg outline-none focus:border-primary/60"
               />
             </form>
           ) : (
             <span
               className={`text-xs sm:text-sm font-semibold truncate ${
                 isActive
-                  ? "text-violet-900 dark:text-white"
-                  : "text-slate-800 dark:text-slate-200 group-hover:text-violet-700 dark:group-hover:text-white"
+                  ? "text-primary-text"
+                  : "text-fg group-hover:text-primary-text"
               }`}
             >
               {title}
@@ -131,8 +131,8 @@ const ConversationItem = ({
             <span
               className={`text-[10px] shrink-0 ml-1.5 transition-opacity ${
                 isActive
-                  ? "text-violet-600 dark:text-violet-300 font-semibold"
-                  : "text-slate-400 dark:text-slate-500 group-hover:opacity-60"
+                  ? "text-primary-text font-semibold"
+                  : "text-fg-muted group-hover:opacity-60"
               }`}
             >
               {formatTime(timestamp)}
@@ -141,7 +141,7 @@ const ConversationItem = ({
         </div>
 
         <div className="flex items-center justify-between gap-1">
-          <p className="text-[11px] truncate text-slate-500 dark:text-slate-400 flex-1">
+          <p className="text-[11px] truncate text-fg-muted flex-1">
             {lastMessage}
           </p>
         </div>
@@ -159,7 +159,7 @@ const ConversationItem = ({
                 setIsEditing(true);
               }}
               title="Rename conversation"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-violet-500 hover:bg-violet-500/10 transition-all cursor-pointer"
+              className="p-1.5 rounded-lg text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-all cursor-pointer"
             >
               <HiOutlinePencilSquare className="w-3.5 h-3.5" />
             </button>
@@ -170,7 +170,7 @@ const ConversationItem = ({
               onClick={handleDelete}
               disabled={isDeleting}
               title="Delete conversation"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-500/10 transition-all cursor-pointer"
+              className="p-1.5 rounded-lg text-fg-muted hover:text-error-text hover:bg-error/10 transition-all cursor-pointer"
             >
               <HiOutlineTrash className="w-3.5 h-3.5" />
             </button>

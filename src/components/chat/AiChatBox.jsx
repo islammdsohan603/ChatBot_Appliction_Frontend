@@ -32,15 +32,15 @@ const CodeBlock = ({ inline, className, children, ...props }) => {
 
   if (!inline && match) {
     return (
-      <div className="relative group my-4 rounded-xl overflow-hidden border border-slate-700/50">
-        <div className="flex items-center justify-between px-4 py-2 bg-slate-800 text-slate-300 text-xs">
+      <div className="relative group my-4 rounded-xl overflow-hidden border border-line-strong">
+        <div className="flex items-center justify-between px-4 py-2 bg-surface text-fg-secondary text-xs">
           <span className="font-mono">{match[1]}</span>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 hover:text-primary-contrast transition-colors"
           >
             {copied ? (
-              <FiCheck className="w-3.5 h-3.5 text-green-400" />
+              <FiCheck className="w-3.5 h-3.5 text-success-text" />
             ) : (
               <FiCopy className="w-3.5 h-3.5" />
             )}
@@ -61,7 +61,7 @@ const CodeBlock = ({ inline, className, children, ...props }) => {
   }
   return (
     <code
-      className={`${className || ""} bg-violet-500/10 text-violet-600 dark:text-violet-300 px-1.5 py-0.5 rounded-md text-sm`}
+      className={`${className || ""} bg-primary/10 text-primary-text px-1.5 py-0.5 rounded-md text-sm`}
       {...props}
     >
       {children}
@@ -204,19 +204,19 @@ export const AiChatBox = ({
 
   return (
     <div
-      className={`flex flex-col h-full min-h-0 w-full max-w-4xl mx-auto rounded-2xl bg-white/90 dark:bg-[#0a0f2a]/95 backdrop-blur-xl border border-violet-500/20 shadow-2xl overflow-hidden font-inter ${className}`}
+      className={`flex flex-col h-full min-h-0 w-full max-w-4xl mx-auto rounded-2xl bg-surface/90 backdrop-blur-xl border border-line-strong shadow-2xl overflow-hidden font-inter ${className}`}
     >
       {/* ── Top Header ── */}
-      <div className="flex items-center justify-between px-5 py-3.5 border-b border-violet-500/10 bg-white/40 dark:bg-[#111840]/60 backdrop-blur-md shrink-0">
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-line bg-surface/40 backdrop-blur-md shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-500 to-cyan-400 p-0.5 shadow-md shadow-violet-500/20 flex items-center justify-center shrink-0">
-            <div className="w-full h-full bg-[#0d1230] rounded-[10px] flex items-center justify-center">
-              <FiCpu className="w-4 h-4 text-cyan-300 animate-pulse" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-violet to-brand-cyan p-0.5 shadow-md shadow-primary/20 flex items-center justify-center shrink-0">
+            <div className="w-full h-full bg-canvas rounded-[10px] flex items-center justify-center">
+              <FiCpu className="w-4 h-4 text-accent-text animate-pulse" />
             </div>
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm sm:text-base truncate">
+              <h3 className="font-bold text-fg text-sm sm:text-base truncate">
                 {activeConversation?.title || "Nexora AI"}
               </h3>
               <div className="relative inline-flex items-center">
@@ -238,7 +238,7 @@ export const AiChatBox = ({
                     }
                   }}
                   title="Select AI Model"
-                  className="text-[10px] font-semibold tracking-wider pl-2 pr-5 py-0.5 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-600 dark:text-violet-300 outline-none cursor-pointer appearance-none hover:bg-violet-500/25 transition-all"
+                  className="text-[10px] font-semibold tracking-wider pl-2 pr-5 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-primary-text outline-none cursor-pointer appearance-none hover:bg-primary/25 transition-all"
                 >
                   <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
                   <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
@@ -247,10 +247,10 @@ export const AiChatBox = ({
                     Gemini Flash Latest
                   </option>
                 </select>
-                <IoSparkles className="w-2.5 h-2.5 text-violet-500 dark:text-violet-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <IoSparkles className="w-2.5 h-2.5 text-primary-text absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+            <p className="text-[11px] text-fg-muted truncate">
               {isStreaming
                 ? "Streaming response..."
                 : isLoading
@@ -266,7 +266,7 @@ export const AiChatBox = ({
               type="button"
               onClick={onNewChat}
               title="Start a new chat"
-              className="px-3 py-1.5 rounded-xl bg-violet-500/10 hover:bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/20 transition-all text-xs flex items-center gap-1.5 font-medium cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary-text border border-line-strong transition-all text-xs flex items-center gap-1.5 font-medium cursor-pointer"
             >
               <FiPlus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">New Chat</span>
@@ -278,7 +278,7 @@ export const AiChatBox = ({
               type="button"
               onClick={() => onDeleteConversation(conversationId)}
               title="Delete this conversation"
-              className="p-1.5 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all text-xs cursor-pointer"
+              className="p-1.5 rounded-xl text-fg-muted hover:text-error-text hover:bg-error/10 border border-transparent hover:border-error/20 transition-all text-xs cursor-pointer"
             >
               <FiTrash2 className="w-4 h-4" />
             </button>
@@ -289,8 +289,8 @@ export const AiChatBox = ({
       {/* ── Scrollable Message View ── */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">
         {isHistoryLoading ? (
-          <div className="h-full flex items-center justify-center text-xs text-slate-400 gap-2">
-            <span className="w-2 h-2 rounded-full bg-violet-500 animate-ping" />
+          <div className="h-full flex items-center justify-center text-xs text-fg-muted gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
             Loading conversation history...
           </div>
         ) : messages.length === 0 ? (
@@ -299,14 +299,14 @@ export const AiChatBox = ({
             distance="24px"
             className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 my-auto"
           >
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-violet-500/30 flex items-center justify-center shadow-lg">
-              <IoSparkles className="w-7 h-7 text-violet-400" />
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 border border-primary/30 flex items-center justify-center shadow-lg">
+              <IoSparkles className="w-7 h-7 text-primary-text" />
             </div>
             <div className="max-w-md">
-              <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+              <h4 className="text-base sm:text-lg font-bold text-fg">
                 How can I assist you today?
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+              <p className="text-xs text-fg-muted mt-1 leading-relaxed">
                 Type a prompt, attach an image for visual analysis, and receive
                 instant, real-time streamed responses.
               </p>
@@ -329,7 +329,7 @@ export const AiChatBox = ({
                   key={idx}
                   type="button"
                   onClick={() => sendMessage(starter)}
-                  className="text-left text-xs p-3 rounded-xl bg-violet-500/5 hover:bg-violet-500/10 border border-violet-500/15 hover:border-violet-500/30 text-slate-700 dark:text-slate-300 transition-all cursor-pointer"
+                  className="text-left text-xs p-3 rounded-xl bg-primary/5 hover:bg-primary/10 border border-line hover:border-primary/30 text-fg-secondary transition-all cursor-pointer"
                 >
                   {starter} →
                 </button>
@@ -346,8 +346,8 @@ export const AiChatBox = ({
               >
                 {/* AI Avatar */}
                 {!isUser && (
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-500 flex items-center justify-center shrink-0 shadow-md">
-                    <FiCpu className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-violet to-brand-cyan flex items-center justify-center shrink-0 shadow-md">
+                    <FiCpu className="w-4 h-4 text-primary-contrast" />
                   </div>
                 )}
 
@@ -355,13 +355,13 @@ export const AiChatBox = ({
                 <div
                   className={`relative max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                     isUser
-                      ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-br-none shadow-md shadow-violet-900/20"
-                      : "bg-white dark:bg-[#111840] border border-violet-500/15 text-slate-800 dark:text-slate-100 rounded-bl-none shadow-sm"
+                      ? "bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast rounded-br-none shadow-md shadow-primary/20"
+                      : "bg-surface border border-line text-fg rounded-bl-none shadow-sm"
                   }`}
                 >
                   {/* Uploaded Image Display */}
                   {msg.imageUrl && (
-                    <div className="mb-2.5 overflow-hidden rounded-xl border border-white/20 dark:border-violet-500/20">
+                    <div className="mb-2.5 overflow-hidden rounded-xl border border-line-strong">
                       <img
                         src={msg.imageUrl}
                         alt="Uploaded preview"
@@ -381,8 +381,8 @@ export const AiChatBox = ({
                         </div>
                       ) : (
                         msg.isStreaming && (
-                          <span className="inline-flex items-center gap-1.5 text-slate-400 text-xs">
-                            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping" />
+                          <span className="inline-flex items-center gap-1.5 text-fg-muted text-xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
                             Generating response...
                           </span>
                         )
@@ -393,7 +393,7 @@ export const AiChatBox = ({
 
                     {/* Real-time Blinking Cursor */}
                     {msg.isStreaming && msg.content && (
-                      <span className="inline-block w-2 h-4 ml-0.5 bg-violet-400 animate-pulse align-middle" />
+                      <span className="inline-block w-2 h-4 ml-0.5 bg-primary animate-pulse align-middle" />
                     )}
                   </div>
                 </div>
@@ -413,7 +413,7 @@ export const AiChatBox = ({
                               base64: lastUserMsg.imageUrl,
                             });
                         }}
-                        className="flex items-center gap-1.5 px-2 py-1 text-[10px] rounded-lg text-slate-500 hover:text-violet-500 hover:bg-violet-500/10 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2 py-1 text-[10px] rounded-lg text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-colors cursor-pointer"
                       >
                         <FiRefreshCw className="w-3 h-3" /> Regenerate
                       </button>
@@ -422,7 +422,7 @@ export const AiChatBox = ({
 
                 {/* User Avatar */}
                 {isUser && (
-                  <div className="w-8 h-8 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center shrink-0 text-violet-600 dark:text-violet-300">
+                  <div className="w-8 h-8 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 text-primary-text">
                     <FiUser className="w-4 h-4" />
                   </div>
                 )}
@@ -433,7 +433,7 @@ export const AiChatBox = ({
 
         {/* Error notification banner */}
         {error && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-red-500/10 border border-red-500/25 text-red-600 dark:text-red-400 text-xs animate-in fade-in duration-200">
+          <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-error/10 border border-error/25 text-error-text text-xs animate-in fade-in duration-200">
             <FiAlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <div className="flex-1 space-y-1">
               <p className="font-semibold text-xs">AI Response Notice</p>
@@ -441,7 +441,7 @@ export const AiChatBox = ({
               {(error.includes("GOOGLE_API_KEY") ||
                 error.includes("API key") ||
                 error.includes("quota")) && (
-                <p className="text-[11px] text-violet-700 dark:text-violet-300 font-medium pt-1">
+                <p className="text-[11px] text-primary-text font-medium pt-1">
                   Tip: Verify your API key or configure your custom Google
                   Gemini API Key in Settings &rarr; Personalization.
                 </p>
@@ -454,7 +454,7 @@ export const AiChatBox = ({
       </div>
 
       {/* ── Single Unified Input Bar at the Bottom ── */}
-      <div className="pt-2 pb-5 sm:pb-6 px-4 sm:px-6 border-t border-violet-500/10 bg-white/70 dark:bg-[#060918]/80 backdrop-blur-md shrink-0">
+      <div className="pt-2 pb-5 sm:pb-6 px-4 sm:px-6 border-t border-line bg-surface/70 backdrop-blur-md shrink-0">
         <div className="w-full max-w-4xl mx-auto">
           {/* Hidden Image File Input */}
           <input
@@ -467,17 +467,17 @@ export const AiChatBox = ({
 
           {/* Selected Image Attachment Preview Chip */}
           {selectedImage && (
-            <div className="mb-2.5 inline-flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-violet-50 dark:bg-[#171e4a] border border-violet-300/50 dark:border-violet-500/30 shadow-xs animate-in fade-in zoom-in-95 duration-150">
+            <div className="mb-2.5 inline-flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-primary/10 border border-line-strong shadow-xs animate-in fade-in zoom-in-95 duration-150">
               <img
                 src={selectedImage.previewUrl}
                 alt="Attachment thumbnail"
-                className="w-8 h-8 rounded-lg object-cover border border-violet-500/30"
+                className="w-8 h-8 rounded-lg object-cover border border-primary/30"
               />
               <div className="flex flex-col min-w-0 max-w-[160px] sm:max-w-[220px]">
-                <span className="truncate text-xs font-medium text-slate-800 dark:text-slate-200">
+                <span className="truncate text-xs font-medium text-fg">
                   {selectedImage.name}
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-fg-muted">
                   {selectedImage.size}
                 </span>
               </div>
@@ -485,7 +485,7 @@ export const AiChatBox = ({
                 type="button"
                 onClick={removeSelectedImage}
                 title="Remove image"
-                className="p-1 rounded-full text-slate-400 hover:text-red-500 hover:bg-red-500/10 transition-colors ml-1 cursor-pointer"
+                className="p-1 rounded-full text-fg-muted hover:text-error-text hover:bg-error/10 transition-colors ml-1 cursor-pointer"
               >
                 <FiX className="w-3.5 h-3.5" />
               </button>
@@ -499,7 +499,7 @@ export const AiChatBox = ({
               e.stopPropagation();
               handleSubmit(e);
             }}
-            className="relative flex items-center rounded-2xl bg-white/95 dark:bg-[#111840]/95 border border-violet-500/25 focus-within:border-violet-500/60 shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all px-2.5 py-2"
+            className="relative flex items-center rounded-2xl bg-surface/95 border border-primary/25 focus-within:border-primary/60 shadow-[0_4px_20px_rgb(var(--scrim-rgb)/0.06)] dark:shadow-[0_4px_24px_rgb(var(--scrim-rgb)/0.4)] transition-all px-2.5 py-2"
           >
             {/* Image Upload Action Trigger */}
             <button
@@ -507,7 +507,7 @@ export const AiChatBox = ({
               onClick={() => fileInputRef.current?.click()}
               title="Attach an image"
               disabled={isLoading || isStreaming}
-              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/15 transition-all shrink-0 cursor-pointer disabled:opacity-50"
+              className="p-2 rounded-xl text-fg-muted hover:text-primary-text hover:bg-primary/15 transition-all shrink-0 cursor-pointer disabled:opacity-50"
             >
               <FiImage className="w-5 h-5" />
             </button>
@@ -527,7 +527,7 @@ export const AiChatBox = ({
                     : "Ask anything (Press Enter to send)..."
               }
               disabled={isLoading || isStreaming}
-              className="flex-1 bg-transparent px-2.5 py-1 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-sm outline-none resize-none leading-relaxed min-h-[24px] max-h-[160px] overflow-y-auto no-scrollbar"
+              className="flex-1 bg-transparent px-2.5 py-1 text-fg placeholder:text-fg-muted text-sm outline-none resize-none leading-relaxed min-h-[24px] max-h-[160px] overflow-y-auto no-scrollbar"
             />
 
             {/* Action Trigger: Send or Stop Button */}
@@ -537,7 +537,7 @@ export const AiChatBox = ({
                   type="button"
                   onClick={stop}
                   title="Stop generating"
-                  className="w-8 h-8 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 flex items-center justify-center transition-all shadow-xs cursor-pointer active:scale-95"
+                  className="w-8 h-8 rounded-xl bg-error/20 text-error-text hover:bg-error/30 border border-error/30 flex items-center justify-center transition-all shadow-xs cursor-pointer active:scale-95"
                 >
                   <FiSquare className="w-4 h-4 fill-current" />
                 </button>
@@ -549,8 +549,8 @@ export const AiChatBox = ({
                   title="Send message"
                   className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                     input.trim() || selectedImage
-                      ? "bg-gradient-to-tr from-violet-600 to-cyan-500 text-white shadow-md shadow-violet-500/30 hover:scale-105 active:scale-95"
-                      : "bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed opacity-50"
+                      ? "bg-gradient-to-tr from-brand-violet to-brand-cyan text-primary-contrast shadow-md shadow-primary/30 hover:scale-105 active:scale-95"
+                      : "bg-surface-hover text-fg-muted cursor-not-allowed opacity-50"
                   }`}
                 >
                   <FiSend className="w-4 h-4 translate-x-[-1px] translate-y-[1px]" />
@@ -560,18 +560,18 @@ export const AiChatBox = ({
           </form>
 
           {/* Bottom disclaimer & shortcut hint */}
-          <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-slate-500 dark:text-slate-400/80 text-center select-none">
+          <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-fg-muted text-center select-none">
             <span>Nexora AI can make mistakes. Verify sensitive details.</span>
-            <span className="hidden sm:inline text-slate-400 dark:text-slate-600">
+            <span className="hidden sm:inline text-fg-muted">
               ·
             </span>
-            <span className="hidden sm:inline text-slate-400 dark:text-slate-500/70">
+            <span className="hidden sm:inline text-fg-muted">
               Press{" "}
-              <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">
+              <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono">
                 Enter
               </kbd>{" "}
               to send,{" "}
-              <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700/60 text-[10px] font-mono">
+              <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono">
                 Shift+Enter
               </kbd>{" "}
               for newline

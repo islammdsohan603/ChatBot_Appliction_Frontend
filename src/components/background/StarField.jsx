@@ -32,7 +32,7 @@ export const StarField = ({ scrollY = 0, mouseX = 0, mouseY = 0 }) => {
         left: `${(i * 29 + 13) % 100}%`,
         top: `${(i * 37 + 19) % 100}%`,
         size: (i % 2) + 2,
-        color: i % 3 === 0 ? "rgba(139,92,246,0.8)" : i % 3 === 1 ? "rgba(6,182,212,0.8)" : "rgba(255,255,255,0.9)",
+        color: i % 3 === 0 ? "rgb(var(--primary-rgb)/0.8)" : i % 3 === 1 ? "rgb(var(--accent-rgb)/0.8)" : "rgb(var(--primary-contrast-rgb)/0.9)",
         opacity: (i % 3) * 0.2 + 0.4,
       });
     }
@@ -64,14 +64,14 @@ export const StarField = ({ scrollY = 0, mouseX = 0, mouseY = 0 }) => {
         {stars.layer1.map((star) => (
           <div
             key={star.id}
-            className="absolute rounded-full bg-white dark:bg-slate-200"
+            className="absolute rounded-full bg-surface"
             style={{
               left: star.left,
               top: star.top,
               width: `${star.size}px`,
               height: `${star.size}px`,
               opacity: star.opacity,
-              boxShadow: "0 0 4px rgba(255,255,255,0.4)",
+              boxShadow: "0 0 4px rgb(var(--primary-contrast-rgb)/0.4)",
             }}
           />
         ))}

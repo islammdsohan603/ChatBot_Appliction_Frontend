@@ -23,6 +23,7 @@ export default {
         elevated: rgb("bg-elevated"),
         surface: { DEFAULT: rgb("surface"), hover: rgb("surface-hover") },
         code: rgb("code-bg"),
+        scrim: rgb("scrim"),
         /* lines */
         line: { DEFAULT: "var(--border)", strong: "var(--border-strong)" },
         /* text */

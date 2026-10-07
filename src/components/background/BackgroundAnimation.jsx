@@ -40,14 +40,14 @@ export const BackgroundAnimation = ({
         className="absolute w-[800px] h-[800px] -top-40 -left-40 rounded-full blur-[140px] opacity-25 dark:opacity-40 transition-opacity pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(139,92,246,0.45) 0%, rgba(6,182,212,0.25) 50%, transparent 75%)",
+            "radial-gradient(circle, rgb(var(--primary-rgb)/0.45) 0%, rgb(var(--accent-rgb)/0.25) 50%, transparent 75%)",
         }}
       />
       <div
         className="absolute w-[700px] h-[700px] -bottom-32 -right-32 rounded-full blur-[130px] opacity-20 dark:opacity-35 transition-opacity pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(236,72,153,0.35) 0%, rgba(139,92,246,0.2) 60%, transparent 80%)",
+            "radial-gradient(circle, rgb(var(--brand-violet-rgb)/0.35) 0%, rgb(var(--primary-rgb)/0.2) 60%, transparent 80%)",
         }}
       />
 

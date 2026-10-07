@@ -24,7 +24,7 @@ function Field({
       data-slot="field"
       className={cn(
         orientation === "horizontal"
-          ? "flex items-center justify-end gap-3 pt-4 border-t border-violet-500/10"
+          ? "flex items-center justify-end gap-3 pt-4 border-t border-line"
           : "space-y-2",
         className
       )}
@@ -41,7 +41,7 @@ function FieldLabel({
     <label
       data-slot="field-label"
       className={cn(
-        "block text-xs font-semibold uppercase tracking-wider text-slate-300",
+        "block text-xs font-semibold uppercase tracking-wider text-fg-secondary",
         className
       )}
       {...props}
@@ -56,7 +56,7 @@ function FieldDescription({
   return (
     <p
       data-slot="field-description"
-      className={cn("text-xs text-slate-400 mt-1", className)}
+      className={cn("text-xs text-fg-muted mt-1", className)}
       {...props}
     />
   )

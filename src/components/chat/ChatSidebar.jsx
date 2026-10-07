@@ -43,10 +43,10 @@ const NexoraLogo = () => (
     aria-label="Go to home page"
     className="flex items-center gap-3 group cursor-pointer"
   >
-    <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center shadow-[0_4px_16px_rgba(139,92,246,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300">
-      <div className="absolute -inset-0.5 rounded-[14px] bg-gradient-to-br from-violet-500/50 to-cyan-500/50 -z-[1] blur-[6px] group-hover:blur-[8px] transition-all" />
+    <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center shadow-[0_4px_16px_rgb(var(--primary-rgb)/0.35)] group-hover:scale-105 group-hover:shadow-[0_0_20px_rgb(var(--primary-rgb)/0.5)] transition-all duration-300">
+      <div className="absolute -inset-0.5 rounded-[14px] bg-gradient-to-br from-brand-violet/50 to-brand-cyan/50 -z-[1] blur-[6px] group-hover:blur-[8px] transition-all" />
       <svg
-        className="w-5 h-5 text-white group-hover:rotate-6 transition-transform duration-300"
+        className="w-5 h-5 text-primary-contrast group-hover:rotate-6 transition-transform duration-300"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -57,7 +57,7 @@ const NexoraLogo = () => (
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
     </div>
-    <span className="text-xl font-extrabold bg-gradient-to-br from-indigo-200 via-violet-300 to-cyan-300 bg-clip-text text-transparent tracking-tight group-hover:from-white group-hover:to-cyan-200 transition-all">
+    <span className="text-xl font-extrabold text-gradient text-transparent tracking-tight transition-all">
       NEXORA
     </span>
   </Link>
@@ -89,7 +89,7 @@ const ChatSidebar = ({
       {/* Mobile backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-20 md:hidden"
+          className="fixed inset-0 bg-scrim/40 backdrop-blur-sm z-20 md:hidden"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -97,7 +97,7 @@ const ChatSidebar = ({
 
       <aside
         className={`
-          flex flex-col h-full max-h-screen min-h-0 bg-white/95 dark:bg-[#0a0f2a] border-r border-violet-500/10
+          flex flex-col h-full max-h-screen min-h-0 bg-surface/95 border-r border-line
           transition-all duration-300 ease-in-out overflow-hidden
           md:relative md:translate-x-0 md:w-72 lg:w-80
           fixed left-0 top-0 bottom-0 w-[300px] z-30
@@ -113,14 +113,14 @@ const ChatSidebar = ({
               onClick={onNewChat}
               aria-label="New Chat"
               title="Start a new chat"
-              className="p-2 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/10 transition-all cursor-pointer"
+              className="p-2 rounded-xl text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-all cursor-pointer"
             >
               <HiOutlinePencilSquare className="w-5 h-5" />
             </button>
             <button
               onClick={onClose}
               aria-label="Close sidebar"
-              className="p-2 rounded-xl text-slate-500 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-white hover:bg-violet-500/10 transition-all md:hidden cursor-pointer"
+              className="p-2 rounded-xl text-fg-muted hover:text-fg hover:bg-primary/10 transition-all md:hidden cursor-pointer"
             >
               <HiOutlineXMark className="w-5 h-5" />
             </button>
@@ -128,7 +128,7 @@ const ChatSidebar = ({
         </div>
 
         {/* Current user card */}
-        <div className="mx-3 mb-2.5 px-3 py-3 rounded-xl bg-violet-500/5 dark:bg-violet-500/8 border border-violet-500/15 flex items-center gap-3 shrink-0">
+        <div className="mx-3 mb-2.5 px-3 py-3 rounded-xl bg-primary/5 border border-line flex items-center gap-3 shrink-0">
           <UserAvatar
             name={user.name || user.userName || user.email || "?"}
             src={user.image}
@@ -136,7 +136,7 @@ const ChatSidebar = ({
             online
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+            <p className="text-sm font-semibold text-fg truncate">
               {user.name || user.userName || "You"}
             </p>
             <UserStatus status="online" />
@@ -145,7 +145,7 @@ const ChatSidebar = ({
             <ThemeToggle className="!p-1.5 !rounded-lg" />
             <button
               aria-label="Notifications"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-violet-600 dark:hover:text-violet-300 hover:bg-violet-500/10 transition-all cursor-pointer"
+              className="p-1.5 rounded-lg text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-all cursor-pointer"
             >
               <HiOutlineBell className="w-4 h-4" />
             </button>
@@ -157,7 +157,7 @@ const ChatSidebar = ({
           <button
             type="button"
             onClick={onNewChat}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-violet-600/15 via-violet-500/20 to-cyan-500/15 hover:from-violet-600/25 hover:to-cyan-500/25 border border-violet-500/30 text-violet-700 dark:text-violet-300 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] active:scale-98"
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-violet/15 via-brand-violet/20 to-brand-cyan/15 hover:from-brand-violet/25 hover:to-brand-cyan/25 border border-primary/30 text-primary-text font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer hover:shadow-[0_0_15px_rgb(var(--primary-rgb)/0.2)] active:scale-98"
           >
             <HiOutlinePlus className="w-4 h-4" />
             <span>New Chat</span>
@@ -167,7 +167,7 @@ const ChatSidebar = ({
         {/* Search */}
         <div className="px-3 mb-3 shrink-0">
           <div className="relative">
-            <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
+            <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-fg-muted" />
             <input
               type="search"
               placeholder="Search conversations…"
@@ -180,7 +180,7 @@ const ChatSidebar = ({
                 }
               }}
               aria-label="Search conversations"
-              className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-[#111840] border border-violet-300/40 dark:border-violet-500/15 text-xs sm:text-sm text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500/60 outline-none focus:border-violet-500/40 focus:shadow-[0_0_0_3px_rgba(139,92,246,0.08)] transition-all"
+              className="w-full pl-9 pr-4 py-2 rounded-xl bg-surface-hover border border-line-strong text-xs sm:text-sm text-fg placeholder:text-fg-muted outline-none focus:border-primary/40 focus:shadow-[0_0_0_3px_rgb(var(--primary-rgb)/0.08)] transition-all"
             />
           </div>
         </div>
@@ -193,8 +193,8 @@ const ChatSidebar = ({
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-violet-500/15 dark:bg-violet-500/20 border border-violet-500/30 text-violet-700 dark:text-violet-300 shadow-sm"
-                  : "text-slate-600 dark:text-slate-400/70 hover:text-slate-900 dark:hover:text-slate-300 hover:bg-violet-500/8"
+                  ? "bg-primary/15 border border-primary/30 text-primary-text shadow-sm"
+                  : "text-fg-secondary hover:text-fg hover:bg-primary/8"
               }`}
             >
               {tab.label}
@@ -204,10 +204,10 @@ const ChatSidebar = ({
 
         {/* Section label */}
         <div className="px-5 mb-1 shrink-0 flex items-center justify-between">
-          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-fg-muted uppercase tracking-widest">
             {activeTab === "groups" ? "Direct Users" : "Conversations"}
           </span>
-          <span className="text-[10px] text-slate-400 dark:text-slate-500">
+          <span className="text-[10px] text-fg-muted">
             {filteredConversations.length}
           </span>
         </div>
@@ -226,11 +226,11 @@ const ChatSidebar = ({
         </div>
 
         {/* Bottom nav */}
-        <div className="shrink-0 border-t border-violet-500/10 px-3 py-2.5 flex items-center justify-between bg-white/40 dark:bg-[#0a0f2a]/60">
+        <div className="shrink-0 border-t border-line px-3 py-2.5 flex items-center justify-between bg-surface/40">
           <Link
             to="/profile"
             aria-label="Profile"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400/70 hover:text-violet-700 dark:hover:text-white hover:bg-violet-500/10 transition-all text-xs font-medium"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-fg-secondary hover:text-primary-text hover:bg-primary/10 transition-all text-xs font-medium"
           >
             <HiOutlineUser className="w-5 h-5" />
             <span className="hidden lg:block">Profile</span>
@@ -238,7 +238,7 @@ const ChatSidebar = ({
           <Link
             to="/settings"
             aria-label="Settings"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400/70 hover:text-violet-700 dark:hover:text-white hover:bg-violet-500/10 transition-all text-xs font-medium"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-fg-secondary hover:text-primary-text hover:bg-primary/10 transition-all text-xs font-medium"
           >
             <HiOutlineCog6Tooth className="w-5 h-5" />
             <span className="hidden lg:block">Settings</span>
@@ -246,7 +246,7 @@ const ChatSidebar = ({
           <button
             onClick={onLogout}
             aria-label="Log out"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400/70 hover:text-red-500 hover:bg-red-500/10 transition-all text-xs font-medium cursor-pointer"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-fg-secondary hover:text-error-text hover:bg-error/10 transition-all text-xs font-medium cursor-pointer"
           >
             <HiOutlineArrowRightOnRectangle className="w-5 h-5" />
             <span className="hidden lg:block">Logout</span>

@@ -70,7 +70,7 @@ const SOCIAL_CHANNELS = [
     name: "Discord Community",
     members: "8,920 members online",
     desc: "Chat directly with maintainers, join weekly office hours, and troubleshoot code in real-time.",
-    icon: <FiMessageSquare className="w-6 h-6 text-indigo-400" />,
+    icon: <FiMessageSquare className="w-6 h-6 text-primary-text" />,
     url: "https://discord.com",
     btnText: "Join Discord",
   },
@@ -78,7 +78,7 @@ const SOCIAL_CHANNELS = [
     name: "GitHub Organization",
     members: "4.8k stars • 320 forks",
     desc: "Fork the codebase, submit feature pull requests, and audit our open-source dependencies.",
-    icon: <FiGithub className="w-6 h-6 text-slate-300" />,
+    icon: <FiGithub className="w-6 h-6 text-fg-secondary" />,
     url: "https://github.com",
     btnText: "Star on GitHub",
   },
@@ -86,7 +86,7 @@ const SOCIAL_CHANNELS = [
     name: "Twitter / X Updates",
     members: "@NexoraAI • 14k followers",
     desc: "Product announcements, model benchmarks, prompt engineering tips, and engineering deep-dives.",
-    icon: <FiTwitter className="w-6 h-6 text-cyan-400" />,
+    icon: <FiTwitter className="w-6 h-6 text-accent-text" />,
     url: "https://twitter.com",
     btnText: "Follow @NexoraAI",
   },
@@ -239,7 +239,7 @@ export const Community = () => {
                 }
                 setIsModalOpen(true);
               }}
-              className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold text-xs sm:text-sm shadow-md flex items-center gap-2 cursor-pointer transition-all"
+              className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm shadow-md flex items-center gap-2 cursor-pointer transition-all"
             >
               <FiPlus className="w-4 h-4" />
               Start a Discussion
@@ -248,9 +248,9 @@ export const Community = () => {
               href="https://discord.com"
               target="_blank"
               rel="noreferrer"
-              className="px-5 py-2.5 rounded-xl border border-violet-500/30 text-slate-800 dark:text-slate-200 hover:bg-violet-500/10 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl border border-primary/30 text-fg hover:bg-primary/10 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2"
             >
-              <FiMessageSquare className="w-4 h-4 text-indigo-500" />
+              <FiMessageSquare className="w-4 h-4 text-primary-text" />
               Discord Chat
             </a>
           </div>
@@ -274,12 +274,12 @@ export const Community = () => {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center"
+                className="p-5 rounded-2xl bg-surface border border-line shadow-sm text-center"
               >
-                <p className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+                <p className="text-2xl sm:text-3xl font-extrabold text-gradient text-transparent">
                   {item.value}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                <p className="text-xs text-fg-muted mt-1 font-medium">
                   {item.label}
                 </p>
               </div>
@@ -303,8 +303,8 @@ export const Community = () => {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     selectedCategory === cat
-                      ? "bg-violet-600 text-white shadow-xs"
-                      : "bg-white dark:bg-[#0d1230] border border-violet-500/15 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white"
+                      ? "bg-primary text-primary-contrast shadow-xs"
+                      : "bg-surface border border-line text-fg-secondary hover:text-primary-text"
                   }`}
                 >
                   {cat}
@@ -314,13 +314,13 @@ export const Community = () => {
 
             {/* Search bar */}
             <form onSubmit={handleSearchSubmit} className="relative w-full md:w-72">
-              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fg-muted" />
               <input
                 type="text"
                 placeholder="Search discussions or tags..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-white dark:bg-[#0d1230] border border-violet-500/20 focus:border-violet-500 outline-none transition-all placeholder:text-slate-400"
+                className="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-surface border border-line-strong focus:border-primary outline-none transition-all placeholder:text-fg-muted"
               />
             </form>
           </div>
@@ -332,8 +332,8 @@ export const Community = () => {
         ) : error ? (
           <ErrorState message={error} onRetry={fetchCommunityData} />
         ) : posts.length === 0 ? (
-          <div className="p-12 text-center rounded-2xl border border-violet-500/15 bg-white/40 dark:bg-[#0a0f2a]/40">
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
+          <div className="p-12 text-center rounded-2xl border border-line bg-surface/40">
+            <p className="text-fg-muted text-sm">
               No discussions found under "{selectedCategory}". Be the first to start one!
             </p>
           </div>
@@ -355,30 +355,30 @@ export const Community = () => {
                   distance={30}
                 >
                   <article
-                    className="p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 hover:border-violet-500/35 transition-all shadow-xs"
+                    className="p-6 rounded-2xl bg-surface border border-line hover:border-primary/35 transition-all shadow-xs"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary-text border border-line-strong">
                             {post.category}
                           </span>
                           {post.isPinned && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-warning/10 text-warning-text border border-warning/20">
                               Pinned
                             </span>
                           )}
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-fg-muted">
                             by {post.authorName || "Member"} •{" "}
                             {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Recent"}
                           </span>
                         </div>
 
-                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 hover:text-violet-600 dark:hover:text-violet-300 transition-colors mb-2">
+                        <h3 className="text-base sm:text-lg font-bold text-fg hover:text-primary-text transition-colors mb-2">
                           {post.title}
                         </h3>
 
-                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-fg-secondary leading-relaxed mb-4 line-clamp-2">
                           {post.content}
                         </p>
 
@@ -388,7 +388,7 @@ export const Community = () => {
                             {post.tags.map((tag, tIdx) => (
                               <span
                                 key={tIdx}
-                                className="px-2 py-0.5 rounded-md text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                                className="px-2 py-0.5 rounded-md text-[10px] bg-surface-hover text-fg-secondary"
                               >
                                 #{tag}
                               </span>
@@ -399,18 +399,18 @@ export const Community = () => {
                     </div>
 
                     {/* Actions row */}
-                    <div className="flex items-center justify-between pt-3 border-t border-violet-500/10 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center justify-between pt-3 border-t border-line text-xs text-fg-muted">
                       <div className="flex items-center gap-4">
                         <button
                           type="button"
                           onClick={() => handleLike(post._id)}
                           className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
                             hasLiked
-                              ? "text-rose-500 bg-rose-500/10"
-                              : "hover:text-rose-500 hover:bg-rose-500/10"
+                              ? "text-error-text bg-error/10"
+                              : "hover:text-error-text hover:bg-error/10"
                           }`}
                         >
-                          <FiHeart className={`w-3.5 h-3.5 ${hasLiked ? "fill-rose-500" : ""}`} />
+                          <FiHeart className={`w-3.5 h-3.5 ${hasLiked ? "fill-error-text" : ""}`} />
                           <span>{likesCount}</span>
                         </button>
 
@@ -419,7 +419,7 @@ export const Community = () => {
                           <span>{commentsCount} comments</span>
                         </div>
 
-                        <div className="hidden sm:block text-slate-400">
+                        <div className="hidden sm:block text-fg-muted">
                           {post.views || 0} views
                         </div>
                       </div>
@@ -430,7 +430,7 @@ export const Community = () => {
                           navigator.clipboard.writeText(window.location.href);
                           toast.success("Link copied to clipboard!");
                         }}
-                        className="p-1.5 rounded-lg hover:bg-violet-500/10 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-primary/10 transition-colors"
                         title="Share discussion"
                       >
                         <FiShare2 className="w-3.5 h-3.5" />
@@ -447,15 +447,15 @@ export const Community = () => {
       {/* ══════════════════════════════════════════════
           TOP CONTRIBUTORS SECTION
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-violet-500/10">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
         <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 mb-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Hall of Fame
           </h2>
-          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Featured Community Contributors
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+          <p className="text-sm text-fg-secondary mt-2">
             Acknowledging the open-source developers helping refine prompt parsers, tools, and UI modules.
           </p>
         </ScrollReveal>
@@ -469,20 +469,20 @@ export const Community = () => {
               distance={35}
             >
               <div
-                className="h-full p-6 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 shadow-sm text-center flex flex-col items-center justify-between"
+                className="h-full p-6 rounded-2xl bg-surface border border-line shadow-sm text-center flex flex-col items-center justify-between"
               >
                 <div>
                   <img
                     src={c.avatar}
                     alt={c.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-violet-500/30 mb-3"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-primary/30 mb-3"
                   />
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{c.name}</h4>
-                  <p className="text-xs text-slate-500 mb-2">{c.role}</p>
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/10 text-violet-600 dark:text-violet-300 border border-violet-500/20 mb-3">
+                  <h4 className="text-sm font-bold text-fg">{c.name}</h4>
+                  <p className="text-xs text-fg-muted mb-2">{c.role}</p>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary/10 text-primary-text border border-line-strong mb-3">
                     {c.badge}
                   </span>
-                  <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <p className="text-xs font-semibold text-fg-secondary">
                     {c.contributions} Pull Requests & Commits
                   </p>
                 </div>
@@ -491,7 +491,7 @@ export const Community = () => {
                   href={c.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-xs text-violet-600 dark:text-violet-400 hover:underline"
+                  className="mt-4 inline-flex items-center gap-1.5 text-xs text-primary-text hover:underline"
                 >
                   <FiGithub className="w-3.5 h-3.5" />
                   View GitHub
@@ -505,7 +505,7 @@ export const Community = () => {
       {/* ══════════════════════════════════════════════
           SOCIAL CHANNELS
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-violet-500/10">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SOCIAL_CHANNELS.map((ch, idx) => (
             <ScrollReveal
@@ -515,17 +515,17 @@ export const Community = () => {
               distance={35}
             >
               <div
-                className="h-full p-7 rounded-2xl bg-white dark:bg-[#0a0f2a] border border-violet-500/15 flex flex-col justify-between"
+                className="h-full p-7 rounded-2xl bg-surface border border-line flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center mb-4">
                     {ch.icon}
                   </div>
-                  <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{ch.name}</h4>
-                  <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 mb-2">
+                  <h4 className="text-lg font-bold text-fg mb-1">{ch.name}</h4>
+                  <p className="text-xs font-semibold text-primary-text mb-2">
                     {ch.members}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                  <p className="text-xs text-fg-secondary leading-relaxed mb-6">
                     {ch.desc}
                   </p>
                 </div>
@@ -534,7 +534,7 @@ export const Community = () => {
                   href={ch.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full py-2.5 rounded-xl border border-violet-500/25 hover:bg-violet-500/10 text-slate-800 dark:text-slate-200 text-xs font-semibold text-center transition-all flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-xl border border-primary/25 hover:bg-primary/10 text-fg text-xs font-semibold text-center transition-all flex items-center justify-center gap-2"
                 >
                   <span>{ch.btnText}</span>
                   <FiExternalLink className="w-3.5 h-3.5" />
@@ -549,16 +549,16 @@ export const Community = () => {
           CREATE DISCUSSION MODAL
           ══════════════════════════════════════════════ */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-lg p-6 rounded-3xl bg-white dark:bg-[#0d1230] border border-violet-500/25 shadow-2xl">
-            <div className="flex items-center justify-between pb-4 border-b border-violet-500/10 mb-4">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-scrim/60 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-lg p-6 rounded-3xl bg-surface border border-primary/25 shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-line mb-4">
+              <h3 className="text-lg font-bold text-fg">
                 Start a Community Discussion
               </h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-fg-muted hover:text-primary-contrast"
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -566,7 +566,7 @@ export const Community = () => {
 
             <form onSubmit={handleCreatePost} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-fg-secondary mb-1">
                   Title
                 </label>
                 <input
@@ -574,19 +574,19 @@ export const Community = () => {
                   placeholder="e.g. Prompt engineering tips for code review"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-[#111840] border border-violet-500/20 focus:border-violet-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-canvas border border-line-strong focus:border-primary outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-fg-secondary mb-1">
                   Category
                 </label>
                 <select
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-[#111840] border border-violet-500/20 focus:border-violet-500 outline-none text-slate-800 dark:text-slate-200"
+                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-canvas border border-line-strong focus:border-primary outline-none text-fg"
                 >
                   {CATEGORIES.filter((c) => c !== "All").map((c) => (
                     <option key={c} value={c}>
@@ -597,7 +597,7 @@ export const Community = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-fg-secondary mb-1">
                   Content (Markdown supported)
                 </label>
                 <textarea
@@ -605,13 +605,13 @@ export const Community = () => {
                   placeholder="Describe your question, discovery, or feedback in detail..."
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-[#111840] border border-violet-500/20 focus:border-violet-500 outline-none resize-none"
+                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-canvas border border-line-strong focus:border-primary outline-none resize-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-fg-secondary mb-1">
                   Tags (comma-separated)
                 </label>
                 <input
@@ -619,22 +619,22 @@ export const Community = () => {
                   placeholder="e.g. gemini, streaming, react"
                   value={newTags}
                   onChange={(e) => setNewTags(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-50 dark:bg-[#111840] border border-violet-500/20 focus:border-violet-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-canvas border border-line-strong focus:border-primary outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-violet-500/10">
+              <div className="flex justify-end gap-3 pt-4 border-t border-line">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300"
+                  className="px-4 py-2 rounded-xl border border-line-strong text-xs font-semibold text-fg-secondary"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-md disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs font-semibold shadow-md disabled:opacity-50"
                 >
                   {isSubmitting ? "Publishing..." : "Publish Post"}
                 </button>

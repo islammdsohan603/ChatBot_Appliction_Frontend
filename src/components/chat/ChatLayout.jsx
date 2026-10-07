@@ -333,7 +333,7 @@ const ChatLayout = () => {
   const activeSidebarId = activeHumanId || conversationId || null;
 
   return (
-    <div className="h-screen max-h-screen h-[100dvh] w-full flex bg-slate-50 dark:bg-[#060918] overflow-hidden font-inter transition-colors duration-200">
+    <div className="h-screen max-h-screen h-[100dvh] w-full flex bg-canvas overflow-hidden font-inter transition-colors duration-200">
       {/* ════ LEFT SIDEBAR ════ */}
       <ChatSidebar
         user={{
@@ -357,11 +357,11 @@ const ChatLayout = () => {
       {/* ════ MAIN CHAT AREA ════ */}
       <main className="flex-1 min-h-0 min-w-0 flex flex-col h-full max-h-screen overflow-hidden relative">
         {/* Mobile top bar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-violet-500/10 bg-white/80 dark:bg-[#060918]/80 backdrop-blur-sm md:hidden shrink-0">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-line bg-surface/80 backdrop-blur-sm md:hidden shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open sidebar"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-white hover:bg-violet-500/10 transition-all cursor-pointer"
+            className="p-2 rounded-xl text-fg-secondary hover:text-primary-text hover:bg-primary/10 transition-all cursor-pointer"
           >
             <HiOutlineBars3 className="w-5 h-5" />
           </button>
