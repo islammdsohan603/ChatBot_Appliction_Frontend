@@ -17,6 +17,7 @@ import ChatInput from "./ChatInput";
 import ProfilePanel from "./ProfilePanel";
 import AiChatBox from "./AiChatBox";
 import { HiOutlineBars3, HiOutlineArrowLeft } from "react-icons/hi2";
+import { motion, useReducedMotion } from "framer-motion";
 
 const ChatLayout = () => {
   const { userData } = useSelector((state) => state.user);
@@ -332,6 +333,8 @@ const ChatLayout = () => {
   const sidebarConversations = [...aiConversations, ...directUsers];
   const activeSidebarId = activeHumanId || conversationId || null;
 
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className="h-screen max-h-screen h-[100dvh] w-full flex bg-canvas overflow-hidden font-inter transition-colors duration-200">
       {/* ════ LEFT SIDEBAR ════ */}
@@ -355,7 +358,12 @@ const ChatLayout = () => {
       />
 
       {/* ════ MAIN CHAT AREA ════ */}
-      <main className="flex-1 min-h-0 min-w-0 flex flex-col h-full max-h-screen overflow-hidden relative">
+      <motion.main
+        initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985 }}
+        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="flex-1 min-h-0 min-w-0 flex flex-col h-full max-h-screen overflow-hidden relative"
+      >
         {/* Mobile top bar */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-line bg-surface/80 backdrop-blur-sm md:hidden shrink-0">
           <button
@@ -407,7 +415,7 @@ const ChatLayout = () => {
             />
           </div>
         )}
-      </main>
+      </motion.main>
 
       {/* ════ RIGHT PROFILE PANEL ════ */}
       {activeHumanContact && (

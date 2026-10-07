@@ -12,6 +12,8 @@ import {
   HiOutlineFaceSmile,
 } from "react-icons/hi2";
 import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { chatUserBubbleMotion, chatBotBubbleMotion } from "../../lib/motion";
 
 const REACTIONS = ["👍", "❤️", "😂", "😮", "😢", "🔥"];
 
@@ -39,9 +41,13 @@ const MessageBubble = ({ message, showAvatar = true }) => {
     setShowReactions(false);
   };
 
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <div
-      className={`group flex gap-2.5 px-4 py-1 animate-messageIn ${
+    <motion.div
+      initial={shouldReduceMotion ? { opacity: 0 } : (isOwn ? chatUserBubbleMotion.hidden : chatBotBubbleMotion.hidden)}
+      animate={shouldReduceMotion ? { opacity: 1 } : (isOwn ? chatUserBubbleMotion.visible : chatBotBubbleMotion.visible)}
+      className={`group flex gap-2.5 px-4 py-1 ${
         isOwn ? "flex-row-reverse" : "flex-row"
       }`}
     >
@@ -173,7 +179,7 @@ const MessageBubble = ({ message, showAvatar = true }) => {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

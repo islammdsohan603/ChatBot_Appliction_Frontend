@@ -18,7 +18,9 @@ import {
   FiRefreshCw,
 } from "react-icons/fi";
 import { IoSparkles } from "react-icons/io5";
-import { ScrollReveal, ScrollRevealGroup } from "../common/ScrollReveal";
+import { Reveal, RevealGroup, RevealItem } from "../motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { chatUserBubbleMotion, chatBotBubbleMotion } from "../../lib/motion";
 
 const CodeBlock = ({ inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -88,6 +90,7 @@ export const AiChatBox = ({
   model = "gemini-3.5-flash",
   className = "",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
   const [currentModel, setCurrentModel] = useState(() => {
     try {
       const saved = JSON.parse(
@@ -294,9 +297,9 @@ export const AiChatBox = ({
             Loading conversation history...
           </div>
         ) : messages.length === 0 ? (
-          <ScrollReveal
+          <Reveal
             animation="fade-up"
-            distance="24px"
+            distance={24}
             className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 my-auto"
           >
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-violet/20 to-brand-cyan/20 border border-primary/30 flex items-center justify-center shadow-lg">
@@ -313,10 +316,8 @@ export const AiChatBox = ({
             </div>
 
             {/* Quick Starters */}
-            <ScrollRevealGroup
+            <RevealGroup
               stagger={0.06}
-              animation="fade-up"
-              distance="16px"
               className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md pt-2"
             >
               {[
@@ -325,23 +326,42 @@ export const AiChatBox = ({
                 "Analyze code architecture for clean apps",
                 "Brainstorm 3 tech startup ideas",
               ].map((starter, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => sendMessage(starter)}
-                  className="text-left text-xs p-3 rounded-xl bg-primary/5 hover:bg-primary/10 border border-line hover:border-primary/30 text-fg-secondary transition-all cursor-pointer"
-                >
-                  {starter} →
-                </button>
+                <RevealItem key={idx}>
+                  <button
+                    type="button"
+                    onClick={() => sendMessage(starter)}
+                    className="w-full text-left text-xs p-3 rounded-xl bg-primary/5 hover:bg-primary/10 border border-line hover:border-primary/30 text-fg-secondary transition-all cursor-pointer"
+                  >
+                    {starter} →
+                  </button>
+                </RevealItem>
               ))}
-            </ScrollRevealGroup>
-          </ScrollReveal>
+            </RevealGroup>
+          </Reveal>
         ) : (
           messages.map((msg) => {
             const isUser = msg.role === "user";
+            const isLiveMessage =
+              typeof msg.id === "string" &&
+              (msg.id.startsWith("user-") || msg.id.startsWith("assistant-"));
+
             return (
-              <div
+              <motion.div
                 key={msg.id}
+                initial={
+                  shouldReduceMotion
+                    ? { opacity: 0 }
+                    : isLiveMessage
+                    ? (isUser ? chatUserBubbleMotion.hidden : chatBotBubbleMotion.hidden)
+                    : false
+                }
+                animate={
+                  shouldReduceMotion
+                    ? { opacity: 1 }
+                    : isLiveMessage
+                    ? (isUser ? chatUserBubbleMotion.visible : chatBotBubbleMotion.visible)
+                    : { opacity: 1, x: 0, y: 0 }
+                }
                 className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}
               >
                 {/* AI Avatar */}
@@ -426,7 +446,7 @@ export const AiChatBox = ({
                     <FiUser className="w-4 h-4" />
                   </div>
                 )}
-              </div>
+              </motion.div>
             );
           })
         )}

@@ -1,5 +1,26 @@
 import ConversationItem from "./ConversationItem";
 import SkeletonLoader from "../ui/SkeletonLoader";
+import { motion, useReducedMotion } from "framer-motion";
+
+const sidebarStagger = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const sidebarItem = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 /**
  * Categorize conversations into temporal buckets: Today, Yesterday, Previous 7 Days, Older
@@ -89,12 +110,21 @@ const ConversationList = ({
     );
   }
 
+  const shouldReduceMotion = useReducedMotion();
+
   // If in "all" tab, group conversations by date (ChatGPT style)
   if (filter === "all") {
     const grouped = groupConversationsByDate(filtered);
 
     return (
-      <div className="flex flex-col gap-4 px-2 pb-4" role="listbox" aria-label="Conversations">
+      <motion.div
+        variants={shouldReduceMotion ? undefined : sidebarStagger}
+        initial={shouldReduceMotion ? false : "hidden"}
+        animate="visible"
+        className="flex flex-col gap-4 px-2 pb-4"
+        role="listbox"
+        aria-label="Conversations"
+      >
         {grouped.map((group) => (
           <div key={group.label} className="space-y-1">
             <div className="px-2 pt-1 pb-0.5">
@@ -106,40 +136,55 @@ const ConversationList = ({
               {group.items.map((conversation) => {
                 const id = conversation._id || conversation.id;
                 return (
-                  <ConversationItem
+                  <motion.div
                     key={id}
-                    conversation={conversation}
-                    isActive={id === activeId}
-                    onClick={() => onSelect?.(id)}
-                    onDelete={onDelete}
-                    onRename={onRename}
-                  />
+                    variants={shouldReduceMotion ? undefined : sidebarItem}
+                  >
+                    <ConversationItem
+                      conversation={conversation}
+                      isActive={id === activeId}
+                      onClick={() => onSelect?.(id)}
+                      onDelete={onDelete}
+                      onRename={onRename}
+                    />
+                  </motion.div>
                 );
               })}
             </div>
           </div>
         ))}
-      </div>
+      </motion.div>
     );
   }
 
   // Linear list for other filter tabs
   return (
-    <div className="flex flex-col gap-0.5 px-2" role="listbox" aria-label="Conversations">
+    <motion.div
+      variants={shouldReduceMotion ? undefined : sidebarStagger}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate="visible"
+      className="flex flex-col gap-0.5 px-2"
+      role="listbox"
+      aria-label="Conversations"
+    >
       {filtered.map((conversation) => {
         const id = conversation._id || conversation.id;
         return (
-          <ConversationItem
+          <motion.div
             key={id}
-            conversation={conversation}
-            isActive={id === activeId}
-            onClick={() => onSelect?.(id)}
-            onDelete={onDelete}
-            onRename={onRename}
-          />
+            variants={shouldReduceMotion ? undefined : sidebarItem}
+          >
+            <ConversationItem
+              conversation={conversation}
+              isActive={id === activeId}
+              onClick={() => onSelect?.(id)}
+              onDelete={onDelete}
+              onRename={onRename}
+            />
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 };
 
