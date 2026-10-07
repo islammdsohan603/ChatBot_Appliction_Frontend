@@ -1,9 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { API_BASE_URL } from "../lib/api";
 
-const DEFAULT_SERVER_URL =
-  import.meta.env.VITE_SERVER_URL ||
-  import.meta.env.NEXT_PUBLIC_SERVER_URL ||
-  "http://localhost:8000";
+const DEFAULT_SERVER_URL = API_BASE_URL;
 
 /**
  * Custom hook for real-time streaming AI chat using Server-Sent Events (SSE)
@@ -52,9 +50,15 @@ export const useAiChat = ({
       setIsHistoryLoading(true);
       setError(null);
       try {
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        const fetchHeaders = {};
+        if (token) {
+          fetchHeaders["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(
           `${DEFAULT_SERVER_URL}/api/conversations/${conversationId}`,
-          { credentials: "include" }
+          { credentials: "include", headers: fetchHeaders }
         );
 
         if (!response.ok) {
@@ -182,9 +186,13 @@ export const useAiChat = ({
             }
           })();
 
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
         const headers = {
           "Content-Type": "application/json",
         };
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
         if (customApiKey) {
           headers["x-goog-api-key"] = customApiKey;
         }

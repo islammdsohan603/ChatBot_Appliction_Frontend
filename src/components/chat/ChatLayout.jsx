@@ -44,9 +44,7 @@ const ChatLayout = () => {
   // 1. Fetch AI Conversations for the sidebar
   const fetchAiConversations = useCallback(async () => {
     try {
-      const response = await axios.get(`${serverUrl}/api/conversations`, {
-        withCredentials: true,
-      });
+      const response = await api.get("/api/conversations");
       if (Array.isArray(response.data)) {
         setAiConversations(
           response.data.map((c) => ({
@@ -58,14 +56,12 @@ const ChatLayout = () => {
     } catch (error) {
       console.error("Failed to fetch AI conversations:", error);
     }
-  }, [serverUrl]);
+  }, []);
 
   // 2. Fetch Direct Users
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await axios.get(`${serverUrl}/api/user/all`, {
-        withCredentials: true,
-      });
+      const response = await api.get("/api/user/all");
       if (Array.isArray(response.data)) {
         setDirectUsers(
           response.data.map((u) => ({
@@ -86,7 +82,7 @@ const ChatLayout = () => {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
-  }, [serverUrl]);
+  }, []);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -105,9 +101,7 @@ const ChatLayout = () => {
     const fetchHumanMessages = async () => {
       setIsMessagesLoading(true);
       try {
-        const response = await axios.get(`${serverUrl}/api/chat/${activeHumanId}`, {
-          withCredentials: true,
-        });
+        const response = await api.get(`/api/chat/${activeHumanId}`);
 
         if (!isMounted) return;
 
@@ -177,9 +171,7 @@ const ChatLayout = () => {
       }
 
       try {
-        await axios.delete(`${serverUrl}/api/conversations/${id}`, {
-          withCredentials: true,
-        });
+        await api.delete(`/api/conversations/${id}`);
         setAiConversations((prev) => prev.filter((c) => (c._id || c.id) !== id));
         toast.success("Conversation deleted");
 
@@ -200,7 +192,7 @@ const ChatLayout = () => {
         }
       }
     },
-    [conversationId, directUsers, navigate, serverUrl]
+    [conversationId, directUsers, navigate]
   );
 
   // Handle renaming of an AI conversation
@@ -208,7 +200,7 @@ const ChatLayout = () => {
     async (id, newTitle) => {
       if (!id || !newTitle.trim()) return;
       try {
-        await axios.put(`${serverUrl}/api/conversations/${id}`, { title: newTitle }, { withCredentials: true });
+        await api.put(`/api/conversations/${id}`, { title: newTitle });
         setAiConversations((prev) =>
           prev.map((c) => ((c._id || c.id) === id ? { ...c, title: newTitle } : c))
         );
@@ -218,7 +210,7 @@ const ChatLayout = () => {
         toast.error("Failed to rename conversation");
       }
     },
-    [serverUrl]
+    []
   );
 
   // Optimistic update when new session created during streaming
@@ -265,14 +257,10 @@ const ChatLayout = () => {
       if (!activeHumanId) return;
 
       try {
-        const response = await axios.post(
-          `${serverUrl}/api/chat/send/${activeHumanId}`,
-          {
-            message: textContent,
-            attachments,
-          },
-          { withCredentials: true }
-        );
+        const response = await api.post(`/api/chat/send/${activeHumanId}`, {
+          message: textContent,
+          attachments,
+        });
 
         const savedChat = response.data?.chat;
         const newMessage = {

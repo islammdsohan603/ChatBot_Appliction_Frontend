@@ -185,8 +185,9 @@ const Signup = () => {
       if (user) {
         try {
           localStorage.setItem("user", JSON.stringify(user));
-        } catch {
-          // ignore storage error
+          toast.success("Account Create Sucessfully!")
+        } catch (error){
+          toast.error(`Account Creation Failed! ${error.message}`)
         }
       }
 

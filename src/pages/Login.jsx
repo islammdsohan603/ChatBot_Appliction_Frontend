@@ -133,20 +133,21 @@ const Login = () => {
       if (token) {
         try {
           localStorage.setItem("token", token);
-        } catch {
-          // ignore
+          toast.success("Login Sucessfully!")
+        } catch (error){
+          toast.error(`Login Failed! ${error.message}`)
         }
       }
       if (user) {
         try {
           localStorage.setItem("user", JSON.stringify(user));
-        } catch {
-          // ignore
+          toast.success("Welcome back!")
+        } catch (error){
+          toast.error(`Login Failed! ${error.message}`)
         }
       }
 
       dispatch(setUserData(user));
-      toast.success("Welcome back!");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const errorMessage =
