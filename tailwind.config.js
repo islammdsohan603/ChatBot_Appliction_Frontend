@@ -12,9 +12,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        heading: ["var(--font-heading)"],
+        body: ["var(--font-body)"],
         sans: ["var(--font-body)"],
         inter: ["var(--font-body)"],
-        display: ["var(--font-display)"],
+        roboto: ["var(--font-body)"],
+        poppins: ["var(--font-heading)"],
+        display: ["var(--font-heading)"],
         mono: ["var(--font-mono)"],
       },
       colors: {

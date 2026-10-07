@@ -1,8 +1,6 @@
-/* Fonts: Plus Jakarta Sans (display), Inter (UI), JetBrains Mono (code),
-   Noto Sans Bengali + Hind Siliguri (Bangla fallback). Loaded with
-   <link rel="preconnect"> in index.html; this import is the safety net. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap");
-@import "@fontsource-variable/geist";
+/* Typography: Poppins (headings), Roboto (body), Noto Sans Bengali (Bangla fallback).
+   Loaded with <link rel="preconnect"> in index.html; this import is the safety net. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap');
 @import "./styles/variables.css";
 
 @tailwind base;
@@ -33,9 +31,8 @@
 
   body {
     font-family: var(--font-body);
-    font-size: var(--fs-body);
+    font-size: 16px;
     line-height: 1.6;
-    font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -45,7 +42,7 @@
     overflow-x: hidden;
   }
 
-  /* Bangla copy needs more vertical room */
+  /* Bangla copy needs line-height 1.75 */
   :lang(bn),
   [lang="bn"] {
     line-height: 1.75;
@@ -56,42 +53,34 @@
     min-height: 100vh;
   }
 
-  /* ── Headings: display face, tight tracking, fluid scale ── */
+  /* ── Headings: Poppins heading face, letter-spacing -0.02em, line-height 1.15 ── */
   h1,
   h2,
-  h3 {
-    font-family: var(--font-display);
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
     font-weight: 700;
     color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     text-wrap: balance;
   }
 
   h1 {
-    font-size: var(--fs-h1);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+    font-weight: 700;
   }
 
   h2 {
-    font-size: var(--fs-h2);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.875rem, 3vw + 1rem, 3rem);
+    font-weight: 700;
   }
 
   h3 {
-    font-size: var(--fs-h3);
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-  }
-
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+    font-weight: 600;
   }
 
   code,

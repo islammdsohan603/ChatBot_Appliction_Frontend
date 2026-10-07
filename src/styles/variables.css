@@ -108,16 +108,17 @@
   /* ── Motion ── */
   --theme-transition: 250ms ease;
 
-  /* ── Typography ── */
-  --font-display: "Plus Jakarta Sans", "Inter", "Noto Sans Bengali", "Hind Siliguri", system-ui, sans-serif;
-  --font-body: "Inter", "Noto Sans Bengali", "Hind Siliguri", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "Noto Sans Bengali", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* ── Typography Tokens ── */
+  --font-heading: "Poppins", "Noto Sans Bengali", system-ui, sans-serif;
+  --font-body: "Roboto", "Noto Sans Bengali", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-display: var(--font-heading);
   --fs-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
   --fs-h2: clamp(1.875rem, 3vw + 1rem, 3rem);
   --fs-h3: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
   --fs-body: 1rem;
-  --fs-chat: 0.96875rem;
-  --fs-small: 0.8125rem;
+  --fs-chat: 1rem;
+  --fs-small: 0.875rem;
 }
 
 .dark,
