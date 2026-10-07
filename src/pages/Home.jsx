@@ -1,23 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import {
   FiZap,
   FiShield,
   FiUsers,
-  FiPaperclip,
-  FiSmile,
-  FiLock,
   FiArrowRight,
-  FiMessageSquare,
   FiGlobe,
   FiCpu,
-  FiCheckCircle,
   FiStar,
   FiCode,
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import {
+  Reveal,
+  RevealGroup,
+  RevealItem,
+  AnimatedText,
+  CountUp,
+} from "../components/motion";
 
 const PARTICLES = [
   { left: "8%", top: "15%", dur: "20s", delay: "0s", bg: "rgb(var(--accent-rgb)/0.4)", size: "3px" },
@@ -93,6 +95,7 @@ const TESTIMONIALS = [
 
 /**
  * Modern, responsive Home landing page
+ * Orchestrated with Framer Motion scroll reveals and entrance animations
  */
 export const Home = () => {
   const { isAuthenticated } = useSelector((s) => s.user);
@@ -149,73 +152,100 @@ export const Home = () => {
       </div>
 
       {/* ══════════════════════════════════════════════
-          HERO SECTION
+          HERO SECTION (Plays on load, not on scroll)
           ══════════════════════════════════════════════ */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto">
-          {/* Badge */}
-          <ScrollReveal animation="fade-up" delay={80}>
+          {/* 1. Badge pill: fades down first */}
+          <Reveal variant="fadeDown" playOnMount delay={0.05} distance={16}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-xs font-semibold text-primary-text mb-6 shadow-xs hover:border-primary transition-colors">
               <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
               <span>Nexora 2.0 Released — Powered by Gemini 3.8 Flash</span>
             </div>
-          </ScrollReveal>
+          </Reveal>
 
-          {/* Heading */}
-          <ScrollReveal animation="fade-up" delay={160}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-fg mb-6">
-              Intelligent conversations,{" "}
-              <span className="text-gradient text-transparent">
-                streamed in real time.
-              </span>
-            </h1>
-          </ScrollReveal>
+          {/* 2. Headline words reveal one by one with soft shine sweep */}
+          <AnimatedText
+            text="Intelligent conversations,"
+            highlight="streamed in real time."
+            delay={0.18}
+            stagger={0.05}
+            shine={true}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-fg mb-6"
+          />
 
-          {/* Subtitle */}
-          <ScrollReveal animation="fade-up" delay={240}>
+          {/* 3. Subtitle fades up */}
+          <Reveal variant="fadeUp" playOnMount delay={0.52} distance={18}>
             <p className="text-lg sm:text-xl text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-10">
               A high-performance multimodal AI workspace with sub-second streaming, persistent session memory, vision parsing, and end-to-end encryption.
             </p>
-          </ScrollReveal>
+          </Reveal>
 
-          {/* Action Buttons */}
-          <ScrollReveal animation="fade-up" delay={320}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-              <Link
-                to={isAuthenticated ? "/chat" : "/signup"}
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan text-primary-contrast font-bold text-base shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 group cursor-pointer"
+          {/* 4. Action Buttons scale in with slight stagger */}
+          <RevealGroup
+            playOnMount
+            delayChildren={0.7}
+            stagger={0.1}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
+          >
+            <RevealItem variant="scaleIn">
+              <motion.div
+                whileHover={{ scale: 1.03, y: -1.5 }}
+                whileTap={{ scale: 0.97 }}
               >
-                <span>{isAuthenticated ? "Launch AI Workspace" : "Get Started Free"}</span>
-                <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+                <Link
+                  to={isAuthenticated ? "/chat" : "/signup"}
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan text-primary-contrast font-bold text-base shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center justify-center gap-2 group cursor-pointer"
+                >
+                  <span>{isAuthenticated ? "Launch AI Workspace" : "Get Started Free"}</span>
+                  <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+            </RevealItem>
 
-              <Link
-                to="/docs"
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-line-strong bg-surface/70 backdrop-blur-md text-fg font-semibold text-base hover:bg-surface-hover hover:border-primary/40 transition-all text-center"
+            <RevealItem variant="scaleIn">
+              <motion.div
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
               >
-                Explore API Docs
-              </Link>
-            </div>
-          </ScrollReveal>
+                <Link
+                  to="/docs"
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-line-strong bg-surface/70 backdrop-blur-md text-fg font-semibold text-base hover:bg-surface-hover hover:border-primary/40 transition-all text-center inline-block"
+                >
+                  Explore API Docs
+                </Link>
+              </motion.div>
+            </RevealItem>
+          </RevealGroup>
 
-          {/* Quick Stats Grid */}
-          <ScrollReveal animation="fade-up" delay={400}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 border-t border-line text-left">
-              {[
-                { val: "< 400ms", label: "Average Time-to-First-Token" },
-                { val: "99.98%", label: "Uptime Reliability SLA" },
-                { val: "100%", label: "Encrypted Session Privacy" },
-                { val: "50+ Langs", label: "Markdown Code Highlighting" },
-              ].map((stat, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-surface/40 border border-line hover:border-primary/30 transition-all">
+          {/* 5. Quick Stats Grid: Staggered from bottom with numeric CountUp */}
+          <RevealGroup
+            playOnMount
+            delayChildren={0.88}
+            stagger={0.08}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 border-t border-line text-left"
+          >
+            {[
+              { val: "< 400ms", label: "Average Time-to-First-Token", rawNum: 400, prefix: "< ", suffix: "ms" },
+              { val: "99.98%", label: "Uptime Reliability SLA", rawNum: 99.98, prefix: "", suffix: "%" },
+              { val: "100%", label: "Encrypted Session Privacy", rawNum: 100, prefix: "", suffix: "%" },
+              { val: "50+ Langs", label: "Markdown Code Highlighting", rawNum: 50, prefix: "", suffix: "+ Langs" },
+            ].map((stat, idx) => (
+              <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -3 }}>
+                <div className="p-3 rounded-xl bg-surface/40 border border-line hover:border-primary/30 transition-all">
                   <p className="text-xl sm:text-2xl font-bold text-gradient text-transparent">
-                    {stat.val}
+                    <CountUp
+                      value={stat.rawNum}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      duration={1.0}
+                    />
                   </p>
                   <p className="text-xs text-fg-muted mt-0.5">{stat.label}</p>
                 </div>
-              ))}
-            </div>
-          </ScrollReveal>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </div>
       </section>
 
@@ -223,7 +253,7 @@ export const Home = () => {
           LIVE INTERACTIVE PLAYGROUND DEMO
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <ScrollReveal animation="fade-up" distance={40} delay={100}>
+        <Reveal variant="fadeUp" distance={30}>
           <div className="rounded-3xl border border-primary/25 bg-surface/80 backdrop-blur-xl shadow-2xl overflow-hidden">
             {/* Window Chrome Header */}
             <div className="px-5 py-4 border-b border-line flex items-center justify-between bg-surface-hover/90">
@@ -259,32 +289,38 @@ export const Home = () => {
               <p className="text-xs font-semibold text-fg-muted mb-3">
                 Click a starter prompt to preview live rendering:
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <RevealGroup stagger={0.06} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {starters.map((s, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => handleStarterClick(s.prompt)}
-                    className="p-3 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group"
-                  >
-                    <p className="font-bold text-fg group-hover:text-primary-text">
-                      {s.title}
-                    </p>
-                    <p className="text-[11px] text-fg-muted truncate mt-1">
-                      {s.prompt}
-                    </p>
-                  </button>
+                  <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -2 }}>
+                    <button
+                      type="button"
+                      onClick={() => handleStarterClick(s.prompt)}
+                      className="w-full p-3 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group"
+                    >
+                      <p className="font-bold text-fg group-hover:text-primary-text">
+                        {s.title}
+                      </p>
+                      <p className="text-[11px] text-fg-muted truncate mt-1">
+                        {s.prompt}
+                      </p>
+                    </button>
+                  </RevealItem>
                 ))}
-              </div>
+              </RevealGroup>
             </div>
 
             {/* Simulated Chat Dialogue */}
             <div className="p-6 sm:p-8 space-y-5 min-h-[300px]">
               {/* User message */}
               <div className="flex gap-3 justify-end">
-                <div className="px-4 py-3 rounded-2xl rounded-br-none bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast text-sm max-w-[80%] shadow-md">
+                <motion.div
+                  initial={{ opacity: 0, x: 20, y: 10 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="px-4 py-3 rounded-2xl rounded-br-none bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast text-sm max-w-[80%] shadow-md"
+                >
                   {demoInput}
-                </div>
+                </motion.div>
               </div>
 
               {/* Assistant message */}
@@ -292,13 +328,19 @@ export const Home = () => {
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-primary-contrast shrink-0 shadow-md">
                   <FiCpu className="w-4 h-4" />
                 </div>
-                <div className="px-5 py-4 rounded-2xl rounded-bl-none bg-surface-hover border border-line text-fg text-sm max-w-[85%] leading-relaxed shadow-xs">
+                <motion.div
+                  key={demoOutput}
+                  initial={{ opacity: 0, x: -16, y: 10 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="px-5 py-4 rounded-2xl rounded-bl-none bg-surface-hover border border-line text-fg text-sm max-w-[85%] leading-relaxed shadow-xs"
+                >
                   <p className="whitespace-pre-line">{demoOutput}</p>
                   <div className="mt-4 pt-3 border-t border-line flex items-center justify-between text-[11px] text-fg-muted">
                     <span>Model: gemini-3.8-flash</span>
                     <span className="text-success-text font-medium">Latency: 312ms</span>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -315,14 +357,14 @@ export const Home = () => {
               </Link>
             </div>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </section>
 
       {/* ══════════════════════════════════════════════
           CORE FEATURES GRID
           ══════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-16">
+        <Reveal variant="fadeUp" className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Engineered for Developers & Teams
           </h2>
@@ -332,19 +374,17 @@ export const Home = () => {
           <p className="text-sm sm:text-base text-fg-secondary mt-3">
             No convoluted setups. Connect, stream, code, and share instantly.
           </p>
-        </ScrollReveal>
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((feat, idx) => (
-            <ScrollReveal
+            <RevealItem
               key={idx}
-              animation="fade-up"
-              delay={(idx % 3) * 100}
-              distance={35}
+              variant="fadeUp"
+              whileHover={{ y: -4 }}
+              className="h-full"
             >
-              <div
-                className="h-full p-7 rounded-2xl bg-surface border border-line hover:border-primary/40 hover:shadow-xl transition-all duration-200 group flex flex-col justify-between"
-              >
+              <div className="h-full p-7 rounded-2xl bg-surface border border-line hover:border-primary/40 hover:shadow-xl transition-all duration-200 group flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-5">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -362,35 +402,33 @@ export const Home = () => {
                   </p>
                 </div>
               </div>
-            </ScrollReveal>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* ══════════════════════════════════════════════
           TESTIMONIALS SECTION
           ══════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
-        <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-14">
+        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Loved by Developers
           </h2>
           <h3 className="text-3xl font-extrabold text-fg">
             Trusted by creators across the world
           </h3>
-        </ScrollReveal>
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, idx) => (
-            <ScrollReveal
+            <RevealItem
               key={idx}
-              animation="fade-up"
-              delay={idx * 100}
-              distance={35}
+              variant="fadeUp"
+              whileHover={{ y: -4 }}
+              className="h-full"
             >
-              <div
-                className="h-full p-7 rounded-2xl bg-surface/80 border border-line shadow-sm flex flex-col justify-between"
-              >
+              <div className="h-full p-7 rounded-2xl bg-surface/80 border border-line shadow-sm hover:border-primary/30 transition-all flex flex-col justify-between">
                 <div>
                   <div className="flex gap-1 text-warning-text mb-4">
                     {[...Array(t.rating)].map((_, i) => (
@@ -413,16 +451,16 @@ export const Home = () => {
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* ══════════════════════════════════════════════
           FINAL CALL TO ACTION
           ══════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <ScrollReveal animation="fade-up" distance={40}>
+        <Reveal variant="fadeUp" distance={30}>
           <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-brand-violet/20 via-brand-indigo/20 to-brand-cyan/20 border border-primary/30 shadow-2xl relative overflow-hidden">
             <div className="relative z-10 max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight mb-4">
@@ -432,24 +470,33 @@ export const Home = () => {
                 Join thousands of engineers, researchers, and creators using Nexora AI for intelligent real-time chats.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to={isAuthenticated ? "/chat" : "/signup"}
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-base shadow-lg shadow-primary/40 hover:-translate-y-0.5 transition-all"
+                <motion.div
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  {isAuthenticated ? "Go to Workspace →" : "Create Free Account →"}
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl border border-line-strong bg-surface/50 text-fg font-semibold hover:bg-surface-hover transition-all"
+                  <Link
+                    to={isAuthenticated ? "/chat" : "/signup"}
+                    className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-base shadow-lg shadow-primary/40 transition-all inline-block"
+                  >
+                    {isAuthenticated ? "Go to Workspace →" : "Create Free Account →"}
+                  </Link>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  Compare Plans
-                </Link>
+                  <Link
+                    to="/pricing"
+                    className="w-full sm:w-auto px-8 py-4 rounded-xl border border-line-strong bg-surface/50 text-fg font-semibold hover:bg-surface-hover transition-all inline-block"
+                  >
+                    Compare Plans
+                  </Link>
+                </motion.div>
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </section>
-
     </PageLayout>
   );
 };

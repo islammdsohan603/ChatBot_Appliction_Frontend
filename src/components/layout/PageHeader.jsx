@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import { HiOutlineSparkles } from "react-icons/hi2";
+import { Reveal, AnimatedText } from "../motion";
 
 /**
  * Reusable hero / header component for subpages
+ * Enhanced with Framer Motion: badge fadeDown, animated headline words, and subtitle fadeUp.
  */
 export const PageHeader = ({
   badge = "Nexora AI",
@@ -59,28 +61,38 @@ export const PageHeader = ({
         )}
 
         {badge && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary-text text-xs font-semibold mb-4 shadow-xs">
-            <HiOutlineSparkles className="w-3.5 h-3.5" />
-            <span>{badge}</span>
-          </div>
+          <Reveal variant="fadeDown" playOnMount delay={0.04} distance={14}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary-text text-xs font-semibold mb-4 shadow-xs">
+              <HiOutlineSparkles className="w-3.5 h-3.5" />
+              <span>{badge}</span>
+            </div>
+          </Reveal>
         )}
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight leading-[1.15] mb-4">
-          {title}{" "}
-          {highlight && (
-            <span className="text-gradient text-transparent">
-              {highlight}
-            </span>
-          )}
-        </h1>
+        {title && (
+          <AnimatedText
+            text={title}
+            highlight={highlight}
+            delay={0.12}
+            stagger={0.045}
+            shine={true}
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight leading-[1.15] mb-4"
+          />
+        )}
 
         {description && (
-          <p className="text-base sm:text-lg text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-6">
-            {description}
-          </p>
+          <Reveal variant="fadeUp" playOnMount delay={0.32} distance={16}>
+            <p className="text-base sm:text-lg text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-6">
+              {description}
+            </p>
+          </Reveal>
         )}
 
-        {action && <div className="mt-4 flex justify-center">{action}</div>}
+        {action && (
+          <Reveal variant="scaleIn" playOnMount delay={0.44}>
+            <div className="mt-4 flex justify-center">{action}</div>
+          </Reveal>
+        )}
       </div>
     </div>
   );

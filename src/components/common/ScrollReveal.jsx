@@ -1,222 +1,120 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { Reveal } from "../motion/Reveal";
+import { RevealGroup, RevealItem } from "../motion/RevealGroup";
 
 /**
- * Custom Hook: useScrollReveal
- * Monitors an element's intersection with viewport and triggers visibility state.
- */
-export const useScrollReveal = ({
-  threshold = 0.1,
-  rootMargin = "0px 0px -40px 0px",
-  once = true,
-  disabled = false,
-} = {}) => {
-  const [isVisible, setIsVisible] = useState(disabled);
-  const domRef = useRef(null);
-
-  useEffect(() => {
-    if (disabled) {
-      setIsVisible(true);
-      return;
-    }
-
-    // Reduced motion accessibility preference check
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setIsVisible(true);
-      return;
-    }
-
-    // Fallback if IntersectionObserver is not available
-    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-      setIsVisible(true);
-      return;
-    }
-
-    const currentElem = domRef.current;
-    if (!currentElem) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (once) {
-              observer.unobserve(entry.target);
-            }
-          } else if (!once) {
-            setIsVisible(false);
-          }
-        });
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
-
-    observer.observe(currentElem);
-
-    return () => {
-      if (currentElem) {
-        observer.unobserve(currentElem);
-      }
-    };
-  }, [threshold, rootMargin, once, disabled]);
-
-  return [domRef, isVisible];
-};
-
-/**
- * ScrollReveal Component
- * Smoothly animates elements upwards from the bottom upon scrolling into view.
+ * ScrollReveal (Bridge Component)
  *
- * @param {React.ReactNode} children - Elements to animate
- * @param {string} animation - Animation direction ('fade-up' by default)
- * @param {number} delay - Transition delay in milliseconds (default: 0)
- * @param {number} duration - Transition duration in milliseconds (default: 700)
- * @param {number|string} distance - Initial offset distance in px (default: 36)
- * @param {number} threshold - Viewport intersection threshold (default: 0.1)
- * @param {string} rootMargin - Viewport margin for trigger (default: "0px 0px -40px 0px")
- * @param {boolean} once - If true, triggers only once upon first scroll (default: true)
- * @param {string} className - Additional CSS classes
- * @param {string} as - Polymorphic HTML tag to render (default: 'div')
- * @param {boolean} disabled - Disable animation if true
- * @param {boolean} blur - Add subtle de-blur effect on entrance
- * @param {object} style - Extra inline styles
+ * Bridges the legacy ScrollReveal component API directly to the unified Framer Motion system.
+ * Translates props (animation -> variant, delay in ms -> seconds, distance in px -> number).
  */
 export const ScrollReveal = ({
   children,
   animation = "fade-up",
   delay = 0,
-  duration = 700,
-  distance = 36,
-  threshold = 0.1,
-  rootMargin = "0px 0px -40px 0px",
+  duration = 600,
+  distance = 24,
   once = true,
   className = "",
-  as: Component = "div",
-  disabled = false,
-  blur = false,
-  style = {},
-  ...restProps
+  as = "div",
+  whileHover,
+  whileTap,
+  ...rest
 }) => {
-  const [domRef, isVisible] = useScrollReveal({
-    threshold,
-    rootMargin,
-    once,
-    disabled,
-  });
+  // Normalize animation variant name
+  let variant = "fadeUp";
+  if (animation === "fade-down") variant = "fadeDown";
+  else if (animation === "fade-in") variant = "fadeIn";
+  else if (animation === "scale-in" || animation === "scale") variant = "scaleIn";
+  else if (animation === "slide-left") variant = "slideLeft";
+  else if (animation === "slide-right") variant = "slideRight";
 
-  const getTransitionStyles = () => {
-    if (disabled) return {};
-
-    const dist = typeof distance === "number" ? `${distance}px` : distance;
-
-    const baseTransition = {
-      transitionProperty: "opacity, transform, filter",
-      transitionDuration: `${duration}ms`,
-      transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-      transitionDelay: `${delay}ms`,
-      willChange: "opacity, transform",
-    };
-
-    if (!isVisible) {
-      let initialTransform = `translate3d(0, ${dist}, 0)`; // default upward animation
-
-      switch (animation) {
-        case "fade-up":
-          initialTransform = `translate3d(0, ${dist}, 0)`;
-          break;
-        case "fade-down":
-          initialTransform = `translate3d(0, -${dist}, 0)`;
-          break;
-        case "fade-left":
-          initialTransform = `translate3d(-${dist}, 0, 0)`;
-          break;
-        case "fade-right":
-          initialTransform = `translate3d(${dist}, 0, 0)`;
-          break;
-        case "zoom-in":
-        case "scale-up":
-          initialTransform = "scale3d(0.92, 0.92, 1) translate3d(0, 20px, 0)";
-          break;
-        case "fade-in":
-          initialTransform = "none";
-          break;
-        default:
-          initialTransform = `translate3d(0, ${dist}, 0)`;
-      }
-
-      return {
-        ...baseTransition,
-        opacity: 0,
-        transform: initialTransform,
-        ...(blur ? { filter: "blur(4px)" } : {}),
-      };
-    }
-
-    return {
-      ...baseTransition,
-      opacity: 1,
-      transform: "translate3d(0, 0, 0) scale3d(1, 1, 1)",
-      ...(blur ? { filter: "blur(0px)" } : {}),
-    };
-  };
+  // Normalize delay: if > 10, assume milliseconds and convert to seconds
+  const normalizedDelay = delay > 10 ? delay / 1000 : delay;
+  const normalizedDuration = duration > 10 ? duration / 1000 : duration;
+  const normalizedDistance = typeof distance === "string" ? parseInt(distance, 10) || 24 : distance;
 
   return (
-    <Component
-      ref={domRef}
-      style={{ ...getTransitionStyles(), ...style }}
-      className={`scroll-reveal-container ${isVisible ? "is-visible" : "is-hidden"} ${className}`}
-      {...restProps}
+    <Reveal
+      variant={variant}
+      delay={normalizedDelay}
+      duration={normalizedDuration}
+      distance={normalizedDistance}
+      viewport={{ once, amount: 0.2 }}
+      className={className}
+      as={as}
+      whileHover={whileHover}
+      whileTap={whileTap}
+      {...rest}
     >
       {children}
-    </Component>
+    </Reveal>
   );
 };
 
-/**
- * ScrollRevealGroup Component
- * Wraps multiple child elements and applies a cascading/staggered upward animation.
- */
 export const ScrollRevealGroup = ({
   children,
-  stagger = 100,
-  baseDelay = 0,
-  animation = "fade-up",
-  duration = 700,
-  distance = 36,
-  threshold = 0.1,
+  stagger = 90,
+  delayChildren = 0.1,
   className = "",
-  as: Component = "div",
-  ...restProps
+  as = "div",
+  ...rest
 }) => {
-  const childArray = React.Children.toArray(children);
+  const normalizedStagger = stagger > 10 ? stagger / 1000 : stagger;
 
   return (
-    <Component className={className} {...restProps}>
-      {childArray.map((child, index) => {
-        if (!React.isValidElement(child)) return child;
-
-        return (
-          <ScrollReveal
-            key={child.key || index}
-            animation={animation}
-            delay={baseDelay + index * stagger}
-            duration={duration}
-            distance={distance}
-            threshold={threshold}
-            className={child.props.className ? "" : undefined}
-          >
-            {child}
-          </ScrollReveal>
-        );
-      })}
-    </Component>
+    <RevealGroup
+      stagger={normalizedStagger}
+      delayChildren={delayChildren}
+      className={className}
+      as={as}
+      {...rest}
+    >
+      {children}
+    </RevealGroup>
   );
+};
+
+export const ScrollRevealItem = ({
+  children,
+  animation = "fade-up",
+  distance = 24,
+  duration = 600,
+  className = "",
+  as = "div",
+  whileHover,
+  whileTap,
+  ...rest
+}) => {
+  let variant = "fadeUp";
+  if (animation === "fade-down") variant = "fadeDown";
+  else if (animation === "fade-in") variant = "fadeIn";
+  else if (animation === "scale-in") variant = "scaleIn";
+  else if (animation === "slide-left") variant = "slideLeft";
+  else if (animation === "slide-right") variant = "slideRight";
+
+  const normalizedDuration = duration > 10 ? duration / 1000 : duration;
+  const normalizedDistance = typeof distance === "string" ? parseInt(distance, 10) || 24 : distance;
+
+  return (
+    <RevealItem
+      variant={variant}
+      duration={normalizedDuration}
+      distance={normalizedDistance}
+      className={className}
+      as={as}
+      whileHover={whileHover}
+      whileTap={whileTap}
+      {...rest}
+    >
+      {children}
+    </RevealItem>
+  );
+};
+
+export const useScrollReveal = () => {
+  // Retained for backward-compatibility if any hook uses it
+  return [{ current: null }, true];
 };
 
 export default ScrollReveal;

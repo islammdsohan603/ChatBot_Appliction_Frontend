@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 /**
  * 3D Animated Moon Component with scroll parallax rotation & mouse antigravity float
@@ -9,19 +9,24 @@ import { motion } from "framer-motion";
  * @param {number} props.mouseY - Normalized mouse Y (-1 to 1)
  */
 export const MoonParallax = ({ scrollY = 0, mouseX = 0, mouseY = 0 }) => {
+  const shouldReduceMotion = useReducedMotion();
   // Rotate Moon smoothly as user scrolls (1 degree per 15px scrolled)
-  const rotationAngle = (scrollY / 15) % 360;
+  const rotationAngle = shouldReduceMotion ? 0 : (scrollY / 15) % 360;
 
   return (
     <motion.div
       className="absolute top-12 sm:top-16 right-4 sm:right-16 w-36 sm:w-52 h-36 sm:h-52 pointer-events-none z-0"
       style={{
-        y: scrollY * 0.18,
-        x: mouseX * -25,
+        y: shouldReduceMotion ? 0 : scrollY * 0.18,
+        x: shouldReduceMotion ? 0 : mouseX * -25,
       }}
-      animate={{
-        y: [0, -12, 0],
-      }}
+      animate={
+        shouldReduceMotion
+          ? { y: 0 }
+          : {
+              y: [0, -12, 0],
+            }
+      }
       transition={{
         duration: 6,
         repeat: Infinity,

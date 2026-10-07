@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FiXCircle, FiArrowRight, FiRefreshCw } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal } from "../components/motion";
 
 /**
  * Payment Cancelled / Failed Page — shown when Stripe Checkout is cancelled or errors.
@@ -27,7 +27,7 @@ export const PaymentCancel = () => {
       description="Your payment was cancelled or could not be processed."
     >
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-        <ScrollReveal animation="fade-up" distance="30px">
+        <Reveal animation="fade-up" distance="30px">
           <div className="text-center p-12 rounded-3xl bg-surface border border-error/20 shadow-xl">
           {/* Animated error icon */}
           <div className="relative w-24 h-24 mx-auto mb-8">
@@ -77,7 +77,7 @@ export const PaymentCancel = () => {
             </Link>
           </div>
         </div>
-      </ScrollReveal>
+      </Reveal>
     </div>
   </PageLayout>
   );

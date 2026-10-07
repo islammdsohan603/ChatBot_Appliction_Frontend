@@ -6,8 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import gsap from "gsap";
-import ScrollRevealLib from "scrollreveal";
+
 import {
   HiOutlineBolt,
   HiOutlineShieldCheck,

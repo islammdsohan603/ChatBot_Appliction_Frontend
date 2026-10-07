@@ -14,7 +14,8 @@ import { toast } from "react-toastify";
 import { clearUser } from "../../redux/userSlice";
 import axios from "axios";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal } from "../components/motion";
+import { motion } from "framer-motion";
 import {
   HiOutlineArrowLeft,
   HiOutlineCog6Tooth,
@@ -259,7 +260,7 @@ const Settings = () => {
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Navigation Tabs (ChatGPT/Gemini Style) */}
-          <ScrollReveal
+          <Reveal
             animation="fade-up"
             delay={0.04}
             distance="24px"
@@ -273,14 +274,21 @@ const Settings = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-3 w-full px-3.5 py-3 rounded-xl text-left transition-all shrink-0 ${
+                    className={`relative flex items-center gap-3 w-full px-3.5 py-3 rounded-xl text-left transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? "bg-gradient-to-r from-brand-violet/15 to-brand-violet/10 text-primary-text border border-primary/40 shadow-[0_2px_12px_rgb(var(--primary-rgb)/0.15)] font-semibold"
+                        ? "text-primary-text font-semibold shadow-xs"
                         : "text-fg-secondary hover:text-fg hover:bg-primary/10"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-primary-text" : "text-fg-muted"}`} />
-                    <div className="min-w-0">
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeSettingsTabPill"
+                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-brand-violet/15 to-brand-violet/10 border border-primary/40 -z-10 shadow-[0_2px_12px_rgb(var(--primary-rgb)/0.15)]"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <Icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive ? "text-primary-text" : "text-fg-muted"}`} />
+                    <div className="min-w-0 relative z-10">
                       <p className="text-xs font-semibold truncate">{tab.label}</p>
                       <p className="text-[10px] text-fg-muted truncate hidden lg:block">
                         {tab.desc}
@@ -290,10 +298,10 @@ const Settings = () => {
                 );
               })}
             </div>
-          </ScrollReveal>
+          </Reveal>
 
           {/* Right Content Panel */}
-          <ScrollReveal
+          <Reveal
             animation="fade-up"
             delay={0.12}
             distance="30px"
@@ -745,7 +753,7 @@ const Settings = () => {
                 </div>
               )}
             </div>
-          </ScrollReveal>
+          </Reveal>
         </div>
       </main>
     </div>

@@ -26,7 +26,9 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal, RevealGroup, RevealItem, CountUp } from "../components/motion";
+import { motion } from "framer-motion";
+import { buttonMotion, cardHoverMotion } from "../lib/motion";
 import PreviousChatViewer from "../components/chat/PreviousChatViewer";
 
 const SERVER_URL =
@@ -450,7 +452,7 @@ export const Dashboard = () => {
             {/* ══════════════════════════════════════════════
                 TOP WELCOME & TIER BANNER
                 ══════════════════════════════════════════════ */}
-            <ScrollReveal animation="fade-up" delay={60}>
+            <Reveal animation="fade-up" delay={0.06}>
               <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-line shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-violet to-brand-cyan text-primary-contrast font-extrabold text-xl flex items-center justify-center shadow-lg shadow-primary/20">
@@ -499,7 +501,7 @@ export const Dashboard = () => {
                   </button>
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
 
         {isLoading ? (
           <LoadingSpinner label="Loading dashboard metrics & recent history..." />
@@ -515,7 +517,7 @@ export const Dashboard = () => {
               const activePlan = PLAN_CONFIG[activePlanKey] || PLAN_CONFIG.free;
 
               return (
-                <ScrollReveal animation="fade-up" delay={100} distance={35}>
+                <Reveal animation="fade-up" delay={0.1} distance={35}>
                   <div
                     className={`p-6 sm:p-8 rounded-3xl bg-gradient-to-br ${activePlan.gradient} bg-surface border shadow-xl ${activePlan.glowColor} mb-10 transition-all duration-300`}
                   >
@@ -618,14 +620,14 @@ export const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </ScrollReveal>
+              </Reveal>
             );
           })()}
 
             {/* ══════════════════════════════════════════════
                 4-CARD KPI METRICS GRID
                 ══════════════════════════════════════════════ */}
-            <ScrollReveal animation="fade-up" delay={120} distance={30}>
+            <Reveal animation="fade-up" delay={0.12} distance={30}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
                 <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
                   <div className="flex items-center justify-between mb-3">
@@ -637,7 +639,7 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    {stats?.totalConversations || 0}
+                    <CountUp end={stats?.totalConversations || 0} />
                   </p>
                   <p className="text-[11px] text-success-text font-medium mt-1 flex items-center gap-1">
                     <FiTrendingUp className="w-3 h-3" />
@@ -655,7 +657,7 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    {stats?.totalMessages || 0}
+                    <CountUp end={stats?.totalMessages || 0} />
                   </p>
                   <p className="text-[11px] text-fg-muted mt-1">
                     Prompts + Streamed replies
@@ -672,7 +674,7 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    {stats?.estimatedTokens ? Number(stats.estimatedTokens).toLocaleString() : "0"}
+                    <CountUp end={Number(stats?.estimatedTokens || 0)} />
                   </p>
                   <p className="text-[11px] text-primary-text font-medium mt-1">
                     Gemini 3.8 Flash quota
@@ -696,12 +698,12 @@ export const Dashboard = () => {
                   </p>
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
 
             {/* ══════════════════════════════════════════════
                 7-DAY ACTIVITY CHART & QUICK LAUNCHERS
                 ══════════════════════════════════════════════ */}
-            <ScrollReveal animation="fade-up" delay={180} distance={30}>
+            <Reveal animation="fade-up" delay={0.18} distance={30}>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
                 {/* Activity Bar Visualization */}
                 <div className="lg:col-span-2 p-7 rounded-3xl bg-surface border border-line shadow-sm">
@@ -788,12 +790,12 @@ export const Dashboard = () => {
                   </Link>
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
 
             {/* ══════════════════════════════════════════════
                 RECENT CHAT SESSIONS TABLE
                 ══════════════════════════════════════════════ */}
-            <ScrollReveal animation="fade-up" delay={240} distance={30}>
+            <Reveal animation="fade-up" delay={0.24} distance={30}>
               <div className="p-7 rounded-3xl bg-surface border border-line shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <div>
@@ -898,7 +900,7 @@ export const Dashboard = () => {
                 </div>
               )}
             </div>
-          </ScrollReveal>
+          </Reveal>
           </>
         )}
           </div>

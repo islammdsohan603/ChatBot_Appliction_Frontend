@@ -9,12 +9,16 @@ import {
 } from "react-icons/fi";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { motion, useReducedMotion } from "framer-motion";
+import { fadeIn, MOTION_CONFIG } from "../../lib/motion";
 
 /**
  * Global application footer
+ * Enhanced with Framer Motion: simple fadeIn upon scrolling into view + micro-interactions
  */
 export const Footer = () => {
   const [email, setEmail] = useState("");
+  const shouldReduceMotion = useReducedMotion();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -67,12 +71,18 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="border-t border-line bg-surface-hover/80 backdrop-blur-md transition-colors text-fg-secondary">
+    <motion.footer
+      initial={shouldReduceMotion ? { opacity: 0 } : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={fadeIn}
+      className="border-t border-line bg-surface-hover/80 backdrop-blur-md transition-colors text-fg-secondary"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12 border-b border-line">
           <div className="lg:col-span-5 space-y-4">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-primary-contrast font-bold shadow-md shadow-primary/30">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-primary-contrast font-bold shadow-md shadow-primary/30 group-hover:scale-105 transition-transform">
                 <FiMessageSquare className="w-5 h-5" />
               </div>
               <span className="text-xl font-extrabold text-gradient text-transparent">
@@ -108,13 +118,15 @@ export const Footer = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 px-3.5 py-2 rounded-xl text-xs sm:text-sm bg-surface border border-line-strong focus:border-primary outline-none transition-all placeholder:text-fg-muted text-fg"
               />
-              <button
+              <motion.button
                 type="submit"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
                 className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs sm:text-sm font-semibold transition-all shadow-md flex items-center gap-1.5 cursor-pointer shrink-0"
               >
                 <span>Subscribe</span>
                 <FiSend className="w-3.5 h-3.5" />
-              </button>
+              </motion.button>
             </form>
           </div>
         </div>
@@ -155,42 +167,36 @@ export const Footer = () => {
         <div className="pt-8 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-fg-muted">
           <p className="flex items-center gap-1 text-center sm:text-left">
             © {currentYear} Nexora AI Inc. Built with
-            <FiHeart className="w-3.5 h-3.5 text-error-text fill-error-text inline" />{" "}
+            <FiHeart className="w-3.5 h-3.5 text-error-text fill-error-text inline mx-0.5" />
             for intelligent collaboration.
           </p>
 
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 rounded-lg hover:text-primary-text hover:bg-primary/10 transition-colors"
-              aria-label="GitHub"
-            >
-              <FiGithub className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 rounded-lg hover:text-primary-text hover:bg-primary/10 transition-colors"
-              aria-label="Twitter"
-            >
-              <FiTwitter className="w-4 h-4" />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 rounded-lg hover:text-primary-text hover:bg-primary/10 transition-colors"
-              aria-label="LinkedIn"
-            >
-              <FiLinkedin className="w-4 h-4" />
-            </a>
+          <div className="flex items-center gap-3">
+            {[
+              { icon: FiGithub, href: "https://github.com", label: "GitHub" },
+              { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
+              { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+            ].map((social) => {
+              const Icon = social.icon;
+              return (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.1, y: -1 }}
+                  whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+                  className="p-2 rounded-lg text-fg-secondary hover:text-primary-text hover:bg-primary/10 transition-colors"
+                  aria-label={social.label}
+                >
+                  <Icon className="w-4 h-4" />
+                </motion.a>
+              );
+            })}
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

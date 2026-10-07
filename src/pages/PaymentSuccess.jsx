@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { FiCheckCircle, FiArrowRight, FiLoader, FiAlertTriangle } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import { setUserData } from "../../redux/userSlice";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal } from "../components/motion";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -86,7 +86,7 @@ export const PaymentSuccess = () => {
     >
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
         {status === "verifying" && (
-          <ScrollReveal animation="fade-up" distance="30px">
+          <Reveal animation="fade-up" distance="30px">
             <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
               <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                 <FiLoader className="w-10 h-10 text-primary-text animate-spin" />
@@ -98,11 +98,11 @@ export const PaymentSuccess = () => {
                 Please wait while we confirm your payment with Stripe.
               </p>
             </div>
-          </ScrollReveal>
+          </Reveal>
         )}
 
         {status === "success" && (
-          <ScrollReveal animation="fade-up" distance="30px">
+          <Reveal animation="fade-up" distance="30px">
             <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
               {/* Animated success icon */}
               <div className="relative w-24 h-24 mx-auto mb-8">
@@ -162,11 +162,11 @@ export const PaymentSuccess = () => {
                 </Link>
               </div>
             </div>
-          </ScrollReveal>
+          </Reveal>
         )}
 
         {status === "error" && (
-          <ScrollReveal animation="fade-up" distance="30px">
+          <Reveal animation="fade-up" distance="30px">
             <div className="text-center p-12 rounded-3xl bg-surface border border-error/20 shadow-xl">
               <div className="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center mx-auto mb-6">
                 <FiAlertTriangle className="w-10 h-10 text-error-text" />
@@ -193,7 +193,7 @@ export const PaymentSuccess = () => {
                 </Link>
               </div>
             </div>
-          </ScrollReveal>
+          </Reveal>
         )}
       </div>
     </PageLayout>

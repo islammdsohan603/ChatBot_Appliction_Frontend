@@ -22,17 +22,22 @@ import {
 } from "react-icons/hi2";
 import { useState } from "react";
 import { EditProfile } from "../components/models/EditProfile";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal, CountUp } from "../components/motion";
+import { motion } from "framer-motion";
+import { buttonMotion } from "../lib/motion";
 
 /* ── Stats row ── */
-const StatItem = ({ value, label }) => (
-  <div className="flex flex-col items-center gap-1 px-6 py-4">
-    <span className="text-2xl font-extrabold text-gradient text-transparent">
-      {value}
-    </span>
-    <span className="text-xs text-fg-muted font-medium">{label}</span>
-  </div>
-);
+const StatItem = ({ value, label }) => {
+  const num = parseInt(value, 10);
+  return (
+    <div className="flex flex-col items-center gap-1 px-6 py-4">
+      <span className="text-2xl font-extrabold text-gradient text-transparent">
+        {isNaN(num) ? value : <CountUp end={num} />}
+      </span>
+      <span className="text-xs text-fg-muted font-medium">{label}</span>
+    </div>
+  );
+};
 
 /* ── Info row ── */
 const InfoRow = ({ icon, label, value }) => (
@@ -180,7 +185,7 @@ const Profile = () => {
       <main className="relative max-w-4xl mx-auto px-4 py-8 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* ── Left column: avatar + basic info ── */}
-          <ScrollReveal
+          <Reveal
             animation="fade-up"
             delay={0.06}
             distance="28px"
@@ -265,10 +270,10 @@ const Profile = () => {
                 />
               </div>
             </Card>
-          </ScrollReveal>
+          </Reveal>
 
           {/* ── Right column: account info + activity ── */}
-          <ScrollReveal
+          <Reveal
             animation="fade-up"
             delay={0.14}
             distance="32px"
@@ -393,7 +398,7 @@ const Profile = () => {
                 ))}
               </div>
             </Card>
-          </ScrollReveal>
+          </Reveal>
         </div>
       </main>
 

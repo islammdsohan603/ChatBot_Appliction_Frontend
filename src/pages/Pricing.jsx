@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiCheck,
   FiX,
@@ -16,7 +17,11 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import {
+  Reveal,
+  RevealGroup,
+  RevealItem,
+} from "../components/motion";
 import { setUserData } from "../../redux/userSlice";
 
 const SERVER_URL =
@@ -102,68 +107,66 @@ const FALLBACK_PLANS = [
 ];
 
 const COMPARISON_ROWS = [
-  { feature: "Gemini 3.8 Flash Access", free: true, pro: true, enterprise: true },
-  { feature: "Multimodal Vision Attachments", free: "Up to 5MB", pro: "Unlimited", enterprise: "Unlimited" },
-  { feature: "Daily Message Limits", free: "50 / day", pro: "Unlimited", enterprise: "Unlimited" },
-  { feature: "Turn Alternation Guarantee", free: true, pro: true, enterprise: true },
-  { feature: "History Export (Markdown/JSON)", free: false, pro: true, enterprise: true },
-  { feature: "Custom System Instructions", free: false, pro: true, enterprise: true },
-  { feature: "Direct WebSocket Peer Chat", free: true, pro: true, enterprise: true },
-  { feature: "Dedicated High-Throughput Quota", free: false, pro: false, enterprise: true },
-  { feature: "Custom API & Webhooks Access", free: false, pro: false, enterprise: true },
-  { feature: "Response Queue Priority", free: "Standard", pro: "High", enterprise: "Dedicated VIP" },
-  { feature: "Technical Support Channel", free: "Community", pro: "Discord Priority", enterprise: "24/7 Dedicated" },
+  { feature: "Gemini 3.8 Flash Model", free: true, pro: true, enterprise: true },
+  { feature: "Gemini 3.5 Pro Access", free: false, pro: true, enterprise: true },
+  { feature: "Sub-Second Streaming (SSE)", free: true, pro: true, enterprise: true },
+  { feature: "Multimodal Vision Attachments", free: "5MB max", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Daily Message Limit", free: "50 / day", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Session History Retention", free: "30 Days", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Export (JSON / Markdown)", free: false, pro: true, enterprise: true },
+  { feature: "Direct Human Chat (WebSockets)", free: true, pro: true, enterprise: true },
+  { feature: "Custom API Keys", free: false, pro: true, enterprise: true },
+  { feature: "Dedicated Support Queue", free: false, pro: "Discord Priority", enterprise: "24/7 Phone + Slack" },
 ];
 
 const FAQS = [
   {
-    q: "Can I bring my own Google Gemini API key?",
-    a: "Yes! In your Settings -> AI Personalization page, you can configure your own Google AI Studio project key. All plans support bringing custom keys to bypass shared team quotas.",
+    q: "Can I use Nexora AI for free indefinitely?",
+    a: "Yes! Our Free Starter plan has no expiration date. You get 50 high-speed messages daily powered by Gemini 3.8 Flash, complete with multimodal optical image parsing.",
   },
   {
     q: "How does the annual billing discount work?",
-    a: "When you select Yearly billing, you receive 2 months completely free (equivalent to a 20% discount on Pro and Enterprise tiers).",
+    a: "When you select Annual Billing, you pay upfront for 12 months and receive 2 months completely free (a 20% discount compared to monthly pricing).",
   },
   {
-    q: "Can I cancel or change my plan anytime?",
-    a: "Absolutely. You can upgrade, downgrade, or cancel your subscription at any time with immediate effect. No lock-in contracts.",
+    q: "Can I switch or cancel my plan at any time?",
+    a: "Absolutely. You can upgrade, downgrade, or cancel directly from your User Dashboard. Downgrades take effect at the conclusion of your current billing period.",
   },
   {
     q: "What payment methods are supported?",
-    a: "We accept all major credit/debit cards (Visa, MasterCard, American Express), Apple Pay, Google Pay, and corporate invoicing for Enterprise accounts.",
+    a: "We process payments via Stripe. We support all major credit cards (Visa, MasterCard, American Express), Apple Pay, Google Pay, and SEPA debit.",
   },
   {
-    q: "Is my conversation history secure?",
-    a: "Yes. All conversations are stored in encrypted MongoDB Atlas databases with strict per-user JWT authorization. We never sell or train public models on your private conversations.",
+    q: "Is my conversational data private and secure?",
+    a: "100%. We never use your prompts, attachments, or conversation history to train models. All sessions are encrypted with bcrypt and JWT authentication over SSL.",
   },
 ];
 
 /**
- * Pricing & Plans Page Component
+ * Modern Pricing Page with Framer Motion reveals & staggered card animation
  */
 export const Pricing = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, userData } = useSelector((s) => s.user);
   const navigate = useNavigate();
+  const { userData, isAuthenticated } = useSelector((s) => s.user);
+
   const [isYearly, setIsYearly] = useState(false);
   const [plans, setPlans] = useState(FALLBACK_PLANS);
-  const [isLoading, setIsLoading] = useState(true);
-  const [subscribingSlug, setSubscribingSlug] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
+  const [subscribingSlug, setSubscribingSlug] = useState(null);
 
-  const currentTier = userData?.user?.subscriptionTier || userData?.subscriptionTier || "free";
+  const currentTier = userData?.user?.plan || userData?.plan || "free";
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
         const res = await axios.get(`${SERVER_URL}/api/pricing/plans`);
-        if (res.data?.plans && res.data.plans.length > 0) {
-          setPlans(res.data.plans);
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setPlans(res.data);
         }
-      } catch (err) {
-        console.warn("Pricing fetch failed, using defaults:", err);
-      } finally {
-        setIsLoading(false);
+      } catch {
+        setPlans(FALLBACK_PLANS);
       }
     };
     fetchPlans();
@@ -171,12 +174,12 @@ export const Pricing = () => {
 
   const handleSubscribe = async (planSlug) => {
     if (!isAuthenticated) {
-      toast.info("Please log in or create an account to choose a subscription plan.");
-      navigate("/signup");
+      toast.info("Please create an account or sign in to subscribe.");
+      navigate("/login");
       return;
     }
 
-    if (planSlug === currentTier) {
+    if (currentTier === planSlug) {
       toast.info(`You are currently on the ${planSlug.toUpperCase()} plan.`);
       return;
     }
@@ -184,7 +187,6 @@ export const Pricing = () => {
     setSubscribingSlug(planSlug);
 
     try {
-      // Free plan — direct downgrade, no payment needed
       if (planSlug === "free") {
         const res = await axios.post(
           `${SERVER_URL}/api/pricing/subscribe`,
@@ -202,7 +204,6 @@ export const Pricing = () => {
         return;
       }
 
-      // Paid plans — create Stripe Checkout Session and redirect
       const billingCycle = isYearly ? "yearly" : "monthly";
       const res = await axios.post(
         `${SERVER_URL}/api/pricing/create-checkout-session`,
@@ -211,7 +212,6 @@ export const Pricing = () => {
       );
 
       if (res.data?.url) {
-        // Redirect to Stripe Checkout
         window.location.href = res.data.url;
       } else {
         toast.error("Failed to start checkout process. Please try again.");
@@ -237,7 +237,7 @@ export const Pricing = () => {
       />
 
       {/* ── Billing Cycle Toggle ── */}
-      <ScrollReveal animation="fade-up" delay={80}>
+      <Reveal variant="fadeUp" delay={0.08}>
         <div className="flex items-center justify-center gap-3 mb-14 px-4">
           <span
             className={`text-sm font-semibold cursor-pointer ${
@@ -254,9 +254,11 @@ export const Pricing = () => {
             className="relative w-14 h-8 rounded-full bg-surface-hover border border-primary/25 p-1 transition-colors cursor-pointer"
             aria-label="Toggle Monthly and Yearly billing"
           >
-            <div
-              className={`w-6 h-6 rounded-full bg-primary transition-transform shadow-md ${
-                isYearly ? "translate-x-6" : "translate-x-0"
+            <motion.div
+              layout
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              className={`w-6 h-6 rounded-full bg-primary shadow-md ${
+                isYearly ? "ml-auto" : "mr-auto"
               }`}
             />
           </button>
@@ -273,36 +275,35 @@ export const Pricing = () => {
             </span>
           </span>
         </div>
-      </ScrollReveal>
+      </Reveal>
 
       {/* ══════════════════════════════════════════════
-          PRICING CARDS
+          PRICING CARDS (Staggered with popular plan scaled up)
           ══════════════════════════════════════════════ */}
       <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {isLoading ? (
           <LoadingSpinner label="Loading plans..." />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <RevealGroup stagger={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {plans.map((plan, idx) => {
               const price = isYearly ? Math.round(plan.priceYearly / 12) : plan.priceMonthly;
               const isCurrent = currentTier === plan.slug;
               const isSubmitting = subscribingSlug === plan.slug;
-              const isAnySubscribing = subscribingSlug !== null;
 
               return (
-                <ScrollReveal
+                <RevealItem
                   key={plan.slug}
-                  animation="fade-up"
-                  delay={idx * 120}
-                  distance={40}
+                  variant={plan.isPopular ? "scaleIn" : "fadeUp"}
                   className="h-full flex flex-col"
                 >
-                  <div
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.25 }}
                     className={`h-full relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between overflow-hidden ${
                       isSubmitting
                         ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/40 ring-4 ring-primary/20 scale-[1.02]"
                         : plan.isPopular
-                        ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/20 md:-translate-y-2"
+                        ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/20 md:-translate-y-2 md:scale-[1.02]"
                         : "bg-surface/80 border border-line hover:border-primary/40 shadow-lg"
                     }`}
                   >
@@ -319,83 +320,85 @@ export const Pricing = () => {
                     )}
 
                     <div>
-                      <div className="flex items-center justify-between mb-2">
+                      {/* Plan Header */}
+                      <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xl font-bold text-fg">
                           {plan.name}
                         </h3>
                         {isCurrent && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-success/15 text-success-text border border-success/30">
-                            Active Plan
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-success/15 text-success-text border border-success/30">
+                            Current Plan
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-fg-muted mb-6 min-h-[36px]">
+                      <p className="text-xs text-fg-muted min-h-[32px] leading-relaxed mb-6">
                         {plan.description}
                       </p>
 
-                      {/* Price display */}
-                      <div className="flex items-baseline gap-1 mb-6">
-                        <span className="text-4xl sm:text-5xl font-extrabold text-fg">
+                      {/* Pricing Tag */}
+                      <div className="mb-6 pb-6 border-b border-line flex items-baseline gap-1">
+                        <span className="text-4xl sm:text-5xl font-extrabold text-gradient text-transparent">
                           ${price}
                         </span>
-                        <span className="text-xs sm:text-sm text-fg-muted font-medium">
-                          / month {isYearly && plan.priceMonthly > 0 && "(billed annually)"}
+                        <span className="text-xs font-semibold text-fg-muted">
+                          {price === 0 ? "forever" : "/ month"}
                         </span>
+                        {isYearly && price > 0 && (
+                          <span className="text-[10px] text-success-text ml-2 font-medium">
+                            billed ${plan.priceYearly}/yr
+                          </span>
+                        )}
                       </div>
 
-                      {/* Feature bullet list */}
-                      <div className="space-y-3 mb-8 pt-4 border-t border-line">
+                      {/* Features List */}
+                      <div className="space-y-3 mb-8">
+                        <p className="text-xs font-bold uppercase tracking-wider text-fg-muted">
+                          What's included:
+                        </p>
                         {plan.features.map((feat, fIdx) => (
-                          <div key={fIdx} className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-primary/10 text-primary-text flex items-center justify-center shrink-0 mt-0.5">
-                              <FiCheck className="w-3.5 h-3.5" />
-                            </div>
-                            <span className="text-xs sm:text-sm text-fg-secondary">
-                              {feat}
-                            </span>
+                          <div key={fIdx} className="flex items-start gap-2.5 text-xs text-fg-secondary">
+                            <FiCheck className="w-4 h-4 text-success-text shrink-0 mt-0.5" />
+                            <span>{feat}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Plan CTA button */}
-                    <button
+                    {/* Action Button */}
+                    <motion.button
                       type="button"
-                      disabled={isCurrent || isAnySubscribing}
+                      disabled={isSubmitting || isCurrent}
                       onClick={() => handleSubscribe(plan.slug)}
-                      className={`w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
-                        isSubmitting
-                          ? "bg-primary text-primary-contrast shadow-lg shadow-primary/30 opacity-95 cursor-wait"
-                          : isCurrent
-                          ? "bg-surface-hover text-fg-muted cursor-not-allowed"
+                      whileHover={isCurrent ? {} : { scale: 1.02 }}
+                      whileTap={isCurrent ? {} : { scale: 0.98 }}
+                      className={`w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${
+                        isCurrent
+                          ? "bg-surface-hover text-fg-muted cursor-not-allowed border border-line-strong"
                           : plan.isPopular
-                          ? "bg-primary hover:bg-primary-hover text-primary-contrast shadow-md shadow-primary/30 hover:-translate-y-0.5 cursor-pointer"
-                          : "border border-primary/30 text-fg hover:bg-primary/10 cursor-pointer"
+                          ? "bg-primary hover:bg-primary-hover text-primary-contrast shadow-primary/30"
+                          : "bg-surface hover:bg-surface-hover text-fg border border-line-strong hover:border-primary/40"
                       }`}
                     >
                       {isSubmitting ? (
                         <>
-                          <FiLoader className="w-4 h-4 animate-spin text-primary-contrast shrink-0" />
-                          <span>
-                            {plan.priceMonthly === 0
-                              ? "Switching Plan..."
-                              : "Redirecting to Stripe..."}
-                          </span>
+                          <FiLoader className="w-4 h-4 animate-spin" />
+                          <span>Processing...</span>
                         </>
                       ) : isCurrent ? (
-                        "Current Active Plan"
-                      ) : plan.priceMonthly === 0 ? (
-                        "Get Started Free"
+                        <span>Active Subscription</span>
                       ) : (
-                        `Upgrade to ${plan.name}`
+                        <>
+                          <span>{plan.priceMonthly === 0 ? "Get Started Free" : `Upgrade to ${plan.name}`}</span>
+                          <FiArrowRight className="w-4 h-4" />
+                        </>
                       )}
-                    </button>
-                  </div>
-                </ScrollReveal>
+                    </motion.button>
+                  </motion.div>
+                </RevealItem>
               );
             })}
-          </div>
+          </RevealGroup>
         )}
       </section>
 
@@ -403,16 +406,16 @@ export const Pricing = () => {
           FEATURE COMPARISON MATRIX
           ══════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
+        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Detailed Breakdown
           </h2>
           <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Compare Plan Capabilities
           </h3>
-        </ScrollReveal>
+        </Reveal>
 
-        <ScrollReveal animation="fade-up" distance={35}>
+        <Reveal variant="fadeUp" distance={30}>
           <div className="rounded-2xl border border-line bg-surface shadow-lg overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead>
@@ -467,35 +470,28 @@ export const Pricing = () => {
               </tbody>
             </table>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </section>
 
       {/* ══════════════════════════════════════════════
           FREQUENTLY ASKED QUESTIONS (ACCORDION)
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
-        <ScrollReveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12">
+        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Got Questions?
           </h2>
           <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Frequently Asked Questions
           </h3>
-        </ScrollReveal>
+        </Reveal>
 
-        <div className="space-y-4">
+        <RevealGroup stagger={0.07} className="space-y-4">
           {FAQS.map((faq, idx) => {
             const isOpen = openFaq === idx;
             return (
-              <ScrollReveal
-                key={idx}
-                animation="fade-up"
-                delay={idx * 60}
-                distance={25}
-              >
-                <div
-                  className="rounded-2xl border border-line bg-surface overflow-hidden transition-all shadow-xs"
-                >
+              <RevealItem key={idx} variant="fadeUp">
+                <div className="rounded-2xl border border-line bg-surface overflow-hidden transition-all shadow-xs">
                   <button
                     type="button"
                     onClick={() => setOpenFaq(isOpen ? -1 : idx)}
@@ -508,23 +504,33 @@ export const Pricing = () => {
                       <FiChevronDown className="w-5 h-5 text-fg-muted shrink-0" />
                     )}
                   </button>
-                  {isOpen && (
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-fg-secondary leading-relaxed border-t border-line pt-3">
-                      {faq.a}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 pb-5 text-xs sm:text-sm text-fg-secondary leading-relaxed border-t border-line pt-3">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </ScrollReveal>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* ══════════════════════════════════════════════
           CUSTOM ENTERPRISE BANNER
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <ScrollReveal animation="fade-up" distance={35}>
+        <Reveal variant="fadeUp" distance={30}>
           <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-violet/15 to-brand-cyan/15 border border-primary/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
             <div>
               <h4 className="text-xl sm:text-2xl font-bold text-fg mb-1">
@@ -534,14 +540,16 @@ export const Pricing = () => {
                 Speak with our solutions engineering team for bespoke SLAs and security evaluations.
               </p>
             </div>
-            <Link
-              to="/about"
-              className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all"
-            >
-              Contact Sales Team →
-            </Link>
+            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/about"
+                className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all inline-block"
+              >
+                Contact Sales Team →
+              </Link>
+            </motion.div>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </section>
     </PageLayout>
   );

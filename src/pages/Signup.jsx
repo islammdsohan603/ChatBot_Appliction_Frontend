@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/userSlice";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { ScrollReveal, ScrollRevealGroup } from "../components/common/ScrollReveal";
+import { Reveal, RevealGroup, RevealItem } from "../components/motion";
 
 /* ── Particle configuration ── */
 const PARTICLES = [
@@ -249,7 +249,7 @@ const Signup = () => {
         ].join(" ")}
       >
         {/* ════════════ Left branding panel ════════════ */}
-        <ScrollReveal
+        <Reveal
           animation="fade-up"
           delay={0.06}
           distance="28px"
@@ -297,10 +297,8 @@ const Signup = () => {
           </p>
 
           {/* Feature list */}
-          <ScrollRevealGroup
-            animation="fade-up"
+          <RevealGroup
             stagger={0.08}
-            distance="20px"
             className="flex flex-col gap-4 mt-2 max-[900px]:items-center w-full"
           >
             {[
@@ -317,7 +315,7 @@ const Signup = () => {
                 text: "Group chats, channels & threads",
               },
             ].map((f, i) => (
-              <div
+              <RevealItem
                 key={i}
                 className="flex items-center gap-3 text-fg-secondary text-sm font-medium"
               >
@@ -325,13 +323,13 @@ const Signup = () => {
                   <span className="w-4 h-4 text-primary-text">{f.icon}</span>
                 </div>
                 {f.text}
-              </div>
+              </RevealItem>
             ))}
-          </ScrollRevealGroup>
-        </ScrollReveal>
+          </RevealGroup>
+        </Reveal>
 
         {/* ════════════ Glassmorphism signup card ════════════ */}
-        <ScrollReveal
+        <Reveal
           animation="fade-up"
           delay={0.16}
           distance="32px"
@@ -607,7 +605,7 @@ const Signup = () => {
               Log in
             </Link>
           </div>
-        </ScrollReveal>
+        </Reveal>
       </div>
     </div>
   );

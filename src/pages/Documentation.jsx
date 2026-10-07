@@ -16,7 +16,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
-import { ScrollReveal } from "../components/common/ScrollReveal";
+import { Reveal } from "../components/motion";
+import { motion } from "framer-motion";
+import { buttonMotion } from "../lib/motion";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -238,7 +240,7 @@ export const Documentation = () => {
               LEFT STICKY SIDEBAR NAVIGATION
               ══════════════════════════════════════════════ */}
           <aside className="lg:col-span-4 lg:sticky lg:top-24">
-            <ScrollReveal animation="fade-up" delay={80}>
+            <Reveal animation="fade-up" delay={0.08}>
               <div className="rounded-3xl bg-surface border border-line p-5 shadow-sm space-y-6">
                 {/* Search filter */}
                 <div className="relative">
@@ -299,14 +301,14 @@ export const Documentation = () => {
                   })}
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
           </aside>
 
           {/* ══════════════════════════════════════════════
               RIGHT MAIN DOCUMENTATION BODY
               ══════════════════════════════════════════════ */}
           <main className="lg:col-span-8 space-y-8">
-            <ScrollReveal animation="fade-up" delay={120} distance={35}>
+            <Reveal animation="fade-up" delay={0.12} distance={35}>
               <article className="p-8 sm:p-10 rounded-3xl bg-surface border border-line shadow-sm">
                 {/* Category pill */}
                 <div className="flex items-center gap-2 mb-3">
@@ -340,8 +342,10 @@ export const Documentation = () => {
                       <span className="font-mono font-semibold text-primary-text">
                         {activeSection.codeSnippet.language}
                       </span>
-                      <button
+                      <motion.button
                         type="button"
+                        whileHover={buttonMotion.hover}
+                        whileTap={buttonMotion.tap}
                         onClick={() =>
                           handleCopy(activeSection.codeSnippet.code, activeSection.id)
                         }
@@ -353,7 +357,7 @@ export const Documentation = () => {
                           <FiCopy className="w-3.5 h-3.5" />
                         )}
                         <span>{copiedId === activeSection.id ? "Copied!" : "Copy Code"}</span>
-                      </button>
+                      </motion.button>
                     </div>
                     <pre className="p-5 text-xs font-mono text-fg overflow-x-auto leading-relaxed">
                       <code>{activeSection.codeSnippet.code}</code>
@@ -361,10 +365,10 @@ export const Documentation = () => {
                   </div>
                 )}
               </article>
-            </ScrollReveal>
+            </Reveal>
 
             {/* Quick API Explorer Box */}
-            <ScrollReveal animation="fade-up" delay={200} distance={30}>
+            <Reveal animation="fade-up" delay={0.2} distance={30}>
               <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-violet/10 to-brand-cyan/10 border border-line-strong flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <p className="text-sm font-bold text-fg">
@@ -375,15 +379,17 @@ export const Documentation = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-2.5 shrink-0">
-                  <a
+                  <motion.a
                     href="/chat"
-                    className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs font-semibold shadow-md transition-all"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast text-xs font-semibold shadow-md transition-all inline-block"
                   >
                     Live Chatbox →
-                  </a>
+                  </motion.a>
                 </div>
               </div>
-            </ScrollReveal>
+            </Reveal>
           </main>
         </div>
       </div>
