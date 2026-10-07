@@ -1,3 +1,10 @@
+/**
+ * Colour aliases resolve to the design tokens in src/styles/variables.css,
+ * so utilities like `bg-surface` or `text-fg-muted` flip automatically
+ * between light and dark — no hard-coded colours, no `dark:` pairs needed.
+ */
+const rgb = (token) => `rgb(var(--${token}-rgb) / <alpha-value>)`;
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -5,56 +12,71 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["var(--font-body)"],
+        inter: ["var(--font-body)"],
+        display: ["var(--font-display)"],
+        mono: ["var(--font-mono)"],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        /* surfaces */
+        canvas: rgb("bg"),
+        elevated: rgb("bg-elevated"),
+        surface: { DEFAULT: rgb("surface"), hover: rgb("surface-hover") },
+        code: rgb("code-bg"),
+        /* lines */
+        line: { DEFAULT: "var(--border)", strong: "var(--border-strong)" },
+        /* text */
+        fg: {
+          DEFAULT: rgb("text-primary"),
+          secondary: rgb("text-secondary"),
+          muted: rgb("text-muted"),
+        },
+        /* interactive */
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: rgb("primary"),
+          hover: rgb("primary-hover"),
+          text: rgb("primary-text"),
+          contrast: rgb("primary-contrast"),
+          foreground: rgb("primary-contrast"),
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: rgb("accent"),
+          text: rgb("accent-text"),
+          foreground: rgb("primary-contrast"),
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        brand: {
+          violet: rgb("brand-violet"),
+          indigo: rgb("brand-indigo"),
+          cyan: rgb("brand-cyan"),
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        nexora: {
-          bg: "#060918",
-          surface: "#0d1230",
-          surface2: "#111840",
-          border: "rgba(139,92,246,0.15)",
-          accent: "#8b5cf6",
-          "accent-2": "#06b6d4",
-          pink: "#ec4899",
-        },
+        /* semantic: DEFAULT = fills/dots, text = AA-safe text colour */
+        success: { DEFAULT: rgb("success"), text: rgb("success-text") },
+        warning: { DEFAULT: rgb("warning"), text: rgb("warning-text") },
+        error: { DEFAULT: rgb("error"), text: rgb("error-text") },
+        info: { DEFAULT: rgb("info"), text: rgb("info-text") },
+        /* shadcn/ui compatibility layer */
+        border: "var(--border)",
+        input: "var(--border-strong)",
+        ring: rgb("primary"),
+        background: rgb("bg"),
+        foreground: rgb("text-primary"),
+        secondary: { DEFAULT: rgb("surface-hover"), foreground: rgb("text-primary") },
+        destructive: { DEFAULT: rgb("error"), foreground: rgb("primary-contrast") },
+        muted: { DEFAULT: rgb("surface-hover"), foreground: rgb("text-muted") },
+        popover: { DEFAULT: rgb("bg-elevated"), foreground: rgb("text-primary") },
+        card: { DEFAULT: rgb("surface"), foreground: rgb("text-primary") },
+      },
+      boxShadow: {
+        card: "var(--shadow)",
+        glow: "var(--glow)",
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius-md)",
+        md: "var(--radius-sm)",
+        sm: "var(--radius-sm)",
+        xl: "var(--radius-md)",
+        "2xl": "var(--radius-lg)",
+        "3xl": "var(--radius-xl)",
       },
       keyframes: {
         orbFloat: {

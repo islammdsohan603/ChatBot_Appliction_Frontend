@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════════════════════════
+   NEXORA — Design Tokens  (single source of truth)
+   Light  = :root (default)
+   Dark   = .dark  /  [data-theme="dark"]
+   Every component consumes these tokens (directly, or through the
+   Tailwind colour aliases declared in tailwind.config.js).
+   Each colour also has an `-rgb` channel twin so Tailwind opacity
+   modifiers (bg-primary/10, border-primary/40 …) keep working.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Brand (identical in both modes) ── */
+  --brand-violet: #7c5cff;
+  --brand-indigo: #5b6cff;
+  --brand-cyan: #22d3ee;
+  --brand-violet-rgb: 124 92 255;
+  --brand-indigo-rgb: 91 108 255;
+  --brand-cyan-rgb: 34 211 238;
+  --brand-gradient: linear-gradient(135deg, #7c5cff 0%, #4f8bff 55%, #22d3ee 100%);
+  /* Light mode uses darker stops so gradient text stays readable on white */
+  --brand-gradient-text: linear-gradient(90deg, #6847f5 0%, #2f6fed 50%, #0e7490 100%);
+
+  /* ── Surfaces ── */
+  --bg: #f7f8fc;
+  --bg-rgb: 247 248 252;
+  --bg-elevated: #ffffff;
+  --bg-elevated-rgb: 255 255 255;
+  --surface: #ffffff;
+  --surface-rgb: 255 255 255;
+  --surface-hover: #f0f2fa;
+  --surface-hover-rgb: 240 242 250;
+  --border: rgba(20, 24, 60, 0.08);
+  --border-strong: rgba(20, 24, 60, 0.16);
+
+  /* ── Text ── */
+  --text-primary: #0e1030;
+  --text-primary-rgb: 14 16 48;
+  --text-secondary: #474d73;
+  --text-secondary-rgb: 71 77 115;
+  /* spec value #7A80A3 measured 3.6:1 on --bg → darkened to pass AA (4.5:1) */
+  --text-muted: #646a8e;
+  --text-muted-rgb: 100 106 142;
+
+  /* ── Interactive ── */
+  --primary: #6847f5;
+  --primary-rgb: 104 71 245;
+  --primary-hover: #5636e0;
+  --primary-hover-rgb: 86 54 224;
+  --primary-text: #6847f5; /* primary used as text colour */
+  --primary-text-rgb: 104 71 245;
+  --primary-contrast: #ffffff;
+  --primary-contrast-rgb: 255 255 255;
+  --accent: #0891b2;
+  --accent-rgb: 8 145 178;
+  /* #0891B2 is only 3.7:1 on white → darker twin for accent *text* */
+  --accent-text: #0e7490;
+  --accent-text-rgb: 14 116 144;
+
+  /* ── Effects ── */
+  --glow: 0 0 40px rgba(104, 71, 245, 0.18);
+  --shadow: 0 10px 30px rgba(30, 35, 90, 0.1);
+  --ring: rgba(104, 71, 245, 0.5);
+  --selection: rgba(104, 71, 245, 0.3);
+
+  /* ── Chat ── */
+  --chat-user-bubble: linear-gradient(135deg, #6847f5, #3b82f6);
+  --chat-bot-bubble: #ffffff;
+  --chat-bot-border: var(--border);
+  --code-bg: #f1f3fa;
+  --code-bg-rgb: 241 243 250;
+
+  /* ── Semantic (fill) + readable text twin per mode ── */
+  --success: #22c55e;
+  --success-rgb: 34 197 94;
+  --success-text: #15803d;
+  --success-text-rgb: 21 128 61;
+  --warning: #f59e0b;
+  --warning-rgb: 245 158 11;
+  --warning-text: #b45309;
+  --warning-text-rgb: 180 83 9;
+  --error: #ef4444;
+  --error-rgb: 239 68 68;
+  --error-text: #b91c1c;
+  --error-text-rgb: 185 28 28;
+  --info: #3b82f6;
+  --info-rgb: 59 130 246;
+  --info-text: #1d4ed8;
+  --info-text-rgb: 29 78 216;
+
+  /* ── Decorative background (softened in light mode) ── */
+  --deco-opacity: 0.45;
+  --deco-star: #a5b4fc;
+  --deco-star-rgb: 165 180 252;
+  --deco-glow-violet: rgba(124, 92, 255, 0.14);
+  --deco-glow-cyan: rgba(34, 211, 238, 0.12);
+  --planet-opacity: 0.4;
+
+  /* ── Shape (8px grid) ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius: 0.75rem; /* shadcn compatibility */
+
+  /* ── Motion ── */
+  --theme-transition: 250ms ease;
+
+  /* ── Typography ── */
+  --font-display: "Plus Jakarta Sans", "Inter", "Noto Sans Bengali", "Hind Siliguri", system-ui, sans-serif;
+  --font-body: "Inter", "Noto Sans Bengali", "Hind Siliguri", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Noto Sans Bengali", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fs-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --fs-h2: clamp(1.875rem, 3vw + 1rem, 3rem);
+  --fs-h3: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+  --fs-body: 1rem;
+  --fs-chat: 0.96875rem;
+  --fs-small: 0.8125rem;
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #07080f;
+  --bg-rgb: 7 8 15;
+  --bg-elevated: #0d0f1c;
+  --bg-elevated-rgb: 13 15 28;
+  --surface: #12152a;
+  --surface-rgb: 18 21 42;
+  --surface-hover: #181c36;
+  --surface-hover-rgb: 24 28 54;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text-primary: #f5f7ff;
+  --text-primary-rgb: 245 247 255;
+  --text-secondary: #b4bad6;
+  --text-secondary-rgb: 180 186 214;
+  --text-muted: #8189ad; /* spec #7C84A8 lifted slightly to clear AA on --surface */
+  --text-muted-rgb: 129 137 173;
+
+  --primary: #7c5cff;
+  --primary-rgb: 124 92 255;
+  --primary-hover: #917aff;
+  --primary-hover-rgb: 145 122 255;
+  --primary-text: #a592ff; /* #7C5CFF alone is 4.2:1 on --surface → lighter text twin */
+  --primary-text-rgb: 165 146 255;
+  --primary-contrast: #ffffff;
+  --primary-contrast-rgb: 255 255 255;
+  --accent: #22d3ee;
+  --accent-rgb: 34 211 238;
+  --accent-text: #22d3ee;
+  --accent-text-rgb: 34 211 238;
+
+  --brand-gradient-text: linear-gradient(90deg, #8b6bff 0%, #4f8bff 50%, #22d3ee 100%);
+
+  --glow: 0 0 40px rgba(124, 92, 255, 0.35);
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --ring: rgba(124, 92, 255, 0.5);
+  --selection: rgba(124, 92, 255, 0.3);
+
+  --chat-user-bubble: linear-gradient(135deg, #7c5cff, #4f8bff);
+  --chat-bot-bubble: #12152a;
+  --code-bg: #0b0d1a;
+  --code-bg-rgb: 11 13 26;
+
+  --success: #22c55e;
+  --success-rgb: 34 197 94;
+  --success-text: #4ade80;
+  --success-text-rgb: 74 222 128;
+  --warning: #f59e0b;
+  --warning-rgb: 245 158 11;
+  --warning-text: #fbbf24;
+  --warning-text-rgb: 251 191 36;
+  --error: #ef4444;
+  --error-rgb: 239 68 68;
+  --error-text: #f87171;
+  --error-text-rgb: 248 113 113;
+  --info: #3b82f6;
+  --info-rgb: 59 130 246;
+  --info-text: #60a5fa;
+  --info-text-rgb: 96 165 250;
+
+  --deco-opacity: 1;
+  --deco-star: #e2e8f0;
+  --deco-star-rgb: 226 232 240;
+  --deco-glow-violet: rgba(124, 92, 255, 0.18);
+  --deco-glow-cyan: rgba(34, 211, 238, 0.12);
+  --planet-opacity: 1;
+}
