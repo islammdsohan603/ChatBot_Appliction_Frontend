@@ -133,22 +133,28 @@ const Login = () => {
       if (token) {
         try {
           localStorage.setItem("token", token);
-          toast.success("Login Sucessfully!")
-        } catch (error){
-          toast.error(`Login Failed! ${error.message}`)
+        } catch {
+          // ignore storage quota errors
         }
       }
       if (user) {
         try {
           localStorage.setItem("user", JSON.stringify(user));
-          toast.success("Welcome back!")
-        } catch (error){
-          toast.error(`Login Failed! ${error.message}`)
+        } catch {
+          // ignore storage quota errors
         }
       }
 
       dispatch(setUserData(user));
+      const displayName = user?.name || user?.userName;
+      toast.success(
+        displayName
+          ? `Welcome back, ${displayName}!`
+          : "Logged in successfully! Welcome back!",
+        { autoClose: 3000 }
+      );
       navigate("/dashboard", { replace: true });
+
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || err.message || "Invalid credentials.";

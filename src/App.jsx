@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { MotionConfig } from "framer-motion";
 import { applyTheme, getInitialTheme } from "./lib/theme";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -190,14 +190,18 @@ function App() {
       </ErrorBoundary>
 
       <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
         theme={currentTheme === "dark" ? "dark" : "light"}
-        position="bottom-right"
-        toastClassName={
-          currentTheme === "dark"
-            ? "!bg-canvas !border !border-line-strong !text-fg"
-            : "!bg-surface !border !border-line-strong !text-fg !shadow-lg"
-        }
       />
+
     </>
   );
 }

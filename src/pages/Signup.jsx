@@ -177,23 +177,28 @@ const Signup = () => {
       if (token) {
         try {
           localStorage.setItem("token", token);
-          toast.success("Account Create Sucessfully!")
-        } catch (error){
-          toast.error(`Account Creation Failed! ${error.message}`)
+        } catch {
+          // ignore storage quota errors
         }
       }
       if (user) {
         try {
           localStorage.setItem("user", JSON.stringify(user));
-          toast.success("Account Create Sucessfully!")
-        } catch (error){
-          toast.error(`Account Creation Failed! ${error.message}`)
+        } catch {
+          // ignore storage quota errors
         }
       }
 
       dispatch(setUserData(user));
-      toast.success("Account created successfully!");
+      const displayName = user?.name || user?.userName;
+      toast.success(
+        displayName
+          ? `Account created successfully! Welcome, ${displayName}!`
+          : "Account created successfully! Welcome to Nexora!",
+        { autoClose: 3000 }
+      );
       navigate("/dashboard", { replace: true });
+
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || err.message || "Failed to create account.";
