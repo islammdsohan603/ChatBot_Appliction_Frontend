@@ -23,7 +23,7 @@ import { SolarSystem } from "./SolarSystem";
  */
 export const BackgroundAnimation = ({
   showSolarSystem = true,
-  showMoon = true,
+  showMoon = false,
   showStars = true,
   className = "",
 }) => {

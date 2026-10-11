@@ -68,6 +68,8 @@ const ConversationList = ({
   isLoading = false,
   filter = "all",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   if (isLoading) {
     return <SkeletonLoader type="conversation" count={6} />;
   }
@@ -75,7 +77,8 @@ const ConversationList = ({
   const filtered = conversations.filter((c) => {
     if (filter === "unread") return (c.unread || 0) > 0;
     if (filter === "groups") return c.isGroup || !c.isAi;
-    return true;
+    // By default ("all"): show strictly the user's private AI conversations (ChatGPT style)
+    return c.isAi !== false;
   });
 
   if (filtered.length === 0) {
@@ -110,7 +113,6 @@ const ConversationList = ({
     );
   }
 
-  const shouldReduceMotion = useReducedMotion();
 
   // If in "all" tab, group conversations by date (ChatGPT style)
   if (filter === "all") {

@@ -45,8 +45,9 @@ export const SolarSystem = ({ mouseX = 0, mouseY = 0 }) => {
       color: "bg-accent border-info/30",
       speed: "25s",
       glow: "rgb(var(--accent-rgb)/0.6)",
-      hasMoon: true,
+      hasMoon: false,
     },
+
     {
       name: "Mars",
       radius: 200,

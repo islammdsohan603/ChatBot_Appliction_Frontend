@@ -134,6 +134,7 @@ export const AiChatBox = ({
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Auto-scroll to bottom on new tokens or messages
   useEffect(() => {
@@ -145,12 +146,47 @@ export const AiChatBox = ({
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = `${Math.min(Math.max(el.scrollHeight, 24), 160)}px`;
+    el.style.height = `${Math.min(Math.max(el.scrollHeight, 44), 180)}px`;
   }, []);
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
     adjustHeight();
+  };
+
+  // Drag and drop image handlers
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isDragging) setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const files = e.dataTransfer?.files;
+    if (files && files[0] && files[0].type.startsWith("image/")) {
+      const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage({
+          file,
+          name: file.name,
+          size: (file.size / 1024).toFixed(1) + " KB",
+          previewUrl,
+          base64: reader.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Handle image selection & convert to base64
@@ -181,6 +217,7 @@ export const AiChatBox = ({
     }
     setSelectedImage(null);
   };
+
 
   const handleSubmit = (e) => {
     if (e) {
@@ -473,8 +510,8 @@ export const AiChatBox = ({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* ── Single Unified Input Bar at the Bottom ── */}
-      <div className="pt-2 pb-5 sm:pb-6 px-4 sm:px-6 border-t border-line bg-surface/70 backdrop-blur-md shrink-0">
+      {/* ── Professional Floating Input Card at the Bottom ── */}
+      <div className="pt-2 pb-4 sm:pb-6 px-3 sm:px-6 shrink-0 bg-gradient-to-t from-canvas via-canvas/90 to-transparent">
         <div className="w-full max-w-4xl mx-auto">
           {/* Hidden Image File Input */}
           <input
@@ -485,120 +522,169 @@ export const AiChatBox = ({
             onChange={handleImageSelect}
           />
 
-          {/* Selected Image Attachment Preview Chip */}
-          {selectedImage && (
-            <div className="mb-2.5 inline-flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-primary/10 border border-line-strong shadow-xs animate-in fade-in zoom-in-95 duration-150">
-              <img
-                src={selectedImage.previewUrl}
-                alt="Attachment thumbnail"
-                className="w-8 h-8 rounded-lg object-cover border border-primary/30"
-              />
-              <div className="flex flex-col min-w-0 max-w-[160px] sm:max-w-[220px]">
-                <span className="truncate text-xs font-medium text-fg">
-                  {selectedImage.name}
-                </span>
-                <span className="text-[10px] text-fg-muted">
-                  {selectedImage.size}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={removeSelectedImage}
-                title="Remove image"
-                className="p-1 rounded-full text-fg-muted hover:text-error-text hover:bg-error/10 transition-colors ml-1 cursor-pointer"
-              >
-                <FiX className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-
-          {/* Unified Input Box */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleSubmit(e);
-            }}
-            className="relative flex items-center rounded-2xl bg-surface/95 border border-primary/25 focus-within:border-primary/60 shadow-[0_4px_20px_rgb(var(--scrim-rgb)/0.06)] dark:shadow-[0_4px_24px_rgb(var(--scrim-rgb)/0.4)] transition-all px-2.5 py-2"
-          >
-            {/* Image Upload Action Trigger */}
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              title="Attach an image"
-              disabled={isLoading || isStreaming}
-              className="p-2 rounded-xl text-fg-muted hover:text-primary-text hover:bg-primary/15 transition-all shrink-0 cursor-pointer disabled:opacity-50"
-            >
-              <FiImage className="w-5 h-5" />
-            </button>
-
-            {/* Prompt Textarea */}
-            <textarea
-              ref={textareaRef}
-              rows={1}
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              placeholder={
-                isStreaming
-                  ? "AI is streaming response..."
-                  : selectedImage
-                    ? "Add a prompt or question about this image..."
-                    : "Ask anything (Press Enter to send)..."
+          {/* Professional Card Wrapper */}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`
+              relative flex flex-col rounded-3xl bg-surface/95 dark:bg-surface/85 backdrop-blur-2xl
+              border transition-all duration-200
+              shadow-[0_8px_32px_rgb(var(--scrim-rgb)/0.08)] dark:shadow-[0_12px_44px_rgb(var(--scrim-rgb)/0.45)]
+              ${
+                isDragging
+                  ? "border-primary border-dashed bg-primary/5 ring-4 ring-primary/15 scale-[1.005]"
+                  : "border-line-strong hover:border-primary/35 focus-within:border-primary/60 focus-within:shadow-[0_0_0_3px_rgb(var(--primary-rgb)/0.12),0_12px_36px_rgb(var(--scrim-rgb)/0.1)]"
               }
-              disabled={isLoading || isStreaming}
-              className="flex-1 bg-transparent px-2.5 py-1 text-fg placeholder:text-fg-muted text-sm outline-none resize-none leading-relaxed min-h-[24px] max-h-[160px] overflow-y-auto no-scrollbar"
-            />
+            `}
+          >
+            {/* Drag overlay notice if dragging */}
+            {isDragging && (
+              <div className="absolute inset-0 z-20 rounded-3xl bg-primary/10 backdrop-blur-xs flex items-center justify-center border-2 border-dashed border-primary pointer-events-none animate-in fade-in duration-150">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface shadow-md text-primary-text font-semibold text-xs">
+                  <FiImage className="w-4 h-4 animate-bounce" />
+                  <span>Drop image here to attach</span>
+                </div>
+              </div>
+            )}
 
-            {/* Action Trigger: Send or Stop Button */}
-            <div className="flex items-center gap-1 shrink-0 ml-1">
-              {isStreaming || isLoading ? (
-                <button
-                  type="button"
-                  onClick={stop}
-                  title="Stop generating"
-                  className="w-8 h-8 rounded-xl bg-error/20 text-error-text hover:bg-error/30 border border-error/30 flex items-center justify-center transition-all shadow-xs cursor-pointer active:scale-95"
-                >
-                  <FiSquare className="w-4 h-4 fill-current" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={!input.trim() && !selectedImage}
-                  title="Send message"
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                    input.trim() || selectedImage
-                      ? "bg-gradient-to-tr from-brand-violet to-brand-cyan text-primary-contrast shadow-md shadow-primary/30 hover:scale-105 active:scale-95"
-                      : "bg-surface-hover text-fg-muted cursor-not-allowed opacity-50"
-                  }`}
-                >
-                  <FiSend className="w-4 h-4 translate-x-[-1px] translate-y-[1px]" />
-                </button>
-              )}
+            {/* Top Shelf: Image Attachment Pill */}
+            {selectedImage && (
+              <div className="px-4 pt-3 pb-1 flex items-center">
+                <div className="inline-flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-surface-hover border border-line-strong shadow-xs animate-in fade-in zoom-in-95 duration-150">
+                  <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-primary/30 shrink-0 bg-surface">
+                    <img
+                      src={selectedImage.previewUrl}
+                      alt="Attachment thumbnail"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col min-w-0 max-w-[180px] sm:max-w-[240px]">
+                    <span className="truncate text-xs font-semibold text-fg">
+                      {selectedImage.name}
+                    </span>
+                    <div className="flex items-center gap-1.5 text-[10px] text-fg-muted">
+                      <span>{selectedImage.size}</span>
+                      <span>·</span>
+                      <span className="text-primary-text font-medium flex items-center gap-0.5">
+                        <IoSparkles className="w-2.5 h-2.5" />
+                        Vision Ready
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeSelectedImage}
+                    title="Remove image"
+                    className="p-1.5 rounded-full text-fg-muted hover:text-error-text hover:bg-error/10 transition-colors ml-1 cursor-pointer"
+                  >
+                    <FiX className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Textarea Field */}
+            <div className="px-4 pt-3 pb-1">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder={
+                  isStreaming
+                    ? "Nexora AI is streaming response..."
+                    : selectedImage
+                      ? "Ask anything about this image or request analysis..."
+                      : "Ask anything, brainstorm ideas, generate code, or drop an image..."
+                }
+                disabled={isLoading || isStreaming}
+                className="w-full bg-transparent text-fg placeholder:text-fg-muted/70 text-sm sm:text-[15px] outline-none resize-none leading-relaxed min-h-[44px] max-h-[180px] overflow-y-auto no-scrollbar"
+              />
             </div>
-          </form>
+
+            {/* Integrated Bottom Controls Toolbar */}
+            <div className="px-3 pb-2.5 pt-1.5 flex items-center justify-between gap-2 border-t border-line/40">
+              {/* Left Action Buttons & Badges */}
+              <div className="flex items-center gap-2">
+                {/* Image Attach Button */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Attach an image for optical analysis"
+                  disabled={isLoading || isStreaming}
+                  className="px-2.5 py-1.5 rounded-xl text-fg-muted hover:text-primary-text hover:bg-primary/10 transition-all cursor-pointer disabled:opacity-40 flex items-center gap-1.5 group border border-transparent hover:border-line-strong"
+                >
+                  <FiImage className="w-4 h-4 group-hover:scale-110 transition-transform text-fg-muted group-hover:text-primary-text" />
+                  <span className="text-xs font-medium hidden sm:inline">
+                    Attach Image
+                  </span>
+                </button>
+
+                {/* Model Engine Pill Badge */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/8 border border-primary/20 text-[11px] font-medium text-primary-text shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+                  <span>Gemini 2.0 Flash</span>
+                </div>
+              </div>
+
+              {/* Right Action: Send / Stop button */}
+              <div className="flex items-center gap-2">
+                {input.length > 100 && (
+                  <span className="text-[10px] text-fg-muted font-mono hidden sm:inline">
+                    {input.length} chars
+                  </span>
+                )}
+
+                {isStreaming || isLoading ? (
+                  <button
+                    type="button"
+                    onClick={stop}
+                    title="Stop generating"
+                    className="h-9 px-3.5 rounded-xl bg-error/15 text-error-text hover:bg-error/25 border border-error/30 flex items-center gap-1.5 font-semibold text-xs transition-all shadow-xs cursor-pointer active:scale-95 animate-pulse"
+                  >
+                    <FiSquare className="w-3.5 h-3.5 fill-current" />
+                    <span>Stop</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={!input.trim() && !selectedImage}
+                    title="Send message (Enter)"
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      input.trim() || selectedImage
+                        ? "bg-gradient-to-tr from-brand-violet to-brand-cyan text-primary-contrast shadow-md shadow-primary/30 hover:shadow-primary/50 hover:scale-105 active:scale-95"
+                        : "bg-surface-hover text-fg-muted/40 cursor-not-allowed opacity-50"
+                    }`}
+                  >
+                    <FiSend className="w-4 h-4 translate-x-[-0.5px] translate-y-[0.5px]" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
 
           {/* Bottom disclaimer & shortcut hint */}
-          <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-fg-muted text-center select-none">
+          <div className="flex items-center justify-center gap-2 mt-2.5 text-[11px] text-fg-muted text-center select-none">
             <span>Nexora AI can make mistakes. Verify sensitive details.</span>
-            <span className="hidden sm:inline text-fg-muted">
-              ·
-            </span>
+            <span className="hidden sm:inline text-fg-muted/60">·</span>
             <span className="hidden sm:inline text-fg-muted">
               Press{" "}
-              <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono">
+              <kbd className="px-1.5 py-0.5 rounded-md bg-surface-hover border border-line text-[10px] font-mono shadow-2xs">
                 Enter
               </kbd>{" "}
               to send,{" "}
-              <kbd className="px-1 py-0.5 rounded bg-surface-hover border border-line-strong text-[10px] font-mono">
-                Shift+Enter
+              <kbd className="px-1.5 py-0.5 rounded-md bg-surface-hover border border-line text-[10px] font-mono shadow-2xs">
+                Shift + Enter
               </kbd>{" "}
               for newline
             </span>
           </div>
         </div>
       </div>
+
     </div>
   );
 };

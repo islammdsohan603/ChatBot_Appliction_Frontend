@@ -16,7 +16,7 @@ import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import ProfilePanel from "./ProfilePanel";
 import AiChatBox from "./AiChatBox";
-import { HiOutlineBars3, HiOutlineArrowLeft } from "react-icons/hi2";
+import { HiOutlineBars3 } from "react-icons/hi2";
 import { motion, useReducedMotion } from "framer-motion";
 
 const ChatLayout = () => {
@@ -293,7 +293,7 @@ const ChatLayout = () => {
         toast.error(error.response?.data?.message || "Failed to send chat message");
       }
     },
-    [activeHumanId, currentUserId, currentUserName, serverUrl]
+    [activeHumanId, currentUserId, currentUserName]
   );
 
   const handleLogout = async () => {
@@ -320,9 +320,12 @@ const ChatLayout = () => {
     (u) => (u._id || u.id) === activeHumanId
   );
 
-  // Combine lists for sidebar
-  const sidebarConversations = [...aiConversations, ...directUsers];
+  // Only include the user's own conversations in the sidebar (strictly private like ChatGPT)
+  const sidebarConversations = activeHumanId
+    ? [...aiConversations, ...directUsers]
+    : aiConversations;
   const activeSidebarId = activeHumanId || conversationId || null;
+
 
   const shouldReduceMotion = useReducedMotion();
 

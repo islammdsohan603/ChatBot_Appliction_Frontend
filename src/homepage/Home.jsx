@@ -25,20 +25,10 @@ import {
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import HeroBackground from "./HeroBackground";
+import gsap from "gsap";
+import ScrollRevealLib from "scrollreveal";
 
-/* ─────────────────────────────────────────
-   Particle config
-   ───────────────────────────────────────── */
-const PARTICLES = [
-  { left: "8%", top: "15%", dur: "20s", delay: "0s", bg: "rgb(var(--accent-rgb)/0.4)", size: "3px" },
-  { left: "20%", top: "70%", dur: "25s", delay: "-4s", bg: "rgb(var(--primary-rgb)/0.5)", size: "2px" },
-  { left: "40%", top: "10%", dur: "18s", delay: "-8s", bg: "rgb(var(--brand-violet-rgb)/0.35)", size: "2px" },
-  { left: "60%", top: "80%", dur: "22s", delay: "-2s", bg: "rgb(var(--accent-rgb)/0.3)", size: "4px" },
-  { left: "75%", top: "25%", dur: "19s", delay: "-6s", bg: "rgb(var(--primary-rgb)/0.4)", size: "2px" },
-  { left: "90%", top: "55%", dur: "24s", delay: "-1s", bg: "rgb(var(--brand-violet-rgb)/0.3)", size: "3px" },
-  { left: "50%", top: "40%", dur: "21s", delay: "-3s", bg: "rgb(var(--accent-rgb)/0.35)", size: "2px" },
-  { left: "30%", top: "90%", dur: "17s", delay: "-5s", bg: "rgb(var(--primary-rgb)/0.3)", size: "3px" },
-];
 
 /* ─────────────────────────────────────────
    NEXORA Logo Mark
@@ -462,13 +452,9 @@ const Hero = ({ isAuthenticated }) => (
       ].join(", ")
     }} />
 
-    {/* Particles */}
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {PARTICLES.map((p, i) => (
-        <div key={i} className="absolute rounded-full animate-particleDrift"
-          style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: p.bg, animationDuration: p.dur, animationDelay: p.delay }} />
-      ))}
-    </div>
+    {/* Interactive WebGL Particle Constellation Mesh Background */}
+    <HeroBackground className="absolute inset-0 z-0" />
+
 
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-12">
       {/* Single-column grid on mobile & 'md', 2-column grid layout on 'lg' and above */}

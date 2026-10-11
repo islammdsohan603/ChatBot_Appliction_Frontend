@@ -2,9 +2,10 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SEO from "../common/SEO";
 import BackgroundAnimation from "../background/BackgroundAnimation";
+import useSmoothScroll from "../../customHooks/useSmoothScroll";
 
 /**
- * Standard PageLayout wrapper with Antigravity Space Background
+ * Standard PageLayout wrapper with Antigravity Space Background and smooth scrolling
  */
 export const PageLayout = ({
   title,
@@ -14,7 +15,10 @@ export const PageLayout = ({
   className = "",
   showFooter = true,
   showBackground = true,
+  showMoon = false,
 }) => {
+  // Initialize Lenis physics-based smooth momentum scrolling
+  useSmoothScroll();
 
   return (
     <div
@@ -22,9 +26,8 @@ export const PageLayout = ({
     >
       <SEO title={title} description={description} keywords={keywords} />
 
-      {/* Antigravity Space Background */}
-      {showBackground && <BackgroundAnimation />}
-
+      {/* Antigravity Space Background (Moon disabled per design) */}
+      {showBackground && <BackgroundAnimation showMoon={showMoon} />}
 
       <Navbar />
 
