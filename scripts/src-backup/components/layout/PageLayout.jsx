@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SEO from "../common/SEO";
@@ -16,23 +15,6 @@ export const PageLayout = ({
   showFooter = true,
   showBackground = true,
 }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      const windowHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      if (windowHeight > 0) {
-        setScrollProgress((totalScroll / windowHeight) * 100);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div
@@ -43,12 +25,6 @@ export const PageLayout = ({
       {/* Antigravity Space Background */}
       {showBackground && <BackgroundAnimation />}
 
-      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-transparent">
-        <div
-          className="h-full bg-gradient-to-r from-violet-500 via-violet-600 to-cyan-400 shadow-[0_0_10px_rgba(139,92,246,0.7)] transition-[width] duration-150 ease-out"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
 
       <Navbar />
 
