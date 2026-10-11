@@ -600,7 +600,7 @@ export const AiChatBox = ({
                       : "Ask anything, brainstorm ideas, generate code, or drop an image..."
                 }
                 disabled={isLoading || isStreaming}
-                className="w-full bg-transparent text-fg placeholder:text-fg-muted/70 text-sm sm:text-[15px] outline-none resize-none leading-relaxed min-h-[44px] max-h-[180px] overflow-y-auto no-scrollbar"
+                className="w-full rounded-lg bg-transparent p-2 hover:border border-line-strong pointer-events-auto cursor-text text-fg placeholder:text-fg-muted/70 text-sm sm:text-[15px] outline-none resize-none leading-relaxed min-h-[44px] max-h-[180px] overflow-y-auto no-scrollbar"
               />
             </div>
 
