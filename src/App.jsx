@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { applyTheme, getInitialTheme } from "./lib/theme";
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useSelector } from "react-redux";
@@ -191,7 +191,7 @@ function App() {
 
       <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={4500}
         hideProgressBar={false}
         newestOnTop={true}
         closeOnClick
@@ -200,6 +200,8 @@ function App() {
         draggable
         pauseOnHover
         theme={currentTheme === "dark" ? "dark" : "light"}
+        transition={Slide}
+        limit={3}
       />
 
     </>

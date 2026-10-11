@@ -110,11 +110,15 @@ const Login = () => {
     setError("");
 
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-      setError("Please enter a valid email address.");
+      const msg = "Please enter a valid email address.";
+      setError(msg);
+      toast.error(msg, { autoClose: 4000 });
       return;
     }
     if (!formData.password) {
-      setError("Password is required.");
+      const msg = "Password is required.";
+      setError(msg);
+      toast.error(msg, { autoClose: 4000 });
       return;
     }
 
@@ -151,15 +155,19 @@ const Login = () => {
         displayName
           ? `Welcome back, ${displayName}!`
           : "Logged in successfully! Welcome back!",
-        { autoClose: 3000 }
+        { autoClose: 4000 }
       );
-      navigate("/dashboard", { replace: true });
+
+      // Brief delay to let the user clearly see the success message
+      setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 500);
 
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || err.message || "Invalid credentials.";
       setError(errorMessage);
-      toast.error(errorMessage);
+      toast.error(errorMessage, { autoClose: 4000 });
     } finally {
       setIsLoading(false);
     }

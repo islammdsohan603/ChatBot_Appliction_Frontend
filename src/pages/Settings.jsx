@@ -138,7 +138,7 @@ const Settings = () => {
       }
       return next;
     });
-    toast.success("Setting updated", { autoClose: 1200 });
+    toast.success("Setting updated");
   };
 
   // Preview voice sample
