@@ -24,7 +24,7 @@ import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
 import {
   Reveal,
-  RevealGroup,
+  RevealStack,
   RevealItem,
 } from "../components/motion";
 
@@ -261,7 +261,7 @@ export const Community = () => {
           COMMUNITY STATS BANNER
           ══════════════════════════════════════════════ */}
       <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <RevealGroup stagger={0.08} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Active Developers", value: stats?.activeMembers || "1,250+" },
             { label: "Community Threads", value: stats?.totalDiscussions || "480+" },
@@ -279,7 +279,7 @@ export const Community = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
@@ -332,7 +332,7 @@ export const Community = () => {
             </p>
           </div>
         ) : (
-          <RevealGroup stagger={0.06} className="space-y-4">
+          <RevealStack stagger={0.06} amount={0.15} className="space-y-4">
             {posts.map((post) => {
               const likesCount = Array.isArray(post.likes) ? post.likes.length : 0;
               const commentsCount = Array.isArray(post.comments) ? post.comments.length : 0;
@@ -407,7 +407,7 @@ export const Community = () => {
                 </RevealItem>
               );
             })}
-          </RevealGroup>
+          </RevealStack>
         )}
       </section>
 
@@ -427,7 +427,7 @@ export const Community = () => {
           </p>
         </Reveal>
 
-        <RevealGroup stagger={0.08} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {TOP_CONTRIBUTORS.map((c, idx) => (
             <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -4 }} className="h-full">
               <div className="h-full p-6 rounded-2xl bg-surface border border-line shadow-sm text-center flex flex-col items-center justify-between">
@@ -459,14 +459,14 @@ export const Community = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
           SOCIAL CHANNELS
           ══════════════════════════════════════════════ */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
-        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SOCIAL_CHANNELS.map((ch, idx) => (
             <RevealItem key={idx} variant="scaleIn" whileHover={{ y: -4 }} className="h-full">
               <div className="h-full p-7 rounded-2xl bg-surface border border-line flex flex-col justify-between">
@@ -497,7 +497,7 @@ export const Community = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════

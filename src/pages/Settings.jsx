@@ -263,9 +263,7 @@ const Settings = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Left Navigation Tabs (ChatGPT/Gemini Style) */}
           <Reveal
-            animation="fade-up"
             delay={0.04}
-            distance="24px"
             className="md:col-span-4 lg:col-span-3"
           >
             <div className="sticky top-24 rounded-2xl bg-surface/80 border border-line-strong p-2 backdrop-blur-xl shadow-lg dark:shadow-xl flex md:flex-col gap-1 overflow-x-auto no-scrollbar">
@@ -304,9 +302,7 @@ const Settings = () => {
 
           {/* Right Content Panel */}
           <Reveal
-            animation="fade-up"
-            delay={0.12}
-            distance="30px"
+            delay={0.08}
             className="md:col-span-8 lg:col-span-9"
           >
             <div className="rounded-3xl bg-surface/85 border border-line-strong p-6 md:p-8 backdrop-blur-xl shadow-xl dark:shadow-2xl">

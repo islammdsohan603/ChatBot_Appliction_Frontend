@@ -26,7 +26,7 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
-import { Reveal, RevealGroup, RevealItem, CountUp } from "../components/motion";
+import { Reveal, RevealStack, RevealItem, CountUp } from "../components/motion";
 import { motion } from "framer-motion";
 import { buttonMotion, cardHoverMotion } from "../lib/motion";
 import PreviousChatViewer from "../components/chat/PreviousChatViewer";
@@ -282,7 +282,9 @@ export const Dashboard = () => {
           {/* ══════════════════════════════════════════════
               DASHBOARD SIDEBAR: CHAT HISTORY
               ══════════════════════════════════════════════ */}
-          <aside
+          <Reveal
+            as="aside"
+            delay={0.04}
             className={`w-full lg:w-80 xl:w-88 shrink-0 lg:sticky lg:top-28 z-20 flex flex-col gap-4 ${
               sidebarCollapsedMobile ? "hidden lg:flex" : "flex"
             }`}
@@ -436,7 +438,7 @@ export const Dashboard = () => {
                 </p>
               </div>
             </div>
-          </aside>
+          </Reveal>
 
           {/* ══════════════════════════════════════════════
               MAIN DASHBOARD CONTENT
@@ -445,7 +447,7 @@ export const Dashboard = () => {
             {/* ══════════════════════════════════════════════
                 TOP WELCOME & TIER BANNER
                 ══════════════════════════════════════════════ */}
-            <Reveal animation="fade-up" delay={0.06}>
+            <Reveal delay={0.06}>
               <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-line shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-violet to-brand-cyan text-primary-contrast font-extrabold text-xl flex items-center justify-center shadow-lg shadow-primary/20">
@@ -510,7 +512,7 @@ export const Dashboard = () => {
               const activePlan = PLAN_CONFIG[activePlanKey] || PLAN_CONFIG.free;
 
               return (
-                <Reveal animation="fade-up" delay={0.1} distance={35}>
+                <Reveal delay={0.08}>
                   <div
                     className={`p-6 sm:p-8 rounded-3xl bg-gradient-to-br ${activePlan.gradient} bg-surface border shadow-xl ${activePlan.glowColor} mb-10 transition-all duration-300`}
                   >
@@ -620,83 +622,85 @@ export const Dashboard = () => {
             {/* ══════════════════════════════════════════════
                 4-CARD KPI METRICS GRID
                 ══════════════════════════════════════════════ */}
-            <Reveal animation="fade-up" delay={0.12} distance={30}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-fg-muted">
-                      Total Conversations
-                    </span>
-                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
-                      <FiMessageSquare className="w-4 h-4" />
-                    </div>
+            <RevealStack
+              stagger={0.08}
+              amount={0.15}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10"
+            >
+              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-fg-muted">
+                    Total Conversations
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
+                    <FiMessageSquare className="w-4 h-4" />
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    <CountUp end={stats?.totalConversations || 0} />
-                  </p>
-                  <p className="text-[11px] text-success-text font-medium mt-1 flex items-center gap-1">
-                    <FiTrendingUp className="w-3 h-3" />
-                    Active thread sessions
-                  </p>
                 </div>
+                <p className="text-2xl sm:text-3xl font-extrabold text-fg">
+                  <CountUp end={stats?.totalConversations || 0} />
+                </p>
+                <p className="text-[11px] text-success-text font-medium mt-1 flex items-center gap-1">
+                  <FiTrendingUp className="w-3 h-3" />
+                  Active thread sessions
+                </p>
+              </RevealItem>
 
-                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-fg-muted">
-                      Total Messages
-                    </span>
-                    <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent-text flex items-center justify-center">
-                      <FiZap className="w-4 h-4" />
-                    </div>
+              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-fg-muted">
+                    Total Messages
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent-text flex items-center justify-center">
+                    <FiZap className="w-4 h-4" />
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    <CountUp end={stats?.totalMessages || 0} />
-                  </p>
-                  <p className="text-[11px] text-fg-muted mt-1">
-                    Prompts + Streamed replies
-                  </p>
                 </div>
+                <p className="text-2xl sm:text-3xl font-extrabold text-fg">
+                  <CountUp end={stats?.totalMessages || 0} />
+                </p>
+                <p className="text-[11px] text-fg-muted mt-1">
+                  Prompts + Streamed replies
+                </p>
+              </RevealItem>
 
-                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-fg-muted">
-                      Estimated Tokens
-                    </span>
-                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
-                      <FiCpu className="w-4 h-4" />
-                    </div>
+              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-fg-muted">
+                    Estimated Tokens
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary-text flex items-center justify-center">
+                    <FiCpu className="w-4 h-4" />
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    <CountUp end={Number(stats?.estimatedTokens || 0)} />
-                  </p>
-                  <p className="text-[11px] text-primary-text font-medium mt-1">
-                    Gemini 3.8 Flash quota
-                  </p>
                 </div>
+                <p className="text-2xl sm:text-3xl font-extrabold text-fg">
+                  <CountUp end={Number(stats?.estimatedTokens || 0)} />
+                </p>
+                <p className="text-[11px] text-primary-text font-medium mt-1">
+                  Gemini 3.8 Flash quota
+                </p>
+              </RevealItem>
 
-                <div className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold text-fg-muted">
-                      Storage Allocated
-                    </span>
-                    <div className="w-9 h-9 rounded-xl bg-success/10 text-success-text flex items-center justify-center">
-                      <FiDatabase className="w-4 h-4" />
-                    </div>
+              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold text-fg-muted">
+                    Storage Allocated
+                  </span>
+                  <div className="w-9 h-9 rounded-xl bg-success/10 text-success-text flex items-center justify-center">
+                    <FiDatabase className="w-4 h-4" />
                   </div>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-fg">
-                    {stats?.estimatedStorageMb || "0 MB"}
-                  </p>
-                  <p className="text-[11px] text-fg-muted mt-1">
-                    MongoDB Atlas encrypted
-                  </p>
                 </div>
-              </div>
-            </Reveal>
+                <p className="text-2xl sm:text-3xl font-extrabold text-fg">
+                  {stats?.estimatedStorageMb || "0 MB"}
+                </p>
+                <p className="text-[11px] text-fg-muted mt-1">
+                  MongoDB Atlas encrypted
+                </p>
+              </RevealItem>
+            </RevealStack>
 
             {/* ══════════════════════════════════════════════
                 7-DAY ACTIVITY CHART & QUICK LAUNCHERS
                 ══════════════════════════════════════════════ */}
-            <Reveal animation="fade-up" delay={0.18} distance={30}>
+            <Reveal delay={0.12}>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
                 {/* Activity Bar Visualization */}
                 <div className="lg:col-span-2 p-7 rounded-3xl bg-surface border border-line shadow-sm">
@@ -788,7 +792,7 @@ export const Dashboard = () => {
             {/* ══════════════════════════════════════════════
                 RECENT CHAT SESSIONS TABLE
                 ══════════════════════════════════════════════ */}
-            <Reveal animation="fade-up" delay={0.24} distance={30}>
+            <Reveal delay={0.14}>
               <div className="p-7 rounded-3xl bg-surface border border-line shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <div>

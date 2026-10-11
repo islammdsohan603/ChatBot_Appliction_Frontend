@@ -238,136 +238,132 @@ export const Documentation = () => {
           {/* ══════════════════════════════════════════════
               LEFT STICKY SIDEBAR NAVIGATION
               ══════════════════════════════════════════════ */}
-          <aside className="lg:col-span-4 lg:sticky lg:top-24">
-            <Reveal animation="fade-up" delay={0.08}>
-              <div className="rounded-3xl bg-surface border border-line p-5 shadow-sm space-y-6">
-                {/* Search filter */}
-                <div className="relative">
-                  <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fg-muted" />
-                  <input
-                    type="text"
-                    placeholder="Search endpoints or guides..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-3.5 py-2 rounded-xl text-xs bg-canvas border border-line-strong focus:border-primary outline-none placeholder:text-fg-muted text-fg"
-                  />
-                </div>
-
-                {/* Categorized links list */}
-                <div className="space-y-5 max-h-[calc(100vh-240px)] overflow-y-auto pr-1">
-                  {categories.map((cat) => {
-                    const catSections = filteredSections.filter((s) => s.category === cat);
-                    if (catSections.length === 0) return null;
-
-                    return (
-                      <div key={cat}>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-fg-muted mb-2">
-                          {cat}
-                        </p>
-                        <div className="space-y-1">
-                          {catSections.map((sec) => (
-                            <button
-                              key={sec.id}
-                              type="button"
-                              onClick={() => setActiveSectionId(sec.id)}
-                              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
-                                activeSectionId === sec.id
-                                  ? "bg-primary text-primary-contrast shadow-xs"
-                                  : "text-fg-secondary hover:text-fg hover:bg-primary/10"
-                              }`}
-                            >
-                              <span className="truncate">{sec.title}</span>
-                              {sec.method && (
-                                <span
-                                  className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ${
-                                    sec.method === "POST"
-                                      ? "bg-info/20 text-info-text"
-                                      : sec.method === "GET"
-                                      ? "bg-success/20 text-success-text"
-                                      : sec.method === "WS"
-                                      ? "bg-warning/20 text-warning-text"
-                                      : "bg-primary/20 text-primary-text"
-                                  }`}
-                                >
-                                  {sec.method}
-                                </span>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+          <Reveal as="aside" delay={0.08} className="lg:col-span-4 lg:sticky lg:top-24">
+            <div className="rounded-3xl bg-surface border border-line p-5 shadow-sm space-y-6">
+              {/* Search filter */}
+              <div className="relative">
+                <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fg-muted" />
+                <input
+                  type="text"
+                  placeholder="Search endpoints or guides..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3.5 py-2 rounded-xl text-xs bg-canvas border border-line-strong focus:border-primary outline-none placeholder:text-fg-muted text-fg"
+                />
               </div>
-            </Reveal>
-          </aside>
+
+              {/* Categorized links list */}
+              <div className="space-y-5 max-h-[calc(100vh-240px)] overflow-y-auto pr-1">
+                {categories.map((cat) => {
+                  const catSections = filteredSections.filter((s) => s.category === cat);
+                  if (catSections.length === 0) return null;
+
+                  return (
+                    <div key={cat}>
+                      <p className="text-xs font-bold uppercase tracking-wider text-fg-muted mb-2">
+                        {cat}
+                      </p>
+                      <div className="space-y-1">
+                        {catSections.map((sec) => (
+                          <button
+                            key={sec.id}
+                            type="button"
+                            onClick={() => setActiveSectionId(sec.id)}
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                              activeSectionId === sec.id
+                                ? "bg-primary text-primary-contrast shadow-xs"
+                                : "text-fg-secondary hover:text-fg hover:bg-primary/10"
+                            }`}
+                          >
+                            <span className="truncate">{sec.title}</span>
+                            {sec.method && (
+                              <span
+                                className={`px-1.5 py-0.5 rounded text-xs font-bold uppercase ${
+                                  sec.method === "POST"
+                                    ? "bg-info/20 text-info-text"
+                                    : sec.method === "GET"
+                                    ? "bg-success/20 text-success-text"
+                                    : sec.method === "WS"
+                                    ? "bg-warning/20 text-warning-text"
+                                    : "bg-primary/20 text-primary-text"
+                                }`}
+                              >
+                                {sec.method}
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </Reveal>
 
           {/* ══════════════════════════════════════════════
               RIGHT MAIN DOCUMENTATION BODY
               ══════════════════════════════════════════════ */}
           <main className="lg:col-span-8 space-y-8">
-            <Reveal animation="fade-up" delay={0.12} distance={35}>
-              <article className="p-8 sm:p-10 rounded-3xl bg-surface border border-line shadow-sm">
-                {/* Category pill */}
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">
-                    {activeSection.category}
+            <Reveal as="article" delay={0.12} className="p-8 sm:p-10 rounded-3xl bg-surface border border-line shadow-sm">
+              {/* Category pill */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">
+                  {activeSection.category}
+                </span>
+                {activeSection.method && (
+                  <span className="px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-surface-hover border border-line text-fg-secondary">
+                    {activeSection.method} {activeSection.endpoint}
                   </span>
-                  {activeSection.method && (
-                    <span className="px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-surface-hover border border-line text-fg-secondary">
-                      {activeSection.method} {activeSection.endpoint}
-                    </span>
-                  )}
-                </div>
-
-                {/* Title & Description */}
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3 tracking-tight">
-                  {activeSection.title}
-                </h2>
-                <p className="text-sm sm:text-base text-fg-secondary leading-relaxed mb-6">
-                  {activeSection.description}
-                </p>
-
-                {/* Prose Content */}
-                <div className="text-xs sm:text-sm text-fg-secondary leading-relaxed space-y-3 mb-8 whitespace-pre-line border-t border-line pt-6">
-                  {activeSection.content}
-                </div>
-
-                {/* Code Snippet Box */}
-                {activeSection.codeSnippet && (
-                  <div className="rounded-2xl border border-line-strong overflow-hidden bg-canvas shadow-xl">
-                    <div className="px-4 py-2.5 bg-fg-muted/90 border-b border-line-strong flex items-center justify-between text-xs text-fg-secondary">
-                      <span className="font-mono font-semibold text-primary-text">
-                        {activeSection.codeSnippet.language}
-                      </span>
-                      <motion.button
-                        type="button"
-                        whileHover={buttonMotion.hover}
-                        whileTap={buttonMotion.tap}
-                        onClick={() =>
-                          handleCopy(activeSection.codeSnippet.code, activeSection.id)
-                        }
-                        className="flex items-center gap-1.5 text-xs text-fg-secondary hover:text-primary-contrast transition-colors cursor-pointer"
-                      >
-                        {copiedId === activeSection.id ? (
-                          <FiCheck className="w-3.5 h-3.5 text-success-text" />
-                        ) : (
-                          <FiCopy className="w-3.5 h-3.5" />
-                        )}
-                        <span>{copiedId === activeSection.id ? "Copied!" : "Copy Code"}</span>
-                      </motion.button>
-                    </div>
-                    <pre className="p-5 text-xs font-mono text-fg overflow-x-auto leading-relaxed">
-                      <code>{activeSection.codeSnippet.code}</code>
-                    </pre>
-                  </div>
                 )}
-              </article>
+              </div>
+
+              {/* Title & Description */}
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3 tracking-tight">
+                {activeSection.title}
+              </h2>
+              <p className="text-sm sm:text-base text-fg-secondary leading-relaxed mb-6">
+                {activeSection.description}
+              </p>
+
+              {/* Prose Content */}
+              <div className="text-xs sm:text-sm text-fg-secondary leading-relaxed space-y-3 mb-8 whitespace-pre-line border-t border-line pt-6">
+                {activeSection.content}
+              </div>
+
+              {/* Code Snippet Box */}
+              {activeSection.codeSnippet && (
+                <div className="rounded-2xl border border-line-strong overflow-hidden bg-canvas shadow-xl">
+                  <div className="px-4 py-2.5 bg-fg-muted/90 border-b border-line-strong flex items-center justify-between text-xs text-fg-secondary">
+                    <span className="font-mono font-semibold text-primary-text">
+                      {activeSection.codeSnippet.language}
+                    </span>
+                    <motion.button
+                      type="button"
+                      whileHover={buttonMotion.hover}
+                      whileTap={buttonMotion.tap}
+                      onClick={() =>
+                        handleCopy(activeSection.codeSnippet.code, activeSection.id)
+                      }
+                      className="flex items-center gap-1.5 text-xs text-fg-secondary hover:text-primary-contrast transition-colors cursor-pointer"
+                    >
+                      {copiedId === activeSection.id ? (
+                        <FiCheck className="w-3.5 h-3.5 text-success-text" />
+                      ) : (
+                        <FiCopy className="w-3.5 h-3.5" />
+                      )}
+                      <span>{copiedId === activeSection.id ? "Copied!" : "Copy Code"}</span>
+                    </motion.button>
+                  </div>
+                  <pre className="p-5 text-xs font-mono text-fg overflow-x-auto leading-relaxed">
+                    <code>{activeSection.codeSnippet.code}</code>
+                  </pre>
+                </div>
+              )}
             </Reveal>
 
             {/* Quick API Explorer Box */}
-            <Reveal animation="fade-up" delay={0.2} distance={30}>
+            <Reveal delay={0.2}>
               <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-violet/10 to-brand-cyan/10 border border-line-strong flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <p className="text-sm font-bold text-fg">

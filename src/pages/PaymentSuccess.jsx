@@ -85,7 +85,7 @@ export const PaymentSuccess = () => {
     >
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
         {status === "verifying" && (
-          <Reveal animation="fade-up" distance="30px">
+          <Reveal delay={0.06}>
             <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
               <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                 <FiLoader className="w-10 h-10 text-primary-text animate-spin" />
@@ -101,7 +101,7 @@ export const PaymentSuccess = () => {
         )}
 
         {status === "success" && (
-          <Reveal animation="fade-up" distance="30px">
+          <Reveal delay={0.06}>
             <div className="text-center p-12 rounded-3xl bg-surface border border-line shadow-xl">
               {/* Animated success icon */}
               <div className="relative w-24 h-24 mx-auto mb-8">
@@ -165,7 +165,7 @@ export const PaymentSuccess = () => {
         )}
 
         {status === "error" && (
-          <Reveal animation="fade-up" distance="30px">
+          <Reveal delay={0.06}>
             <div className="text-center p-12 rounded-3xl bg-surface border border-error/20 shadow-xl">
               <div className="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center mx-auto mb-6">
                 <FiAlertTriangle className="w-10 h-10 text-error-text" />

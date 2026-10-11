@@ -1,67 +1,75 @@
-import React from "react";
+ 
 import { motion, useReducedMotion } from "framer-motion";
 import { VARIANTS_MAP, MOTION_CONFIG, reducedMotionVariants } from "../../lib/motion";
 
 /**
- * Reusable Reveal component
+ * <Reveal>
+ * Standard single-container scroll reveal.
  *
- * Smoothly animates a single element into view when scrolled into viewport.
- * Uses whileInView with viewport={{ once: true, amount: 0.2 }} by default.
- * Respects prefers-reduced-motion automatically.
+ * Starts at opacity 0, translateY 40px and rises smoothly to opacity 1, translateY 0.
+ * Triggers once when 20% of the container enters the viewport.
+ * Automatically respects prefers-reduced-motion.
  *
  * @param {Object} props
  * @param {React.ReactNode} props.children
- * @param {"fadeUp"|"fadeIn"|"fadeDown"|"slideLeft"|"slideRight"|"scaleIn"|Object} [props.variant="fadeUp"] - Named variant or custom variant object
- * @param {number} [props.delay=0] - Delay in seconds
- * @param {number} [props.duration] - Duration in seconds (defaults to MOTION_CONFIG.durationDefault: 0.6s)
- * @param {number} [props.distance] - Translation distance in pixels
- * @param {Object} [props.viewport] - Custom viewport settings
- * @param {boolean} [props.playOnMount=false] - If true, animates immediately on mount (for hero elements)
- * @param {string} [props.className=""] - Additional CSS classes
- * @param {string|React.Component} [props.as="div"] - HTML element tag (polymorphic)
- * @param {Object} [props.whileHover] - Optional hover animation (e.g. lift)
- * @param {Object} [props.whileTap] - Optional tap animation
+ * @param {string} [props.as="div"] - HTML tag (polymorphic: "div", "section", "article", etc.)
+ * @param {number} [props.delay=0] - Initial delay in seconds
+ * @param {number} [props.y=MOTION_CONFIG.distanceDefault] - Vertical translate distance in px (default 40)
+ * @param {number} [props.duration=MOTION_CONFIG.durationDefault] - Duration in seconds (default 0.7)
+ * @param {boolean} [props.once=MOTION_CONFIG.viewportOnce] - Only trigger once (default true)
+ * @param {number} [props.amount=MOTION_CONFIG.viewportAmount] - Viewport entry threshold (default 0.2)
+ * @param {string} [props.className=""] - CSS classes
+ * @param {boolean} [props.playOnMount=false] - For above-the-fold hero containers
+ * @param {string|Object} [props.variant="fadeUp"] - Named variant
+ * @param {Object} [props.whileHover]
+ * @param {Object} [props.whileTap]
  */
 export const Reveal = ({
   children,
-  variant = "fadeUp",
-  delay = 0,
-  duration,
-  distance,
-  viewport,
-  playOnMount = false,
-  className = "",
   as = "div",
+  delay = 0,
+  y = MOTION_CONFIG.distanceDefault,
+  duration = MOTION_CONFIG.durationDefault,
+  once = MOTION_CONFIG.viewportOnce,
+  amount = MOTION_CONFIG.viewportAmount,
+  className = "",
+  playOnMount = false,
+  variant = "fadeUp",
   whileHover,
   whileTap,
+  style,
   ...rest
 }) => {
   const shouldReduceMotion = useReducedMotion();
 
-  // Resolve base variant
-  const selectedVariant = typeof variant === "string" ? VARIANTS_MAP[variant] || VARIANTS_MAP.fadeUp : variant;
+  // Selected base variant
+  const selectedVariant =
+    typeof variant === "string"
+      ? VARIANTS_MAP[variant] || VARIANTS_MAP.fadeUp
+      : variant;
 
   const customProps = {
     delay,
-    duration: duration ?? MOTION_CONFIG.durationDefault,
-    distance: distance ?? MOTION_CONFIG.distanceDefault,
+    duration,
+    y: typeof y === "string" ? parseInt(y, 10) || MOTION_CONFIG.distanceDefault : y,
+    distance: typeof y === "string" ? parseInt(y, 10) || MOTION_CONFIG.distanceDefault : y,
   };
 
-  const finalViewport = viewport ?? {
-    once: MOTION_CONFIG.viewportOnce,
-    amount: MOTION_CONFIG.viewportAmount,
+  const viewportConfig = {
+    once,
+    amount,
   };
 
-  // Polymorphic motion element (motion.div, motion.section, etc.)
   const MotionComponent = motion[as] || motion.div;
 
   if (shouldReduceMotion) {
     return (
       <MotionComponent
         initial="hidden"
-        {...(playOnMount ? { animate: "visible" } : { whileInView: "visible", viewport: finalViewport })}
+        {...(playOnMount ? { animate: "visible" } : { whileInView: "visible", viewport: viewportConfig })}
         variants={reducedMotionVariants}
         className={className}
+        style={style}
         {...rest}
       >
         {children}
@@ -72,12 +80,16 @@ export const Reveal = ({
   return (
     <MotionComponent
       initial="hidden"
-      {...(playOnMount ? { animate: "visible" } : { whileInView: "visible", viewport: finalViewport })}
+      {...(playOnMount ? { animate: "visible" } : { whileInView: "visible", viewport: viewportConfig })}
       variants={selectedVariant}
       custom={customProps}
       whileHover={whileHover}
       whileTap={whileTap}
       className={className}
+      style={{
+        ...style,
+        willChange: "transform, opacity",
+      }}
       {...rest}
     >
       {children}

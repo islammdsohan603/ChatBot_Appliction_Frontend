@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/userSlice";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { Reveal, RevealGroup, RevealItem } from "../components/motion";
+import { Reveal, RevealStack, RevealItem } from "../components/motion";
 
 /* ── Particle configuration ── */
 const PARTICLES = [
@@ -263,9 +263,7 @@ const Signup = () => {
       >
         {/* ════════════ Left branding panel ════════════ */}
         <Reveal
-          animation="fade-up"
           delay={0.06}
-          distance="28px"
           className={[
             "flex-1 flex flex-col items-start gap-8 max-w-[480px]",
             "max-[900px]:items-center max-[900px]:text-center max-[900px]:max-w-full",
@@ -310,8 +308,9 @@ const Signup = () => {
           </p>
 
           {/* Feature list */}
-          <RevealGroup
+          <RevealStack
             stagger={0.08}
+            amount={0.15}
             className="flex flex-col gap-4 mt-2 max-[900px]:items-center w-full"
           >
             {[
@@ -338,16 +337,14 @@ const Signup = () => {
                 {f.text}
               </RevealItem>
             ))}
-          </RevealGroup>
+          </RevealStack>
         </Reveal>
 
         {/* ════════════ Glassmorphism signup card ════════════ */}
         <Reveal
-          animation="fade-up"
-          delay={0.16}
-          distance="32px"
+          delay={0.12}
           className={[
-            "w-full max-w-[440px] relative animate-cardReveal",
+            "w-full max-w-[440px] relative",
             "bg-surface/85 backdrop-blur-[40px] backdrop-saturate-150",
             "border border-line-strong rounded-3xl",
             "shadow-2xl shadow-primary/5 dark:shadow-none",
@@ -405,7 +402,7 @@ const Signup = () => {
                 Username
               </label>
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-fg-muted/70 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
+                <span className="absolute left-4 flex items-center justify-center text-fg-muted transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
                   <HiOutlineUser className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -421,7 +418,7 @@ const Signup = () => {
                     "bg-surface-hover/90 border-[1.5px] border-line-strong rounded-[14px]",
                     "text-fg text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
-                    "placeholder:text-fg-muted/60",
+                    "placeholder:text-fg-muted",
                     "hover:border-primary/40 hover:bg-surface-hover",
                     "focus:border-primary/60 focus:bg-surface",
                     "focus:shadow-[0_0_0_4px_rgb(var(--primary-rgb)/0.1),0_0_20px_rgb(var(--primary-rgb)/0.08)]",
@@ -440,7 +437,7 @@ const Signup = () => {
                 Email
               </label>
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-fg-muted/70 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
+                <span className="absolute left-4 flex items-center justify-center text-fg-muted transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
                   <HiOutlineEnvelope className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -456,7 +453,7 @@ const Signup = () => {
                     "bg-surface-hover/90 border-[1.5px] border-line-strong rounded-[14px]",
                     "text-fg text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
-                    "placeholder:text-fg-muted/60",
+                    "placeholder:text-fg-muted",
                     "hover:border-primary/40 hover:bg-surface-hover",
                     "focus:border-primary/60 focus:bg-surface",
                     "focus:shadow-[0_0_0_4px_rgb(var(--primary-rgb)/0.1),0_0_20px_rgb(var(--primary-rgb)/0.08)]",
@@ -475,7 +472,7 @@ const Signup = () => {
                 Password
               </label>
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-fg-muted/70 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
+                <span className="absolute left-4 flex items-center justify-center text-fg-muted transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
                   <HiOutlineLockClosed className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -491,7 +488,7 @@ const Signup = () => {
                     "bg-surface-hover/90 border-[1.5px] border-line-strong rounded-[14px]",
                     "text-fg text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
-                    "placeholder:text-fg-muted/60",
+                    "placeholder:text-fg-muted",
                     "hover:border-primary/40 hover:bg-surface-hover",
                     "focus:border-primary/60 focus:bg-surface",
                     "focus:shadow-[0_0_0_4px_rgb(var(--primary-rgb)/0.1),0_0_20px_rgb(var(--primary-rgb)/0.08)]",
@@ -524,7 +521,7 @@ const Signup = () => {
                     ))}
                   </div>
                   <span
-                    className={`text-[11px] font-medium mt-1 ml-0.5 ${strengthLabelColor(strength.label)}`}
+                    className={`text-xs font-medium mt-1 ml-0.5 ${strengthLabelColor(strength.label)}`}
                   >
                     {strength.label}
                   </span>

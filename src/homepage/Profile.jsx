@@ -188,9 +188,7 @@ const Profile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* ── Left column: avatar + basic info ── */}
           <Reveal
-            animation="fade-up"
             delay={0.06}
-            distance="28px"
             className="lg:col-span-1 flex flex-col gap-5"
           >
             {/* Profile card */}
@@ -276,9 +274,7 @@ const Profile = () => {
 
           {/* ── Right column: account info + activity ── */}
           <Reveal
-            animation="fade-up"
-            delay={0.14}
-            distance="32px"
+            delay={0.12}
             className="lg:col-span-2 flex flex-col gap-5"
           >
             {/* Account information */}

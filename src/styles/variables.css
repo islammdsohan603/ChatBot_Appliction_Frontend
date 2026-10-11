@@ -18,7 +18,8 @@
   --brand-violet-rgb: 124 92 255;
   --brand-indigo-rgb: 91 108 255;
   --brand-cyan-rgb: 34 211 238;
-  --scrim-rgb: 5 6 15; /* modal backdrops + neutral shadows */
+  --scrim-rgb: 5 6 15;
+  /* modal backdrops + neutral shadows */
   --brand-gradient: linear-gradient(135deg, #7c5cff 0%, #4f8bff 55%, #22d3ee 100%);
   /* Light mode uses darker stops so gradient text stays readable on white */
   --brand-gradient-text: linear-gradient(90deg, #6847f5 0%, #2f6fed 50%, #0e7490 100%);
@@ -49,7 +50,8 @@
   --primary-rgb: 104 71 245;
   --primary-hover: #5636e0;
   --primary-hover-rgb: 86 54 224;
-  --primary-text: #6847f5; /* primary used as text colour */
+  --primary-text: #6847f5;
+  /* primary used as text colour */
   --primary-text-rgb: 104 71 245;
   --primary-contrast: #ffffff;
   --primary-contrast-rgb: 255 255 255;
@@ -103,7 +105,8 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  --radius: 0.75rem; /* shadcn compatibility */
+  --radius: 0.75rem;
+  /* shadcn compatibility */
 
   /* ── Motion ── */
   --theme-transition: 250ms ease;
@@ -140,14 +143,16 @@
   --text-primary-rgb: 245 247 255;
   --text-secondary: #b4bad6;
   --text-secondary-rgb: 180 186 214;
-  --text-muted: #8189ad; /* spec #7C84A8 lifted slightly to clear AA on --surface */
+  --text-muted: #8189ad;
+  /* spec #7C84A8 lifted slightly to clear AA on --surface */
   --text-muted-rgb: 129 137 173;
 
   --primary: #7c5cff;
   --primary-rgb: 124 92 255;
   --primary-hover: #917aff;
   --primary-hover-rgb: 145 122 255;
-  --primary-text: #a592ff; /* #7C5CFF alone is 4.2:1 on --surface → lighter text twin */
+  --primary-text: #a592ff;
+  /* #7C5CFF alone is 4.2:1 on --surface → lighter text twin */
   --primary-text-rgb: 165 146 255;
   --primary-contrast: #ffffff;
   --primary-contrast-rgb: 255 255 255;

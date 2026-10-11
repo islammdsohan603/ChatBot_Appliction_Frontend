@@ -77,7 +77,7 @@ export const Navbar = () => {
               <span className="text-xl font-extrabold text-gradient text-transparent tracking-tight transition-all">
                 NEXORA
               </span>
-              <span className="text-[9px] font-semibold uppercase tracking-wider text-primary-text -mt-1">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary-text -mt-0.5">
                 AI Platform
               </span>
             </div>
@@ -145,31 +145,18 @@ export const Navbar = () => {
             <ThemeToggle />
 
             {isAuthenticated ? (
-              <div className="flex items-center gap-2">
-                <motion.div
-                  whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -1 }}
-                  whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+              <motion.div
+                whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -1 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+              >
+                <Link
+                  to="/chat"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-br from-brand-violet to-brand-indigo hover:from-brand-violet hover:to-brand-indigo text-primary-contrast text-xs sm:text-sm font-semibold shadow-md shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center gap-1.5"
                 >
-                  <Link
-                    to="/dashboard"
-                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-primary/25 text-fg-secondary hover:bg-primary/10 transition-all inline-block"
-                  >
-                    Dashboard
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={shouldReduceMotion ? {} : { scale: 1.03, y: -1 }}
-                  whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-                >
-                  <Link
-                    to="/chat"
-                    className="px-4 py-2 rounded-xl bg-gradient-to-br from-brand-violet to-brand-indigo hover:from-brand-violet hover:to-brand-indigo text-primary-contrast text-xs sm:text-sm font-semibold shadow-md shadow-primary/25 hover:shadow-primary/40 transition-all flex items-center gap-1.5"
-                  >
-                    <HiOutlineSparkles className="w-4 h-4" />
-                    Open Chat
-                  </Link>
-                </motion.div>
-              </div>
+                  <HiOutlineSparkles className="w-4 h-4" />
+                  Open Chat
+                </Link>
+              </motion.div>
             ) : (
               <div className="flex items-center gap-2">
                 <motion.div
@@ -246,20 +233,13 @@ export const Navbar = () => {
 
               <div className="flex gap-2 mt-3 pt-2 border-t border-line">
                 {isAuthenticated ? (
-                  <>
-                    <Link
-                      to="/dashboard"
-                      className="flex-1 py-2 text-center text-xs font-semibold rounded-xl border border-primary/25 text-fg-secondary hover:bg-primary/10"
-                    >
-                      Dashboard
-                    </Link>
-                    <Link
-                      to="/chat"
-                      className="flex-1 py-2 text-center text-xs font-semibold rounded-xl bg-primary text-primary-contrast shadow-md"
-                    >
-                      Open Chat
-                    </Link>
-                  </>
+                  <Link
+                    to="/chat"
+                    className="w-full py-2.5 text-center text-xs sm:text-sm font-semibold rounded-xl bg-primary text-primary-contrast shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    <HiOutlineSparkles className="w-4 h-4" />
+                    Open Chat
+                  </Link>
                 ) : (
                   <>
                     <Link

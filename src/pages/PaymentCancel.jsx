@@ -27,7 +27,7 @@ export const PaymentCancel = () => {
       description="Your payment was cancelled or could not be processed."
     >
       <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-        <Reveal animation="fade-up" distance="30px">
+        <Reveal delay={0.06}>
           <div className="text-center p-12 rounded-3xl bg-surface border border-error/20 shadow-xl">
           {/* Animated error icon */}
           <div className="relative w-24 h-24 mx-auto mb-8">

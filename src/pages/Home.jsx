@@ -15,7 +15,7 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import {
   Reveal,
-  RevealGroup,
+  RevealStack,
   RevealItem,
   AnimatedText,
   CountUp,
@@ -154,11 +154,11 @@ export const Home = () => {
       {/* ══════════════════════════════════════════════
           HERO SECTION (Plays on load, not on scroll)
           ══════════════════════════════════════════════ */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative pt-24 pb-12 sm:pt-28 sm:pb-14 md:pt-32 md:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto">
           {/* 1. Badge pill: fades down first */}
           <Reveal variant="fadeDown" playOnMount delay={0.05} distance={16}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-xs font-semibold text-primary-text mb-6 shadow-xs hover:border-primary transition-colors">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-xs font-semibold text-primary-text mb-4 shadow-xs hover:border-primary transition-colors">
               <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
               <span>Nexora 2.0 Released — Powered by Gemini 3.8 Flash</span>
             </div>
@@ -168,25 +168,26 @@ export const Home = () => {
           <AnimatedText
             text="Intelligent conversations,"
             highlight="streamed in real time."
+            highlightClassName="text-gradient text-transparent inline-block md:whitespace-nowrap"
             delay={0.18}
             stagger={0.05}
             shine={true}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-fg mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-fg mb-4 max-w-4xl mx-auto"
           />
 
           {/* 3. Subtitle fades up */}
           <Reveal variant="fadeUp" playOnMount delay={0.52} distance={18}>
-            <p className="text-lg sm:text-xl text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-10">
+            <p className="text-base sm:text-lg text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-6">
               A high-performance multimodal AI workspace with sub-second streaming, persistent session memory, vision parsing, and end-to-end encryption.
             </p>
           </Reveal>
 
           {/* 4. Action Buttons scale in with slight stagger */}
-          <RevealGroup
+          <RevealStack
             playOnMount
-            delayChildren={0.7}
+            delay={0.7}
             stagger={0.1}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8"
           >
             <RevealItem variant="scaleIn">
               <motion.div
@@ -216,14 +217,14 @@ export const Home = () => {
                 </Link>
               </motion.div>
             </RevealItem>
-          </RevealGroup>
+          </RevealStack>
 
           {/* 5. Quick Stats Grid: Staggered from bottom with numeric CountUp */}
-          <RevealGroup
+          <RevealStack
             playOnMount
-            delayChildren={0.88}
+            delay={0.88}
             stagger={0.08}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 border-t border-line text-left"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-3xl mx-auto pt-5 border-t border-line text-left"
           >
             {[
               { val: "< 400ms", label: "Average Time-to-First-Token", rawNum: 400, prefix: "< ", suffix: "ms" },
@@ -232,7 +233,7 @@ export const Home = () => {
               { val: "50+ Langs", label: "Markdown Code Highlighting", rawNum: 50, prefix: "", suffix: "+ Langs" },
             ].map((stat, idx) => (
               <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -3 }}>
-                <div className="p-3 rounded-xl bg-surface/40 border border-line hover:border-primary/30 transition-all">
+                <div className="p-3.5 rounded-xl bg-surface/90 dark:bg-surface/85 backdrop-blur-md border border-line hover:border-primary/30 transition-all shadow-xs">
                   <p className="text-xl sm:text-2xl font-bold text-gradient text-transparent">
                     <CountUp
                       value={stat.rawNum}
@@ -245,16 +246,15 @@ export const Home = () => {
                 </div>
               </RevealItem>
             ))}
-          </RevealGroup>
+          </RevealStack>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════
           LIVE INTERACTIVE PLAYGROUND DEMO
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <Reveal variant="fadeUp" distance={30}>
-          <div className="rounded-3xl border border-primary/25 bg-surface/80 backdrop-blur-xl shadow-2xl overflow-hidden">
+      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="rounded-3xl border border-primary/25 bg-surface/80 backdrop-blur-xl shadow-2xl overflow-hidden">
             {/* Window Chrome Header */}
             <div className="px-5 py-4 border-b border-line flex items-center justify-between bg-surface-hover/90">
               <div className="flex items-center gap-2">
@@ -289,24 +289,25 @@ export const Home = () => {
               <p className="text-xs font-semibold text-fg-muted mb-3">
                 Click a starter prompt to preview live rendering:
               </p>
-              <RevealGroup stagger={0.06} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {starters.map((s, idx) => (
                   <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -2 }}>
                     <button
                       type="button"
+                      title={s.prompt}
                       onClick={() => handleStarterClick(s.prompt)}
-                      className="w-full p-3 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group"
+                      className="w-full min-h-[92px] p-3.5 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group flex flex-col justify-between"
                     >
                       <p className="font-bold text-fg group-hover:text-primary-text">
                         {s.title}
                       </p>
-                      <p className="text-[11px] text-fg-muted truncate mt-1">
+                      <p className="text-xs text-fg-muted line-clamp-2 mt-1 leading-snug break-words">
                         {s.prompt}
                       </p>
                     </button>
                   </RevealItem>
                 ))}
-              </RevealGroup>
+              </RevealStack>
             </div>
 
             {/* Simulated Chat Dialogue */}
@@ -336,7 +337,7 @@ export const Home = () => {
                   className="px-5 py-4 rounded-2xl rounded-bl-none bg-surface-hover border border-line text-fg text-sm max-w-[85%] leading-relaxed shadow-xs"
                 >
                   <p className="whitespace-pre-line">{demoOutput}</p>
-                  <div className="mt-4 pt-3 border-t border-line flex items-center justify-between text-[11px] text-fg-muted">
+                  <div className="mt-4 pt-3 border-t border-line flex items-center justify-between text-xs text-fg-muted">
                     <span>Model: gemini-3.8-flash</span>
                     <span className="text-success-text font-medium">Latency: 312ms</span>
                   </div>
@@ -357,13 +358,13 @@ export const Home = () => {
               </Link>
             </div>
           </div>
-        </Reveal>
-      </section>
+      </Reveal>
 
       {/* ══════════════════════════════════════════════
           CORE FEATURES GRID
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="absolute inset-0 -mx-4 sm:-mx-6 lg:-mx-8 bg-canvas/90 dark:bg-canvas/95 backdrop-blur-xl -z-10 pointer-events-none rounded-3xl" aria-hidden="true" />
         <Reveal variant="fadeUp" className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Engineered for Developers & Teams
@@ -376,7 +377,7 @@ export const Home = () => {
           </p>
         </Reveal>
 
-        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((feat, idx) => (
             <RevealItem
               key={idx}
@@ -390,7 +391,7 @@ export const Home = () => {
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center group-hover:scale-110 transition-transform">
                       {feat.icon}
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary-text border border-line-strong">
+                    <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">
                       {feat.badge}
                     </span>
                   </div>
@@ -404,7 +405,7 @@ export const Home = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
@@ -420,7 +421,7 @@ export const Home = () => {
           </h3>
         </Reveal>
 
-        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, idx) => (
             <RevealItem
               key={idx}
@@ -453,50 +454,48 @@ export const Home = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
           FINAL CALL TO ACTION
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <Reveal variant="fadeUp" distance={30}>
-          <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-brand-violet/20 via-brand-indigo/20 to-brand-cyan/20 border border-primary/30 shadow-2xl relative overflow-hidden">
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight mb-4">
-                Supercharge your workflow today
-              </h2>
-              <p className="text-base text-fg-secondary leading-relaxed mb-8">
-                Join thousands of engineers, researchers, and creators using Nexora AI for intelligent real-time chats.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.03, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
+      <Reveal as="section" className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+        <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-brand-violet/20 via-brand-indigo/20 to-brand-cyan/20 border border-primary/30 shadow-2xl relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight mb-4">
+              Supercharge your workflow today
+            </h2>
+            <p className="text-base text-fg-secondary leading-relaxed mb-8">
+              Join thousands of engineers, researchers, and creators using Nexora AI for intelligent real-time chats.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <motion.div
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Link
+                  to={isAuthenticated ? "/chat" : "/signup"}
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-base shadow-lg shadow-primary/40 transition-all inline-block"
                 >
-                  <Link
-                    to={isAuthenticated ? "/chat" : "/signup"}
-                    className="w-full sm:w-auto px-8 py-4 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-bold text-base shadow-lg shadow-primary/40 transition-all inline-block"
-                  >
-                    {isAuthenticated ? "Go to Workspace →" : "Create Free Account →"}
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  {isAuthenticated ? "Go to Workspace →" : "Create Free Account →"}
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Link
+                  to="/pricing"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl border border-line-strong bg-surface/50 text-fg font-semibold hover:bg-surface-hover transition-all inline-block"
                 >
-                  <Link
-                    to="/pricing"
-                    className="w-full sm:w-auto px-8 py-4 rounded-xl border border-line-strong bg-surface/50 text-fg font-semibold hover:bg-surface-hover transition-all inline-block"
-                  >
-                    Compare Plans
-                  </Link>
-                </motion.div>
-              </div>
+                  Compare Plans
+                </Link>
+              </motion.div>
             </div>
           </div>
-        </Reveal>
-      </section>
+        </div>
+      </Reveal>
     </PageLayout>
   );
 };

@@ -19,7 +19,7 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import {
   Reveal,
-  RevealGroup,
+  RevealStack,
   RevealItem,
 } from "../components/motion";
 import { setUserData } from "../../redux/userSlice";
@@ -265,7 +265,7 @@ export const Pricing = () => {
             onClick={() => setIsYearly(true)}
           >
             <span>Annual Billing</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-success/15 text-success-text border border-success/30">
+            <span className="px-2 py-0.5 rounded-full text-xs font-extrabold bg-success/15 text-success-text border border-success/30">
               Save 20%
             </span>
           </span>
@@ -279,7 +279,7 @@ export const Pricing = () => {
         {isLoading ? (
           <LoadingSpinner label="Loading plans..." />
         ) : (
-          <RevealGroup stagger={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <RevealStack stagger={0.12} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {plans.map((plan, idx) => {
               const price = isYearly ? Math.round(plan.priceYearly / 12) : plan.priceMonthly;
               const isCurrent = currentTier === plan.slug;
@@ -309,7 +309,7 @@ export const Pricing = () => {
 
                     {/* Highlight pill */}
                     {plan.highlightBadge && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast shadow-md">
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast shadow-md">
                         {plan.highlightBadge}
                       </div>
                     )}
@@ -321,7 +321,7 @@ export const Pricing = () => {
                           {plan.name}
                         </h3>
                         {isCurrent && (
-                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-success/15 text-success-text border border-success/30">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-success/15 text-success-text border border-success/30">
                             Current Plan
                           </span>
                         )}
@@ -340,7 +340,7 @@ export const Pricing = () => {
                           {price === 0 ? "forever" : "/ month"}
                         </span>
                         {isYearly && price > 0 && (
-                          <span className="text-[10px] text-success-text ml-2 font-medium">
+                          <span className="text-xs text-success-text ml-2 font-medium">
                             billed ${plan.priceYearly}/yr
                           </span>
                         )}
@@ -393,7 +393,7 @@ export const Pricing = () => {
                 </RevealItem>
               );
             })}
-          </RevealGroup>
+          </RevealStack>
         )}
       </section>
 
@@ -410,7 +410,7 @@ export const Pricing = () => {
           </h3>
         </Reveal>
 
-        <Reveal variant="fadeUp" distance={30}>
+        <Reveal variant="fadeUp">
           <div className="rounded-2xl border border-line bg-surface shadow-lg overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead>
@@ -481,7 +481,7 @@ export const Pricing = () => {
           </h3>
         </Reveal>
 
-        <RevealGroup stagger={0.07} className="space-y-4">
+        <RevealStack stagger={0.08} amount={0.15} className="space-y-4">
           {FAQS.map((faq, idx) => {
             const isOpen = openFaq === idx;
             return (
@@ -518,34 +518,32 @@ export const Pricing = () => {
               </RevealItem>
             );
           })}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
           CUSTOM ENTERPRISE BANNER
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <Reveal variant="fadeUp" distance={30}>
-          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-violet/15 to-brand-cyan/15 border border-primary/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-            <div>
-              <h4 className="text-xl sm:text-2xl font-bold text-fg mb-1">
-                Need custom LLM fine-tuning or private on-prem hosting?
-              </h4>
-              <p className="text-xs sm:text-sm text-fg-secondary">
-                Speak with our solutions engineering team for bespoke SLAs and security evaluations.
-              </p>
-            </div>
-            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/about"
-                className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all inline-block"
-              >
-                Contact Sales Team →
-              </Link>
-            </motion.div>
+      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-violet/15 to-brand-cyan/15 border border-primary/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+          <div>
+            <h4 className="text-xl sm:text-2xl font-bold text-fg mb-1">
+              Need custom LLM fine-tuning or private on-prem hosting?
+            </h4>
+            <p className="text-xs sm:text-sm text-fg-secondary">
+              Speak with our solutions engineering team for bespoke SLAs and security evaluations.
+            </p>
           </div>
-        </Reveal>
-      </section>
+          <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              to="/about"
+              className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-xs sm:text-sm whitespace-nowrap shadow-md cursor-pointer transition-all inline-block"
+            >
+              Contact Sales Team →
+            </Link>
+          </motion.div>
+        </div>
+      </Reveal>
     </PageLayout>
   );
 };

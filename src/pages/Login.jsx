@@ -15,7 +15,7 @@ import {
 } from "react-icons/hi2";
 import api from "../lib/api";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { Reveal, RevealGroup, RevealItem } from "../components/motion";
+import { Reveal, RevealStack, RevealItem } from "../components/motion";
 
 /* ── Particle configuration ── */
 const PARTICLES = [
@@ -218,9 +218,7 @@ const Login = () => {
       >
         {/* ════════════ Left branding panel ════════════ */}
         <Reveal
-          animation="fade-up"
           delay={0.06}
-          distance="28px"
           className={[
             "flex-1 flex flex-col items-start gap-8 max-w-[480px]",
             "max-[900px]:items-center max-[900px]:text-center max-[900px]:max-w-full",
@@ -263,8 +261,9 @@ const Login = () => {
           </p>
 
           {/* Feature list */}
-          <RevealGroup
+          <RevealStack
             stagger={0.08}
+            amount={0.15}
             className="flex flex-col gap-4 mt-2 max-[900px]:items-center w-full"
           >
             {[
@@ -291,16 +290,14 @@ const Login = () => {
                 {f.text}
               </RevealItem>
             ))}
-          </RevealGroup>
+          </RevealStack>
         </Reveal>
 
         {/* ════════════ Glassmorphism login card ════════════ */}
         <Reveal
-          animation="fade-up"
-          delay={0.16}
-          distance="32px"
+          delay={0.12}
           className={[
-            "w-full max-w-[440px] relative animate-cardReveal",
+            "w-full max-w-[440px] relative",
             "bg-surface/85 backdrop-blur-[40px] backdrop-saturate-150",
             "border border-line-strong rounded-3xl",
             "shadow-2xl shadow-primary/5 dark:shadow-none",
@@ -358,7 +355,7 @@ const Login = () => {
                 Email
               </label>
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-fg-muted/70 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
+                <span className="absolute left-4 flex items-center justify-center text-fg-muted transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
                   <HiOutlineEnvelope className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -374,7 +371,7 @@ const Login = () => {
                     "bg-surface-hover/90 border-[1.5px] border-line-strong rounded-[14px]",
                     "text-fg text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
-                    "placeholder:text-fg-muted/60",
+                    "placeholder:text-fg-muted",
                     "hover:border-primary/40 hover:bg-surface-hover",
                     "focus:border-primary/60 focus:bg-surface",
                     "focus:shadow-[0_0_0_4px_rgb(var(--primary-rgb)/0.1),0_0_20px_rgb(var(--primary-rgb)/0.08)]",
@@ -395,14 +392,14 @@ const Login = () => {
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-[11px] text-primary-text hover:text-primary-text transition-colors"
+                  className="text-xs text-primary-text hover:text-primary-text transition-colors"
                 >
                   Forgot password?
                 </Link>
               </div>
 
               <div className="relative flex items-center group">
-                <span className="absolute left-4 flex items-center justify-center text-fg-muted/70 transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
+                <span className="absolute left-4 flex items-center justify-center text-fg-muted transition-colors duration-300 pointer-events-none z-[2] group-focus-within:text-primary-text">
                   <HiOutlineLockClosed className="w-[18px] h-[18px]" />
                 </span>
                 <input
@@ -418,7 +415,7 @@ const Login = () => {
                     "bg-surface-hover/90 border-[1.5px] border-line-strong rounded-[14px]",
                     "text-fg text-[15px] font-normal font-inter outline-none",
                     "transition-all duration-300",
-                    "placeholder:text-fg-muted/60",
+                    "placeholder:text-fg-muted",
                     "hover:border-primary/40 hover:bg-surface-hover",
                     "focus:border-primary/60 focus:bg-surface",
                     "focus:shadow-[0_0_0_4px_rgb(var(--primary-rgb)/0.1),0_0_20px_rgb(var(--primary-rgb)/0.08)]",

@@ -2,36 +2,37 @@
  * ═══════════════════════════════════════════════════════════════════
  * NEXORA AI — Central Motion & Animation System
  * Powered by Framer Motion.
- * 
- * Contains all central variants, easing curves, timing presets,
- * and micro-interaction variants in ONE tweakable location.
+ *
+ * All animation presets, easing curves, timing, and viewport settings
+ * live in this file. Adjust settings here to tweak the motion system globally.
  * ═══════════════════════════════════════════════════════════════════
  */
 
 // ── 1. Global Motion Settings (Tweakable in one place) ──
 export const MOTION_CONFIG = {
-  // Durations (in seconds)
-  durationDefault: 0.6,
-  durationFast: 0.3,
+  // Durations (in seconds: 0.6s to 0.8s)
+  durationDefault: 0.7,
+  durationFast: 0.35,
   durationSlow: 0.8,
   durationPage: 0.35,
 
-  // Distances (in pixels)
-  distanceDefault: 24,
-  distanceLarge: 36,
-  distanceSmall: 12,
+  // Distances (start state: translateY 40px)
+  distanceDefault: 40,
+  distanceLarge: 48,
+  distanceSmall: 20,
 
-  // Staggers (in seconds)
-  staggerDefault: 0.09,
-  staggerFast: 0.06,
+  // Staggers (in seconds: 0.08s to 0.12s)
+  staggerDefault: 0.1,
+  staggerFast: 0.08,
   staggerSlow: 0.12,
-  delayChildrenDefault: 0.1,
+  delayChildrenDefault: 0,
 
   // Viewport scroll-trigger settings
   viewportOnce: true,
-  viewportAmount: 0.2, // Triggers when 20% of element is in view
+  viewportAmount: 0.2, // Triggers when 20% of the container enters viewport
+  stackViewportAmount: 0.15, // Triggers staggered groups when 15% is in view
 
-  // Premium cubic-bezier curve (smooth deceleration, Linear/Vercel/Stripe style)
+  // Premium ease-out cubic-bezier curve (smooth deceleration)
   ease: [0.22, 1, 0.36, 1],
   easeOut: [0.16, 1, 0.3, 1],
   easeInOut: [0.42, 0, 0.58, 1],
@@ -48,15 +49,16 @@ export const createTransition = ({
   ease,
 });
 
-// ── 3. Central Core Variants ──
+// ── 3. Core Scroll Reveal Variants (Transform and Opacity only) ──
 
 /**
- * Fade Up: Opacity 0 → 1, y 24 → 0
+ * Standard Fade-and-Rise Variant
+ * Start state: opacity 0, translateY 40px. End state: opacity 1, translateY 0.
  */
 export const fadeUp = {
   hidden: (custom = {}) => ({
     opacity: 0,
-    y: custom.distance ?? MOTION_CONFIG.distanceDefault,
+    y: custom.y ?? custom.distance ?? MOTION_CONFIG.distanceDefault,
   }),
   visible: (custom = {}) => ({
     opacity: 1,
@@ -70,12 +72,12 @@ export const fadeUp = {
 };
 
 /**
- * Fade Down: Opacity 0 → 1, y -24 → 0
+ * Directional Fallbacks for Specific Hero/UI Entrances
  */
 export const fadeDown = {
   hidden: (custom = {}) => ({
     opacity: 0,
-    y: -(custom.distance ?? MOTION_CONFIG.distanceDefault),
+    y: -(custom.y ?? custom.distance ?? MOTION_CONFIG.distanceDefault),
   }),
   visible: (custom = {}) => ({
     opacity: 1,
@@ -88,9 +90,6 @@ export const fadeDown = {
   }),
 };
 
-/**
- * Fade In: Opacity 0 → 1
- */
 export const fadeIn = {
   hidden: {
     opacity: 0,
@@ -105,13 +104,10 @@ export const fadeIn = {
   }),
 };
 
-/**
- * Slide Left: Opacity 0 → 1, x 28 → 0 (enters from right toward left)
- */
 export const slideLeft = {
   hidden: (custom = {}) => ({
     opacity: 0,
-    x: custom.distance ?? 28,
+    x: custom.distance ?? MOTION_CONFIG.distanceDefault,
   }),
   visible: (custom = {}) => ({
     opacity: 1,
@@ -124,13 +120,10 @@ export const slideLeft = {
   }),
 };
 
-/**
- * Slide Right: Opacity 0 → 1, x -28 → 0 (enters from left toward right)
- */
 export const slideRight = {
   hidden: (custom = {}) => ({
     opacity: 0,
-    x: -(custom.distance ?? 28),
+    x: -(custom.distance ?? MOTION_CONFIG.distanceDefault),
   }),
   visible: (custom = {}) => ({
     opacity: 1,
@@ -143,9 +136,6 @@ export const slideRight = {
   }),
 };
 
-/**
- * Scale In: Opacity 0 → 1, scale 0.95 → 1
- */
 export const scaleIn = {
   hidden: (custom = {}) => ({
     opacity: 0,
@@ -163,7 +153,8 @@ export const scaleIn = {
 };
 
 /**
- * Stagger Container: Orchestrates children reveals
+ * Stagger Container Variant for Grids & Lists
+ * Orchestrates children item reveals sequentially
  */
 export const staggerContainer = {
   hidden: {
@@ -173,26 +164,21 @@ export const staggerContainer = {
     opacity: 1,
     transition: {
       staggerChildren: custom.stagger ?? MOTION_CONFIG.staggerDefault,
-      delayChildren: custom.delayChildren ?? MOTION_CONFIG.delayChildrenDefault,
+      delayChildren: custom.delay ?? custom.delayChildren ?? MOTION_CONFIG.delayChildrenDefault,
     },
   }),
 };
 
-// ── 4. Reduced Motion Fallback Variants ──
+// ── 4. Reduced Motion Fallback Variants (Instant / subtle opacity fade) ──
 export const reducedMotionVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.2 },
+    transition: { duration: 0.15 },
   },
 };
 
 // ── 5. Micro-Interaction Variants ──
-
-/**
- * Button Hover & Tap Micro-interactions
- * Scale 1.03 with lift on hover, scale 0.97 on tap
- */
 export const buttonMotion = {
   hover: {
     scale: 1.03,
@@ -206,10 +192,6 @@ export const buttonMotion = {
   },
 };
 
-/**
- * Card Hover Micro-interactions
- * Y -4 lift with smooth ease
- */
 export const cardHoverMotion = {
   hover: {
     y: -4,
@@ -217,11 +199,6 @@ export const cardHoverMotion = {
   },
 };
 
-/**
- * Chat Message Entrance Variants
- * User bubble slides from right (x: 20 → 0, y: 12 → 0)
- * Bot bubble slides from left (x: -20 → 0, y: 12 → 0)
- */
 export const chatUserBubbleMotion = {
   hidden: {
     opacity: 0,
@@ -260,9 +237,6 @@ export const chatBotBubbleMotion = {
   },
 };
 
-/**
- * Page Route Transition Variant (0.35s fade + slight y shift)
- */
 export const pageTransitionVariants = {
   initial: {
     opacity: 0,
@@ -286,7 +260,6 @@ export const pageTransitionVariants = {
   },
 };
 
-// ── 6. Map of named variants for easy lookup ──
 export const VARIANTS_MAP = {
   fadeUp,
   fadeIn,

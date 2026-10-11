@@ -13,7 +13,7 @@ import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import {
   Reveal,
-  RevealGroup,
+  RevealStack,
   RevealItem,
 } from "../components/motion";
 
@@ -124,57 +124,55 @@ export const About = () => {
       {/* ══════════════════════════════════════════════
           THE STORY BEHIND NEXORA
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <Reveal variant="fadeUp" distance={28}>
-          <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight mb-4">
-                  The Story Behind Nexora
-                </h2>
-                <div className="space-y-4 text-sm sm:text-base text-fg-secondary leading-relaxed">
-                  <p>
-                    In early 2025, our team grew frustrated with sluggish chatbot interfaces that required constant page refreshes, lost conversation context, and locked users into restrictive walled gardens.
-                  </p>
-                  <p>
-                    We set out to build an open, high-throughput MERN-powered chat application that combines the raw reasoning power of Google Gemini with real-time SSE streaming, persistent MongoDB storage, and peer-to-peer WebSockets.
-                  </p>
-                  <p>
-                    Today, Nexora AI powers conversations for individual developers, research teams, and creative agencies worldwide.
-                  </p>
-                </div>
+      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight mb-4">
+                The Story Behind Nexora
+              </h2>
+              <div className="space-y-4 text-sm sm:text-base text-fg-secondary leading-relaxed">
+                <p>
+                  In early 2025, our team grew frustrated with sluggish chatbot interfaces that required constant page refreshes, lost conversation context, and locked users into restrictive walled gardens.
+                </p>
+                <p>
+                  We set out to build an open, high-throughput MERN-powered chat application that combines the raw reasoning power of Google Gemini with real-time SSE streaming, persistent MongoDB storage, and peer-to-peer WebSockets.
+                </p>
+                <p>
+                  Today, Nexora AI powers conversations for individual developers, research teams, and creative agencies worldwide.
+                </p>
               </div>
-
-              <RevealGroup stagger={0.08} className="grid grid-cols-2 gap-4">
-                <RevealItem variant="scaleIn">
-                  <div className="p-5 rounded-2xl bg-primary/10 border border-line-strong text-center">
-                    <p className="text-3xl font-extrabold text-primary-text">100%</p>
-                    <p className="text-xs text-fg-muted mt-1 font-medium">JavaScript Full-Stack</p>
-                  </div>
-                </RevealItem>
-                <RevealItem variant="scaleIn">
-                  <div className="p-5 rounded-2xl bg-accent/10 border border-accent/20 text-center">
-                    <p className="text-3xl font-extrabold text-accent-text">&lt;500ms</p>
-                    <p className="text-xs text-fg-muted mt-1 font-medium">Average Response Start</p>
-                  </div>
-                </RevealItem>
-                <RevealItem variant="scaleIn">
-                  <div className="p-5 rounded-2xl bg-success/10 border border-success/20 text-center">
-                    <p className="text-3xl font-extrabold text-success-text">24/7</p>
-                    <p className="text-xs text-fg-muted mt-1 font-medium">MongoDB Sync</p>
-                  </div>
-                </RevealItem>
-                <RevealItem variant="scaleIn">
-                  <div className="p-5 rounded-2xl bg-warning/10 border border-warning/20 text-center">
-                    <p className="text-3xl font-extrabold text-warning-text">0</p>
-                    <p className="text-xs text-fg-muted mt-1 font-medium">Data Selling</p>
-                  </div>
-                </RevealItem>
-              </RevealGroup>
             </div>
+
+            <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-2 gap-4">
+              <RevealItem variant="scaleIn">
+                <div className="p-5 rounded-2xl bg-primary/10 border border-line-strong text-center">
+                  <p className="text-3xl font-extrabold text-primary-text">100%</p>
+                  <p className="text-xs text-fg-muted mt-1 font-medium">JavaScript Full-Stack</p>
+                </div>
+              </RevealItem>
+              <RevealItem variant="scaleIn">
+                <div className="p-5 rounded-2xl bg-accent/10 border border-accent/20 text-center">
+                  <p className="text-3xl font-extrabold text-accent-text">&lt;500ms</p>
+                  <p className="text-xs text-fg-muted mt-1 font-medium">Average Response Start</p>
+                </div>
+              </RevealItem>
+              <RevealItem variant="scaleIn">
+                <div className="p-5 rounded-2xl bg-success/10 border border-success/20 text-center">
+                  <p className="text-3xl font-extrabold text-success-text">24/7</p>
+                  <p className="text-xs text-fg-muted mt-1 font-medium">MongoDB Sync</p>
+                </div>
+              </RevealItem>
+              <RevealItem variant="scaleIn">
+                <div className="p-5 rounded-2xl bg-warning/10 border border-warning/20 text-center">
+                  <p className="text-3xl font-extrabold text-warning-text">0</p>
+                  <p className="text-xs text-fg-muted mt-1 font-medium">Data Selling</p>
+                </div>
+              </RevealItem>
+            </RevealStack>
           </div>
-        </Reveal>
-      </section>
+        </div>
+      </Reveal>
 
       {/* ══════════════════════════════════════════════
           CORE VALUES & PILLARS
@@ -189,7 +187,7 @@ export const About = () => {
           </h3>
         </Reveal>
 
-        <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {CORE_VALUES.map((val, idx) => (
             <RevealItem
               key={idx}
@@ -210,7 +208,7 @@ export const About = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
@@ -229,7 +227,7 @@ export const About = () => {
           </p>
         </Reveal>
 
-        <RevealGroup stagger={0.09} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <RevealStack stagger={0.09} amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {TEAM.map((member, idx) => (
             <RevealItem
               key={idx}
@@ -275,7 +273,7 @@ export const About = () => {
                   {member.skills.map((skill, i) => (
                     <span
                       key={i}
-                      className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-surface-hover text-fg-secondary"
+                      className="px-2 py-0.5 rounded-md text-xs font-medium bg-surface-hover text-fg-secondary"
                     >
                       {skill}
                     </span>
@@ -284,7 +282,7 @@ export const About = () => {
               </div>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
@@ -300,12 +298,11 @@ export const About = () => {
           </h3>
         </Reveal>
 
-        <div className="relative border-l-2 border-line-strong ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
+        <RevealStack stagger={0.08} amount={0.15} className="relative border-l-2 border-line-strong ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
           {ROADMAP.map((item, idx) => (
-            <Reveal
+            <RevealItem
               key={idx}
               variant={idx % 2 === 0 ? "slideRight" : "slideLeft"}
-              delay={idx * 0.08}
               className="relative group"
             >
               {/* Dot */}
@@ -324,7 +321,7 @@ export const About = () => {
                   {item.quarter}
                 </span>
                 <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                     item.status === "Completed"
                       ? "bg-success/15 text-success-text"
                       : item.status === "In Progress"
@@ -341,44 +338,42 @@ export const About = () => {
               <p className="text-sm text-fg-secondary leading-relaxed">
                 {item.desc}
               </p>
-            </Reveal>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStack>
       </section>
 
       {/* ══════════════════════════════════════════════
           JOIN THE JOURNEY CTA
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
-        <Reveal variant="fadeUp" distance={28}>
-          <div className="p-8 sm:p-12 rounded-3xl bg-primary/10 border border-primary/25">
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3">
-              Want to help shape Nexora AI?
-            </h3>
-            <p className="text-sm text-fg-secondary max-w-lg mx-auto mb-6">
-              We are always looking for open-source contributors, community moderators, and developer feedback.
-            </p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/community"
-                  className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-sm shadow-md transition-all inline-block"
-                >
-                  Join Our Community
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/docs"
-                  className="px-6 py-3 rounded-xl border border-line-strong text-fg-secondary hover:bg-surface-hover font-semibold text-sm transition-all inline-block"
-                >
-                  Read Documentation
-                </Link>
-              </motion.div>
-            </div>
+      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+        <div className="p-8 sm:p-12 rounded-3xl bg-primary/10 border border-primary/25">
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3">
+            Want to help shape Nexora AI?
+          </h3>
+          <p className="text-sm text-fg-secondary max-w-lg mx-auto mb-6">
+            We are always looking for open-source contributors, community moderators, and developer feedback.
+          </p>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <motion.div whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/community"
+                className="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-contrast font-semibold text-sm shadow-md transition-all inline-block"
+              >
+                Join Our Community
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                to="/docs"
+                className="px-6 py-3 rounded-xl border border-line-strong text-fg-secondary hover:bg-surface-hover font-semibold text-sm transition-all inline-block"
+              >
+                Read Documentation
+              </Link>
+            </motion.div>
           </div>
-        </Reveal>
-      </section>
+        </div>
+      </Reveal>
     </PageLayout>
   );
 };
