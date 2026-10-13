@@ -1,4 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setUserData } from "../../../redux/userSlice";
+import { toast } from "react-toastify";
+import api, { API_BASE_URL } from "../../lib/api";
 import { useAiChat } from "../../customHooks/useAiChat";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -16,11 +20,17 @@ import {
   FiCopy,
   FiCheck,
   FiRefreshCw,
+  FiDownload,
+  FiLock,
 } from "react-icons/fi";
 import { IoSparkles } from "react-icons/io5";
 import { Reveal, RevealGroup, RevealItem } from "../motion";
 import { motion, useReducedMotion } from "framer-motion";
 import { chatUserBubbleMotion, chatBotBubbleMotion } from "../../lib/motion";
+import UsageLimitModal from "./UsageLimitModal";
+import UsageQuotaBadge from "./UsageQuotaBadge";
+import ModelSelector from "./ModelSelector";
+
 
 const CodeBlock = ({ inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -87,29 +97,124 @@ export const AiChatBox = ({
   onNewChat,
   onDeleteConversation,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-3.5-flash",
+  model = "gemini-3.8-flash",
   className = "",
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const dispatch = useDispatch();
+  const { userData } = useSelector((s) => s.user);
+  const userTier = (
+    userData?.user?.subscriptionTier ||
+    userData?.subscriptionTier ||
+    "free"
+  ).toLowerCase();
+
+  const [usageData, setUsageData] = useState(null);
+  const [isUsageModalOpen, setIsUsageModalOpen] = useState(false);
+  const [modalLimitData, setModalLimitData] = useState(null);
+  const [isExporting, setIsExporting] = useState(false);
+
   const [currentModel, setCurrentModel] = useState(() => {
     try {
       const saved = JSON.parse(
         localStorage.getItem("nexora_user_settings") || "{}",
       );
       if (saved.defaultModel && saved.defaultModel.startsWith("gemini")) {
-        if (
-          saved.defaultModel === "gemini-2.0-flash" ||
-          saved.defaultModel === "gemini-1.5-flash"
-        ) {
-          return "gemini-3.5-flash";
-        }
         return saved.defaultModel;
       }
-      return "gemini-3.5-flash";
+      return "gemini-3.8-flash";
     } catch {
-      return "gemini-3.5-flash";
+      return "gemini-3.8-flash";
     }
   });
+
+  const fetchUsage = useCallback(async () => {
+    try {
+      const res = await api.get("/api/user/usage");
+      if (res.data?.success) {
+        setUsageData(res.data);
+      }
+    } catch (err) {
+      // silently ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUsage();
+  }, [fetchUsage, userTier]);
+
+  const handleInstantUpgrade = async () => {
+    try {
+      const res = await api.post("/api/pricing/subscribe", {
+        planSlug: "pro",
+        testUpgrade: true,
+      });
+      if (res.data?.success && res.data?.user) {
+        dispatch(setUserData(res.data.user));
+        toast.success("🎉 Upgraded to PRO! Unlimited privileges unlocked.");
+        setIsUsageModalOpen(false);
+        fetchUsage();
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || "Upgrade failed");
+    }
+  };
+
+  const handleExport = async (format = "markdown") => {
+    if (!conversationId || conversationId === "new") {
+      toast.info("Start a conversation first to export it.");
+      return;
+    }
+
+    if (userTier === "free") {
+      setModalLimitData({
+        reason: "EXPORT_RESTRICTED",
+        error:
+          "Conversation history export is an exclusive Pro feature. Upgrade to Pro to export your conversations as Markdown and JSON.",
+      });
+      setIsUsageModalOpen(true);
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `${API_BASE_URL}/api/conversations/${conversationId}/export?format=${format}`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        if (res.status === 403) {
+          setModalLimitData({
+            reason: "EXPORT_RESTRICTED",
+            error: err.error,
+          });
+          setIsUsageModalOpen(true);
+          return;
+        }
+        throw new Error(err.error || "Failed to export");
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `conversation-${conversationId}.${format === "json" ? "json" : "md"}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success(`Exported conversation transcript (${format.toUpperCase()})`);
+    } catch (err) {
+      toast.error(err.message || "Export failed");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const {
     messages,
@@ -123,12 +228,21 @@ export const AiChatBox = ({
     isStreaming,
     isHistoryLoading,
     error,
+    limitError,
+    clearLimitError,
   } = useAiChat({
     conversationId,
     systemInstruction,
     model: currentModel || model,
     onSessionCreated,
-    onConversationUpdated,
+    onConversationUpdated: (updatedText) => {
+      onConversationUpdated?.(updatedText);
+      fetchUsage();
+    },
+    onLimitReached: (errData) => {
+      setModalLimitData(errData);
+      setIsUsageModalOpen(true);
+    },
   });
 
   const messagesEndRef = useRef(null);
@@ -255,40 +369,10 @@ export const AiChatBox = ({
             </div>
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h3 className="font-bold text-fg text-sm sm:text-base truncate">
                 {activeConversation?.title || "Nexora AI"}
               </h3>
-              <div className="relative inline-flex items-center">
-                <select
-                  value={currentModel}
-                  onChange={(e) => {
-                    const newModel = e.target.value;
-                    setCurrentModel(newModel);
-                    try {
-                      const saved = JSON.parse(
-                        localStorage.getItem("nexora_user_settings") || "{}",
-                      );
-                      localStorage.setItem(
-                        "nexora_user_settings",
-                        JSON.stringify({ ...saved, defaultModel: newModel }),
-                      );
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
-                  title="Select AI Model"
-                  className="text-[10px] font-semibold tracking-wider pl-2 pr-5 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-primary-text outline-none cursor-pointer appearance-none hover:bg-primary/25 transition-all"
-                >
-                  <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                  <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                  <option value="gemini-flash-latest">
-                    Gemini Flash Latest
-                  </option>
-                </select>
-                <IoSparkles className="w-2.5 h-2.5 text-primary-text absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              </div>
             </div>
             <p className="text-[11px] text-fg-muted truncate">
               {isStreaming
@@ -301,6 +385,40 @@ export const AiChatBox = ({
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          {/* Live Quota Badge */}
+          <UsageQuotaBadge
+            usageData={usageData}
+            userTier={userTier}
+            onOpenUpgradeModal={(d) => {
+              setModalLimitData(d);
+              setIsUsageModalOpen(true);
+            }}
+          />
+
+          {/* Export Transcript Action (Pro Feature) */}
+          {conversationId && conversationId !== "new" && (
+            <button
+              type="button"
+              disabled={isExporting}
+              onClick={() => handleExport("markdown")}
+              title={
+                userTier === "free"
+                  ? "Export Conversation (Pro Feature)"
+                  : "Export Conversation Transcript"
+              }
+              className="px-2.5 py-1.5 rounded-xl bg-surface-hover/80 hover:bg-surface-hover text-fg-secondary hover:text-fg border border-line-strong transition-all text-xs flex items-center gap-1.5 font-medium cursor-pointer shadow-2xs"
+            >
+              <FiDownload className="w-3.5 h-3.5 text-primary-text" />
+              <span className="hidden sm:inline">Export</span>
+              {userTier === "free" && (
+                <span className="px-1 py-0.2 rounded bg-amber-500/15 text-[9px] font-bold text-amber-500 flex items-center gap-0.5">
+                  <FiLock className="w-2.5 h-2.5" />
+                  PRO
+                </span>
+              )}
+            </button>
+          )}
+
           {conversationId && (
             <button
               type="button"
@@ -622,11 +740,30 @@ export const AiChatBox = ({
                   </span>
                 </button>
 
-                {/* Model Engine Pill Badge */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-primary/8 border border-primary/20 text-[11px] font-medium text-primary-text shadow-2xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                  <span>Gemini 2.0 Flash</span>
-                </div>
+                {/* Model Engine Selector with Pro Lock Badges */}
+                <ModelSelector
+                  currentModel={currentModel}
+                  userTier={userTier}
+                  disabled={isLoading || isStreaming}
+                  onSelectModel={(newModel) => {
+                    setCurrentModel(newModel);
+                    try {
+                      const saved = JSON.parse(
+                        localStorage.getItem("nexora_user_settings") || "{}",
+                      );
+                      localStorage.setItem(
+                        "nexora_user_settings",
+                        JSON.stringify({ ...saved, defaultModel: newModel }),
+                      );
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  }}
+                  onLockedModelClick={(errData) => {
+                    setModalLimitData(errData);
+                    setIsUsageModalOpen(true);
+                  }}
+                />
               </div>
 
               {/* Right Action: Send / Stop button */}
@@ -685,6 +822,13 @@ export const AiChatBox = ({
         </div>
       </div>
 
+      {/* ── Usage Limit & Pro Privileges Upgrade Modal ── */}
+      <UsageLimitModal
+        isOpen={isUsageModalOpen}
+        onClose={() => setIsUsageModalOpen(false)}
+        limitData={modalLimitData}
+        onInstantUpgrade={handleInstantUpgrade}
+      />
     </div>
   );
 };

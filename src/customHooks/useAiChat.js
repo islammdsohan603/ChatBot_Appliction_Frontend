@@ -14,6 +14,7 @@ export const useAiChat = ({
   onSessionCreated,
   onConversationUpdated,
   onError,
+  onLimitReached,
   onFinish,
 } = {}) => {
   const [messages, setMessages] = useState([]);
@@ -23,6 +24,7 @@ export const useAiChat = ({
   const [isStreaming, setIsStreaming] = useState(false);
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [limitError, setLimitError] = useState(null);
 
   const abortControllerRef = useRef(null);
   const activeSessionIdRef = useRef(conversationId);
@@ -219,7 +221,14 @@ export const useAiChat = ({
 
         if (!response.ok) {
           const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.error || `HTTP error! Status: ${response.status}`);
+          const customErr = new Error(errData.error || `HTTP error! Status: ${response.status}`);
+          customErr.status = response.status;
+          customErr.data = errData;
+          if (response.status === 403 || errData.reason || errData.upgradeUrl) {
+            setLimitError(errData);
+            onLimitReached?.(errData);
+          }
+          throw customErr;
         }
 
         if (!response.body) {
@@ -324,20 +333,28 @@ export const useAiChat = ({
         setError(errMsg);
         onError?.(err);
 
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMessageId
-              ? {
-                  ...msg,
-                  content: accumulatedContent
-                    ? `${msg.content}\n\n*[Generation stopped due to error: ${errMsg}]*`
-                    : `⚠️ Error: ${errMsg}`,
-                  isStreaming: false,
-                  hasError: true,
-                }
-              : msg
-          )
-        );
+        // If error was caused by reaching daily limit or locked model, roll back empty placeholder
+        if (err.status === 403 || err.data?.reason) {
+          setMessages((prev) => prev.filter((m) => m.id !== assistantMessageId));
+          if (promptText) {
+            setInput(promptText);
+          }
+        } else {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? {
+                    ...msg,
+                    content: accumulatedContent
+                      ? `${msg.content}\n\n*[Generation stopped due to error: ${errMsg}]*`
+                      : `⚠️ Error: ${errMsg}`,
+                    isStreaming: false,
+                    hasError: true,
+                  }
+                : msg
+            )
+          );
+        }
       } finally {
         setIsLoading(false);
         setIsStreaming(false);
@@ -355,6 +372,7 @@ export const useAiChat = ({
       onSessionCreated,
       onConversationUpdated,
       onError,
+      onLimitReached,
       onFinish,
     ]
   );
@@ -371,6 +389,9 @@ export const useAiChat = ({
     isStreaming,
     isHistoryLoading,
     error,
+    limitError,
+    setLimitError,
+    clearLimitError: () => setLimitError(null),
     setMessages,
   };
 };

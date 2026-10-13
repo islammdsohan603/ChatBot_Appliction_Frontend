@@ -14,6 +14,8 @@ import {
   FiArrowRight,
   FiLoader,
 } from "react-icons/fi";
+import { IoSparkles } from "react-icons/io5";
+
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
@@ -40,14 +42,14 @@ const FALLBACK_PLANS = [
     highlightBadge: "",
     features: [
       "Access to Gemini 3.8 Flash model",
-      "Up to 50 conversations per day",
+      "Up to 20 messages per day",
       "Standard response streaming speeds",
-      "Multimodal image analysis (up to 5MB)",
+      "Multimodal image analysis (up to 4MB, 5/day)",
       "Community forum access",
       "Light & Dark UI themes",
     ],
     limits: {
-      messagesPerDay: 50,
+      messagesPerDay: 20,
       models: ["gemini-3.8-flash"],
       visionEnabled: true,
       prioritySupport: false,
@@ -111,7 +113,7 @@ const COMPARISON_ROWS = [
   { feature: "Gemini 3.5 Pro Access", free: false, pro: true, enterprise: true },
   { feature: "Sub-Second Streaming (SSE)", free: true, pro: true, enterprise: true },
   { feature: "Multimodal Vision Attachments", free: "5MB max", pro: "Unlimited", enterprise: "Unlimited" },
-  { feature: "Daily Message Limit", free: "50 / day", pro: "Unlimited", enterprise: "Unlimited" },
+  { feature: "Daily Message Limit", free: "20 / day", pro: "Unlimited", enterprise: "Unlimited" },
   { feature: "Session History Retention", free: "30 Days", pro: "Unlimited", enterprise: "Unlimited" },
   { feature: "Export (JSON / Markdown)", free: false, pro: true, enterprise: true },
   { feature: "Direct Human Chat (WebSockets)", free: true, pro: true, enterprise: true },
@@ -122,7 +124,7 @@ const COMPARISON_ROWS = [
 const FAQS = [
   {
     q: "Can I use Nexora AI for free indefinitely?",
-    a: "Yes! Our Free Starter plan has no expiration date. You get 50 high-speed messages daily powered by Gemini 3.8 Flash, complete with multimodal optical image parsing.",
+    a: "Yes! Our Free Starter plan has no expiration date. You get 20 high-speed messages daily powered by Gemini 3.8 Flash, complete with multimodal optical image parsing.",
   },
   {
     q: "How does the annual billing discount work?",
@@ -156,14 +158,21 @@ export const Pricing = () => {
   const [openFaq, setOpenFaq] = useState(0);
   const [subscribingSlug, setSubscribingSlug] = useState(null);
 
-  const currentTier = userData?.user?.plan || userData?.plan || "free";
+  const currentTier = (
+    userData?.user?.subscriptionTier ||
+    userData?.subscriptionTier ||
+    userData?.user?.plan ||
+    userData?.plan ||
+    "free"
+  ).toLowerCase();
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
         const res = await api.get("/api/pricing/plans");
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          setPlans(res.data);
+        const planList = res.data?.plans || res.data;
+        if (Array.isArray(planList) && planList.length > 0) {
+          setPlans(planList);
         }
       } catch {
         setPlans(FALLBACK_PLANS);
@@ -171,6 +180,31 @@ export const Pricing = () => {
     };
     fetchPlans();
   }, []);
+
+  const handleTestUpgrade = async (planSlug = "pro") => {
+    if (!isAuthenticated) {
+      toast.info("Please sign in to test subscription privileges.");
+      navigate("/login");
+      return;
+    }
+    setSubscribingSlug(planSlug);
+    try {
+      const res = await api.post("/api/pricing/subscribe", {
+        planSlug,
+        testUpgrade: true,
+      });
+      if (res.data?.success) {
+        if (res.data?.user) {
+          dispatch(setUserData(res.data.user));
+        }
+        toast.success(res.data.message || `Switched to ${planSlug.toUpperCase()}!`);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || "Failed to switch plan.");
+    } finally {
+      setSubscribingSlug(null);
+    }
+  };
 
   const handleSubscribe = async (planSlug) => {
     if (!isAuthenticated) {
@@ -389,6 +423,29 @@ export const Pricing = () => {
                         </>
                       )}
                     </motion.button>
+
+                    {/* Instant Demo Activation / Downgrade for testing */}
+                    {plan.slug !== "free" && !isCurrent && (
+                      <button
+                        type="button"
+                        onClick={() => handleTestUpgrade(plan.slug)}
+                        title="Instantly test Pro privileges without entering credit card"
+                        className="mt-2.5 w-full py-1.5 px-3 rounded-xl bg-primary/8 hover:bg-primary/15 border border-primary/20 text-[11px] font-semibold text-primary-text transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <IoSparkles className="w-3 h-3 text-amber-400" />
+                        <span>Instant Demo Upgrade (Test Mode)</span>
+                      </button>
+                    )}
+
+                    {isCurrent && plan.slug !== "free" && (
+                      <button
+                        type="button"
+                        onClick={() => handleSubscribe("free")}
+                        className="mt-2.5 w-full py-1.5 px-3 rounded-xl bg-surface-hover hover:bg-error/10 text-fg-muted hover:text-error-text border border-line text-[11px] font-medium transition-colors cursor-pointer"
+                      >
+                        Downgrade to Free Starter
+                      </button>
+                    )}
                   </motion.div>
                 </RevealItem>
               );

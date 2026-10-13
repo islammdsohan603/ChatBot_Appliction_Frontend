@@ -49,11 +49,11 @@ const PLAN_CONFIG = {
       "Multimodal image analysis (up to 5MB)",
     ],
     limits: {
-      messages: "50 / day",
+      messages: "20 / day",
       models: "Gemini 3.8 Flash",
-      vision: "Up to 5MB",
+      vision: "Up to 4MB (5/day)",
       support: "Community Forum",
-      export: "Disabled",
+      export: "Disabled (Pro Only)",
     },
     gradient: "from-fg-muted/5 via-brand-violet/5 to-transparent border-line",
     glowColor: "shadow-scrim/10",
@@ -566,8 +566,17 @@ export const Dashboard = () => {
                         Daily Message Quota
                       </p>
                       <p className="text-sm font-bold text-fg mt-1">
-                        {activePlan.limits.messages}
+                        {activePlanKey === "free"
+                          ? stats?.todayUsage?.usage
+                            ? `${stats.todayUsage.usage.messageCount} / 20 used today`
+                            : "20 / day"
+                          : "Unlimited"}
                       </p>
+                      {activePlanKey === "free" && stats?.todayUsage?.remainingMessages !== undefined && (
+                        <p className="text-[10px] text-primary-text font-semibold mt-0.5">
+                          {stats.todayUsage.remainingMessages} remaining today
+                        </p>
+                      )}
                     </div>
                     <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
                       <p className="text-[11px] font-semibold text-fg-muted">
@@ -576,21 +585,30 @@ export const Dashboard = () => {
                       <p className="text-sm font-bold text-fg mt-1 truncate">
                         {activePlan.limits.models}
                       </p>
+                      {activePlanKey === "free" && (
+                        <p className="text-[10px] text-fg-muted mt-0.5">
+                          Pro unlocks Gemini 3.5 Pro
+                        </p>
+                      )}
                     </div>
                     <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
                       <p className="text-[11px] font-semibold text-fg-muted">
                         Vision Attachments
                       </p>
                       <p className="text-sm font-bold text-fg mt-1">
-                        {activePlan.limits.vision}
+                        {activePlanKey === "free"
+                          ? stats?.todayUsage?.usage
+                            ? `${stats.todayUsage.usage.imageCount} / 5 used`
+                            : "5 / day"
+                          : "Unlimited"}
                       </p>
                     </div>
                     <div className="p-3.5 rounded-xl bg-fg-muted/5 border border-line">
                       <p className="text-[11px] font-semibold text-fg-muted">
-                        Support Channel
+                        Transcript Export
                       </p>
                       <p className="text-sm font-bold text-fg mt-1 truncate">
-                        {activePlan.limits.support}
+                        {activePlanKey === "free" ? "Locked (Pro Only)" : "Markdown & JSON"}
                       </p>
                     </div>
                   </div>
