@@ -13,6 +13,10 @@ Nexora AI is a modern, high-throughput MERN-stack web application designed for l
 
 ![alt text](<Screenshot 2026-10-02 202417-1.png>)
 
+## Live Link: https://chatappliction.vercel.app/
+
+## Backend Code:https://github.com/islammdsohan603/ChatBot_Appliction_Backend
+
 ## 📸 Key Highlights & Features
 
 - **⚡ Real-Time SSE Token Streaming**: Ultra-low-latency response generation using Server-Sent Events with rich Markdown formatting and Prism syntax-highlighted code blocks.
@@ -42,37 +46,42 @@ graph TD
 ## 🛠️ Tech Stack & Technologies
 
 ### Frontend Architecture
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Framework** | React 19.x & Vite 8.x | Lightning-fast HMR and optimized production bundling |
-| **State Management** | Redux Toolkit (`@reduxjs/toolkit`) | Centralized auth, user profiles, and active session caching |
-| **Routing** | React Router DOM v7 | Dynamic client-side routing with `ProtectedRoute` guards |
-| **Styling & Theme** | Tailwind CSS + Custom CSS Variables | Fully customizable dark/light theme engine & micro-animations |
-| **Rendering & Syntax** | `react-markdown` + `react-syntax-highlighter` | Markdown rendering with GitHub dark theme and code copy action |
-| **Networking** | Axios + Native Fetch API | REST requests and ReadableStream SSE consumption |
-| **Icons & Alerts** | `react-icons`, `lucide-react`, `react-toastify` | Accessible UI iconography and responsive notifications |
+
+| Layer                  | Technology                                      | Purpose                                                        |
+| :--------------------- | :---------------------------------------------- | :------------------------------------------------------------- |
+| **Framework**          | React 19.x & Vite 8.x                           | Lightning-fast HMR and optimized production bundling           |
+| **State Management**   | Redux Toolkit (`@reduxjs/toolkit`)              | Centralized auth, user profiles, and active session caching    |
+| **Routing**            | React Router DOM v7                             | Dynamic client-side routing with `ProtectedRoute` guards       |
+| **Styling & Theme**    | Tailwind CSS + Custom CSS Variables             | Fully customizable dark/light theme engine & micro-animations  |
+| **Rendering & Syntax** | `react-markdown` + `react-syntax-highlighter`   | Markdown rendering with GitHub dark theme and code copy action |
+| **Networking**         | Axios + Native Fetch API                        | REST requests and ReadableStream SSE consumption               |
+| **Icons & Alerts**     | `react-icons`, `lucide-react`, `react-toastify` | Accessible UI iconography and responsive notifications         |
 
 ### Backend Component Summary
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Runtime & Server** | Node.js & Express 5.x | High-concurrency REST & SSE streaming server |
-| **AI Inference** | `@google/genai` (Google GenAI SDK) | Direct integration with Google Gemini model family |
-| **Database** | MongoDB Atlas via Mongoose 9.x | Scalable document storage for users, chats, and analytics |
-| **Payments** | Stripe Node SDK | Subscription checkouts, webhooks, and entitlement controls |
-| **Security** | `jsonwebtoken`, `bcryptjs`, `cookie-parser` | Tamper-proof HTTP-only cookie session authentication |
+
+| Layer                | Technology                                  | Purpose                                                    |
+| :------------------- | :------------------------------------------ | :--------------------------------------------------------- |
+| **Runtime & Server** | Node.js & Express 5.x                       | High-concurrency REST & SSE streaming server               |
+| **AI Inference**     | `@google/genai` (Google GenAI SDK)          | Direct integration with Google Gemini model family         |
+| **Database**         | MongoDB Atlas via Mongoose 9.x              | Scalable document storage for users, chats, and analytics  |
+| **Payments**         | Stripe Node SDK                             | Subscription checkouts, webhooks, and entitlement controls |
+| **Security**         | `jsonwebtoken`, `bcryptjs`, `cookie-parser` | Tamper-proof HTTP-only cookie session authentication       |
 
 ---
 
 ## 💡 The Most Challenging Aspect & How It Was Resolved
 
 ### 🔴 The Challenge: Multi-Turn SSE Token Streaming Resilience under AI High-Demand Spikes
-During heavy traffic periods on AI provider endpoints, cloud LLMs frequently emit `503 UNAVAILABLE` ("This model is currently experiencing high demand") or 404 deprecation errors. 
+
+During heavy traffic periods on AI provider endpoints, cloud LLMs frequently emit `503 UNAVAILABLE` ("This model is currently experiencing high demand") or 404 deprecation errors.
 
 Because `@google/genai` stream responses return **asynchronous generator iterators**, the network error is often not triggered upon function invocation, but rather **lazily when the client begins reading the first chunk** (`for await (const chunk of stream)`). In traditional architectures:
+
 1. Standard try/catch blocks fail to catch errors during stream creation.
 2. The SSE response headers are already flushed to the browser, resulting in broken streams, corrupted message histories in MongoDB, and frontend crashes.
 
 ### 🟢 The Resolution: Adaptive Zero-Downtime Stream Fallback Pipeline
+
 To eliminate stream disruptions, an adaptive pre-emission fallback architecture was implemented across the backend and frontend:
 
 1. **Pre-Emission Model Fallback Pipeline**:
@@ -148,6 +157,7 @@ chatprojects/
 ## ⚙️ Getting Started Locally
 
 ### Prerequisites
+
 - **Node.js**: `v18.x` or higher
 - **MongoDB**: Active MongoDB Atlas connection URI or local instance
 - **Google AI Studio Key**: API key for Gemini models ([Get key](https://aistudio.google.com/))
@@ -169,6 +179,7 @@ cp .env.example .env
 ```
 
 Ensure your `backend/.env` contains:
+
 ```env
 PORT=8000
 MONGO_DB_URL=your_mongodb_connection_string
@@ -179,6 +190,7 @@ CLIENT_URL=http://localhost:5173
 ```
 
 Start the backend server:
+
 ```bash
 npm run dev
 ```
@@ -199,11 +211,13 @@ cp .env.example .env
 ```
 
 Ensure your `frontend/.env` contains:
+
 ```env
 VITE_SERVER_URL=http://localhost:8000
 ```
 
 Start the frontend development server:
+
 ```bash
 npm run dev
 ```
