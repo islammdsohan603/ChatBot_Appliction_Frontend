@@ -188,6 +188,17 @@ export const useAiChat = ({
             }
           })();
 
+        const customOpenAiKey =
+          localStorage.getItem("nexora_openai_api_key") ||
+          (() => {
+            try {
+              const settings = JSON.parse(localStorage.getItem("nexora_user_settings") || "{}");
+              return settings.openaiApiKey;
+            } catch {
+              return null;
+            }
+          })();
+
         const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
         const headers = {
           "Content-Type": "application/json",
@@ -197,6 +208,9 @@ export const useAiChat = ({
         }
         if (customApiKey) {
           headers["x-goog-api-key"] = customApiKey;
+        }
+        if (customOpenAiKey) {
+          headers["x-openai-api-key"] = customOpenAiKey;
         }
 
         const effectiveModel =
@@ -215,6 +229,7 @@ export const useAiChat = ({
             systemInstruction,
             model: effectiveModel,
             apiKey: customApiKey || undefined,
+            openAiApiKey: customOpenAiKey || undefined,
           }),
           signal: controller.signal,
         });

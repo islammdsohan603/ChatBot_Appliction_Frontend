@@ -48,6 +48,7 @@ const DEFAULT_SETTINGS = {
   memoryEnabled: true,
   defaultModel: "gemini-3.5-flash",
   googleApiKey: "",
+  openaiApiKey: "",
   chatHistory: true,
   pushNotifications: true,
   readReceipts: true,
@@ -472,6 +473,31 @@ const Settings = () => {
                           }
                         }}
                         placeholder="Paste your Google API key..."
+                        className="w-full px-3 py-2 rounded-xl bg-surface-hover border border-line-strong text-xs text-fg placeholder:text-fg-muted outline-none focus:border-primary/50"
+                      />
+                    </div>
+                  </SettingRow>
+
+                  {/* OpenAI Backup API Key */}
+                  <SettingRow
+                    title="OpenAI Backup API Key"
+                    description="Optionally provide your own OpenAI API key (from platform.openai.com/api-keys) as an instant automatic fallback when Google is unavailable."
+                    badge="OpenAI Backup"
+                  >
+                    <div className="flex items-center gap-2 w-full sm:w-72">
+                      <input
+                        type="password"
+                        value={settings.openaiApiKey || ""}
+                        onChange={(e) => {
+                          const val = e.target.value.trim();
+                          updateSetting("openaiApiKey", val);
+                          if (val) {
+                            localStorage.setItem("nexora_openai_api_key", val);
+                          } else {
+                            localStorage.removeItem("nexora_openai_api_key");
+                          }
+                        }}
+                        placeholder="sk-proj-..."
                         className="w-full px-3 py-2 rounded-xl bg-surface-hover border border-line-strong text-xs text-fg placeholder:text-fg-muted outline-none focus:border-primary/50"
                       />
                     </div>
