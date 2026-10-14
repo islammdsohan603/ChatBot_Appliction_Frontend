@@ -15,9 +15,10 @@ import api from "../lib/api";
 import { toast } from "react-toastify";
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
-import { Reveal } from "../components/motion";
+import { Reveal, GsapSection } from "../components/motion";
 import { motion } from "framer-motion";
 import { buttonMotion } from "../lib/motion";
+import { smoothScrollTo } from "../lib/gsap";
 
 const SERVER_URL =
   import.meta.env.VITE_SERVER_URL ||
@@ -268,7 +269,12 @@ export const Documentation = () => {
                           <button
                             key={sec.id}
                             type="button"
-                            onClick={() => setActiveSectionId(sec.id)}
+                            onClick={() => {
+                              setActiveSectionId(sec.id);
+                              if (window.innerWidth < 1024) {
+                                smoothScrollTo("#doc-article", { offset: -90 });
+                              }
+                            }}
                             className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
                               activeSectionId === sec.id
                                 ? "bg-primary text-primary-contrast shadow-xs"
@@ -305,7 +311,7 @@ export const Documentation = () => {
               RIGHT MAIN DOCUMENTATION BODY
               ══════════════════════════════════════════════ */}
           <main className="lg:col-span-8 space-y-8">
-            <Reveal as="article" delay={0.12} className="p-8 sm:p-10 rounded-3xl bg-surface border border-line shadow-sm">
+            <Reveal as="article" id="doc-article" delay={0.12} className="p-8 sm:p-10 rounded-3xl bg-surface border border-line shadow-sm">
               {/* Category pill */}
               <div className="flex items-center gap-2 mb-3">
                 <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">

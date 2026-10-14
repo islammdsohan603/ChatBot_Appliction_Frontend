@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import api from "../lib/api";
 import { clearUser } from "../../redux/userSlice";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import ScrollProgress from "../components/ui/ScrollProgress";
 import { Reveal } from "../components/motion";
 import { motion } from "framer-motion";
 import {
@@ -208,6 +209,7 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-canvas font-inter text-fg transition-colors duration-200">
+      <ScrollProgress />
       {/* Background ambient lighting */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div

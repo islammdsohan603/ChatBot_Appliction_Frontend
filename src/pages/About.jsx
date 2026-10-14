@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -12,10 +13,11 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import { PageHeader } from "../components/layout/PageHeader";
 import {
-  Reveal,
-  RevealStack,
-  RevealItem,
+  GsapSection,
+  GsapStagger,
+  GsapParallax,
 } from "../components/motion";
+import { gsap } from "../lib/gsap";
 
 const CORE_VALUES = [
   {
@@ -104,9 +106,36 @@ const ROADMAP = [
 
 /**
  * About Page Component
- * Upgraded with unified Framer Motion scroll reveals
+ * Upgraded with GSAP ScrollTrigger section entrances, staggered cards, and animated timeline
  */
 export const About = () => {
+  const timelineRef = useRef(null);
+  const lineFillRef = useRef(null);
+
+  useEffect(() => {
+    if (!timelineRef.current || !lineFillRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Dynamic scrubbed progress line through the roadmap timeline
+      gsap.fromTo(
+        lineFillRef.current,
+        { scaleY: 0, transformOrigin: "top center" },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: timelineRef.current,
+            start: "top 70%",
+            end: "bottom 80%",
+            scrub: 0.5,
+          },
+        }
+      );
+    }, timelineRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <PageLayout
       title="About Us"
@@ -124,7 +153,7 @@ export const About = () => {
       {/* ══════════════════════════════════════════════
           THE STORY BEHIND NEXORA
           ══════════════════════════════════════════════ */}
-      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <GsapSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-line shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
@@ -144,78 +173,66 @@ export const About = () => {
               </div>
             </div>
 
-            <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-2 gap-4">
-              <RevealItem variant="scaleIn">
-                <div className="p-5 rounded-2xl bg-primary/10 border border-line-strong text-center">
-                  <p className="text-3xl font-extrabold text-primary-text">100%</p>
-                  <p className="text-xs text-fg-muted mt-1 font-medium">JavaScript Full-Stack</p>
-                </div>
-              </RevealItem>
-              <RevealItem variant="scaleIn">
-                <div className="p-5 rounded-2xl bg-accent/10 border border-accent/20 text-center">
-                  <p className="text-3xl font-extrabold text-accent-text">&lt;500ms</p>
-                  <p className="text-xs text-fg-muted mt-1 font-medium">Average Response Start</p>
-                </div>
-              </RevealItem>
-              <RevealItem variant="scaleIn">
-                <div className="p-5 rounded-2xl bg-success/10 border border-success/20 text-center">
-                  <p className="text-3xl font-extrabold text-success-text">24/7</p>
-                  <p className="text-xs text-fg-muted mt-1 font-medium">MongoDB Sync</p>
-                </div>
-              </RevealItem>
-              <RevealItem variant="scaleIn">
-                <div className="p-5 rounded-2xl bg-warning/10 border border-warning/20 text-center">
-                  <p className="text-3xl font-extrabold text-warning-text">0</p>
-                  <p className="text-xs text-fg-muted mt-1 font-medium">Data Selling</p>
-                </div>
-              </RevealItem>
-            </RevealStack>
+            <GsapStagger stagger={0.08} childSelector=".stat-pill" className="grid grid-cols-2 gap-4">
+              <div className="stat-pill p-5 rounded-2xl bg-primary/10 border border-line-strong text-center hover:scale-105 transition-transform duration-300">
+                <p className="text-3xl font-extrabold text-primary-text">100%</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">JavaScript Full-Stack</p>
+              </div>
+              <div className="stat-pill p-5 rounded-2xl bg-accent/10 border border-accent/20 text-center hover:scale-105 transition-transform duration-300">
+                <p className="text-3xl font-extrabold text-accent-text">&lt;500ms</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">Average Response Start</p>
+              </div>
+              <div className="stat-pill p-5 rounded-2xl bg-success/10 border border-success/20 text-center hover:scale-105 transition-transform duration-300">
+                <p className="text-3xl font-extrabold text-success-text">24/7</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">MongoDB Sync</p>
+              </div>
+              <div className="stat-pill p-5 rounded-2xl bg-warning/10 border border-warning/20 text-center hover:scale-105 transition-transform duration-300">
+                <p className="text-3xl font-extrabold text-warning-text">0</p>
+                <p className="text-xs text-fg-muted mt-1 font-medium">Data Selling</p>
+              </div>
+            </GsapStagger>
           </div>
         </div>
-      </Reveal>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           CORE VALUES & PILLARS
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-14">
+      <GsapSection id="values" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             What Drives Us
           </h2>
           <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Our Architectural & Ethical Pillars
           </h3>
-        </Reveal>
+        </div>
 
-        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <GsapStagger stagger={0.1} childSelector=".pillar-card" className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {CORE_VALUES.map((val, idx) => (
-            <RevealItem
+            <div
               key={idx}
-              variant="fadeUp"
-              whileHover={{ y: -4 }}
-              className="h-full"
+              className="pillar-card h-full p-8 rounded-2xl bg-surface border border-line hover:border-primary/45 hover:shadow-xl transition-all duration-300 shadow-sm group"
             >
-              <div className="h-full p-8 rounded-2xl bg-surface border border-line hover:border-primary/35 transition-all shadow-sm">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center mb-5">
-                  {val.icon}
-                </div>
-                <h4 className="text-lg font-bold text-fg mb-2">
-                  {val.title}
-                </h4>
-                <p className="text-sm text-fg-secondary leading-relaxed">
-                  {val.desc}
-                </p>
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                {val.icon}
               </div>
-            </RevealItem>
+              <h4 className="text-lg font-bold text-fg mb-2 group-hover:text-primary-text transition-colors">
+                {val.title}
+              </h4>
+              <p className="text-sm text-fg-secondary leading-relaxed">
+                {val.desc}
+              </p>
+            </div>
           ))}
-        </RevealStack>
-      </section>
+        </GsapStagger>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           LEADERSHIP & CORE TEAM
           ══════════════════════════════════════════════ */}
-      <section id="team" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
-        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-16">
+      <GsapSection id="team" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Meet the Builders
           </h2>
@@ -225,128 +242,130 @@ export const About = () => {
           <p className="text-sm text-fg-secondary mt-2">
             Engineers, designers, and researchers passionate about high-impact generative tools.
           </p>
-        </Reveal>
+        </div>
 
-        <RevealStack stagger={0.09} amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <GsapStagger stagger={0.09} childSelector=".team-card" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {TEAM.map((member, idx) => (
-            <RevealItem
+            <div
               key={idx}
-              variant="scaleIn"
-              whileHover={{ y: -4 }}
-              className="h-full"
+              className="team-card h-full p-6 rounded-2xl bg-surface border border-line shadow-sm hover:shadow-2xl hover:border-primary/45 transition-all duration-300 flex flex-col justify-between group"
             >
-              <div className="h-full p-6 rounded-2xl bg-surface border border-line shadow-sm hover:shadow-xl hover:border-primary/40 transition-all flex flex-col justify-between group">
-                <div>
-                  <div className="relative mb-5 overflow-hidden rounded-xl aspect-square">
-                    <img
-                      src={member.avatar}
-                      alt={member.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-scrim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                      <div className="flex gap-2 text-primary-contrast">
-                        <a href={member.socials.github} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
-                          <FiGithub className="w-4 h-4" />
-                        </a>
-                        <a href={member.socials.twitter} target="_blank" rel="noreferrer" className="p-1 hover:text-accent-text">
-                          <FiTwitter className="w-4 h-4" />
-                        </a>
-                        <a href={member.socials.linkedin} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
-                          <FiLinkedin className="w-4 h-4" />
-                        </a>
-                      </div>
+              <div>
+                <div className="relative mb-5 overflow-hidden rounded-xl aspect-square">
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-scrim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                    <div className="flex gap-2 text-primary-contrast">
+                      <a href={member.socials.github} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
+                        <FiGithub className="w-4 h-4" />
+                      </a>
+                      <a href={member.socials.twitter} target="_blank" rel="noreferrer" className="p-1 hover:text-accent-text">
+                        <FiTwitter className="w-4 h-4" />
+                      </a>
+                      <a href={member.socials.linkedin} target="_blank" rel="noreferrer" className="p-1 hover:text-primary-text">
+                        <FiLinkedin className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
-
-                  <h4 className="text-base font-bold text-fg">
-                    {member.name}
-                  </h4>
-                  <p className="text-xs font-semibold text-primary-text mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-xs text-fg-secondary leading-relaxed mb-4">
-                    {member.bio}
-                  </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-line">
-                  {member.skills.map((skill, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-0.5 rounded-md text-xs font-medium bg-surface-hover text-fg-secondary"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+                <h4 className="text-base font-bold text-fg">
+                  {member.name}
+                </h4>
+                <p className="text-xs font-semibold text-primary-text mb-3">
+                  {member.role}
+                </p>
+                <p className="text-xs text-fg-secondary leading-relaxed mb-4">
+                  {member.bio}
+                </p>
               </div>
-            </RevealItem>
+
+              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-line">
+                {member.skills.map((skill, i) => (
+                  <span
+                    key={i}
+                    className="px-2 py-0.5 rounded-md text-xs font-medium bg-surface-hover text-fg-secondary"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
-        </RevealStack>
-      </section>
+        </GsapStagger>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
-          ROADMAP TIMELINE
+          ROADMAP TIMELINE (With GSAP ScrollTrigger Drawn Line)
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
-        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-14">
+      <GsapSection id="roadmap" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Looking Ahead
           </h2>
           <h3 className="text-3xl font-extrabold text-fg tracking-tight">
             Product Evolution & Milestones
           </h3>
-        </Reveal>
+        </div>
 
-        <RevealStack stagger={0.08} amount={0.15} className="relative border-l-2 border-line-strong ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
-          {ROADMAP.map((item, idx) => (
-            <RevealItem
-              key={idx}
-              variant={idx % 2 === 0 ? "slideRight" : "slideLeft"}
-              className="relative group"
-            >
-              {/* Dot */}
-              <div
-                className={`absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full border-2 ${
-                  item.status === "Completed"
-                    ? "bg-success border-success"
-                    : item.status === "In Progress"
-                    ? "bg-primary border-primary animate-pulse"
-                    : "bg-fg-muted border-line-strong"
-                }`}
-              />
+        <div ref={timelineRef} className="relative ml-4 sm:ml-8 pl-6 sm:pl-8 space-y-10">
+          {/* Static track */}
+          <div className="absolute left-0 top-2 bottom-2 w-0.5 bg-line-strong rounded-full" />
+          {/* Scrubbed glowing progress line */}
+          <div
+            ref={lineFillRef}
+            className="absolute left-0 top-2 bottom-2 w-0.5 bg-gradient-to-b from-brand-violet via-brand-indigo to-brand-cyan shadow-[0_0_10px_rgba(99,102,241,0.8)] rounded-full"
+          />
 
-              <div className="flex items-center gap-3 mb-1">
-                <span className="text-xs font-extrabold text-primary-text">
-                  {item.quarter}
-                </span>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+          <GsapStagger stagger={0.12} childSelector=".roadmap-item">
+            {ROADMAP.map((item, idx) => (
+              <div key={idx} className="roadmap-item relative group pb-2">
+                {/* Node dot */}
+                <div
+                  className={`absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full border-2 transition-transform duration-300 group-hover:scale-125 ${
                     item.status === "Completed"
-                      ? "bg-success/15 text-success-text"
+                      ? "bg-success border-success shadow-[0_0_8px_rgba(34,197,94,0.6)]"
                       : item.status === "In Progress"
-                      ? "bg-primary/15 text-primary-text"
-                      : "bg-surface-hover text-fg-muted"
+                      ? "bg-primary border-primary animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.8)]"
+                      : "bg-surface border-line-strong"
                   }`}
-                >
-                  {item.status}
-                </span>
+                />
+
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="text-xs font-extrabold text-primary-text">
+                    {item.quarter}
+                  </span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                      item.status === "Completed"
+                        ? "bg-success/15 text-success-text"
+                        : item.status === "In Progress"
+                        ? "bg-primary/15 text-primary-text"
+                        : "bg-surface-hover text-fg-muted"
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-fg mb-1">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-fg-secondary leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-fg mb-1">
-                {item.title}
-              </h4>
-              <p className="text-sm text-fg-secondary leading-relaxed">
-                {item.desc}
-              </p>
-            </RevealItem>
-          ))}
-        </RevealStack>
-      </section>
+            ))}
+          </GsapStagger>
+        </div>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           JOIN THE JOURNEY CTA
           ══════════════════════════════════════════════ */}
-      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+      <GsapSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
         <div className="p-8 sm:p-12 rounded-3xl bg-primary/10 border border-primary/25">
           <h3 className="text-2xl sm:text-3xl font-extrabold text-fg mb-3">
             Want to help shape Nexora AI?
@@ -373,7 +392,7 @@ export const About = () => {
             </motion.div>
           </div>
         </div>
-      </Reveal>
+      </GsapSection>
     </PageLayout>
   );
 };

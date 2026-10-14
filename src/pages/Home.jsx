@@ -11,6 +11,7 @@ import {
   FiCpu,
   FiStar,
   FiCode,
+  FiChevronDown,
 } from "react-icons/fi";
 import { PageLayout } from "../components/layout/PageLayout";
 import {
@@ -19,7 +20,12 @@ import {
   RevealItem,
   AnimatedText,
   CountUp,
+  GsapSection,
+  GsapStagger,
+  GsapParallax,
+  GsapScrubScale,
 } from "../components/motion";
+import { smoothScrollTo } from "../lib/gsap";
 
 const PARTICLES = [
   { left: "8%", top: "15%", dur: "20s", delay: "0s", bg: "rgb(var(--accent-rgb)/0.4)", size: "3px" },
@@ -95,7 +101,7 @@ const TESTIMONIALS = [
 
 /**
  * Modern, responsive Home landing page
- * Orchestrated with Framer Motion scroll reveals and entrance animations
+ * Powered by Lenis smooth momentum scrolling and GSAP ScrollTrigger
  */
 export const Home = () => {
   const { isAuthenticated } = useSelector((s) => s.user);
@@ -119,21 +125,29 @@ export const Home = () => {
     );
   };
 
+  const scrollToSection = (id) => {
+    smoothScrollTo(id, { offset: -80, duration: 1.2 });
+  };
+
   return (
     <PageLayout
       title="Nexora AI — Modern Multimodal Real-Time AI Chatbot"
       description="Connect with intelligence. Blazing-fast Gemini streaming, multimodal vision analysis, persistent workspace history, and collaborative team messaging."
     >
-      {/* ── Ambient Background Visuals ── */}
+      {/* ── Ambient Background Visuals with GSAP Parallax ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-        <div
-          className="absolute w-[600px] h-[600px] -left-[100px] top-1/4 blur-[100px] opacity-25 dark:opacity-35"
-          style={{ background: "radial-gradient(ellipse, rgb(var(--primary-rgb)/0.6) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute w-[500px] h-[500px] right-0 bottom-1/4 blur-[100px] opacity-20 dark:opacity-30"
-          style={{ background: "radial-gradient(ellipse, rgb(var(--accent-rgb)/0.5) 0%, transparent 70%)" }}
-        />
+        <GsapParallax speed={0.35} yPercent={25} className="absolute inset-0">
+          <div
+            className="absolute w-[650px] h-[650px] -left-[120px] top-1/4 blur-[110px] opacity-25 dark:opacity-40"
+            style={{ background: "radial-gradient(ellipse, rgb(var(--primary-rgb)/0.65) 0%, transparent 70%)" }}
+          />
+        </GsapParallax>
+        <GsapParallax speed={-0.3} yPercent={30} className="absolute inset-0">
+          <div
+            className="absolute w-[550px] h-[550px] right-0 top-1/2 blur-[100px] opacity-20 dark:opacity-35"
+            style={{ background: "radial-gradient(ellipse, rgb(var(--accent-rgb)/0.55) 0%, transparent 70%)" }}
+          />
+        </GsapParallax>
         {PARTICLES.map((p, i) => (
           <div
             key={i}
@@ -156,7 +170,7 @@ export const Home = () => {
           ══════════════════════════════════════════════ */}
       <section className="relative pt-24 pb-12 sm:pt-28 sm:pb-14 md:pt-32 md:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto">
-          {/* 1. Badge pill: fades down first */}
+          {/* 1. Badge pill */}
           <Reveal variant="fadeDown" playOnMount delay={0.05} distance={16}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-xs font-semibold text-primary-text mb-4 shadow-xs hover:border-primary transition-colors">
               <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
@@ -164,7 +178,7 @@ export const Home = () => {
             </div>
           </Reveal>
 
-          {/* 2. Headline words reveal one by one with soft shine sweep */}
+          {/* 2. Headline words reveal */}
           <AnimatedText
             text="Intelligent conversations,"
             highlight="streamed in real time."
@@ -175,14 +189,14 @@ export const Home = () => {
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-fg mb-4 max-w-4xl mx-auto"
           />
 
-          {/* 3. Subtitle fades up */}
+          {/* 3. Subtitle */}
           <Reveal variant="fadeUp" playOnMount delay={0.52} distance={18}>
             <p className="text-base sm:text-lg text-fg-secondary max-w-2xl mx-auto leading-relaxed mb-6">
               A high-performance multimodal AI workspace with sub-second streaming, persistent session memory, vision parsing, and end-to-end encryption.
             </p>
           </Reveal>
 
-          {/* 4. Action Buttons scale in with slight stagger */}
+          {/* 4. Action Buttons with Smooth Section Scroll Link */}
           <RevealStack
             playOnMount
             delay={0.7}
@@ -205,21 +219,18 @@ export const Home = () => {
             </RevealItem>
 
             <RevealItem variant="scaleIn">
-              <motion.div
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
+              <button
+                type="button"
+                onClick={() => scrollToSection("#demo")}
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-line-strong bg-surface/70 backdrop-blur-md text-fg font-semibold text-base hover:bg-surface-hover hover:border-primary/40 transition-all text-center inline-flex items-center justify-center gap-2 cursor-pointer group"
               >
-                <Link
-                  to="/docs"
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-line-strong bg-surface/70 backdrop-blur-md text-fg font-semibold text-base hover:bg-surface-hover hover:border-primary/40 transition-all text-center inline-block"
-                >
-                  Explore API Docs
-                </Link>
-              </motion.div>
+                <span>Interactive Preview</span>
+                <FiChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform text-primary-text" />
+              </button>
             </RevealItem>
           </RevealStack>
 
-          {/* 5. Quick Stats Grid: Staggered from bottom with numeric CountUp */}
+          {/* 5. Quick Stats Grid */}
           <RevealStack
             playOnMount
             delay={0.88}
@@ -251,10 +262,11 @@ export const Home = () => {
       </section>
 
       {/* ══════════════════════════════════════════════
-          LIVE INTERACTIVE PLAYGROUND DEMO
+          LIVE INTERACTIVE PLAYGROUND DEMO (With GSAP Scrub Scale)
           ══════════════════════════════════════════════ */}
-      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="rounded-3xl border border-primary/25 bg-surface/80 backdrop-blur-xl shadow-2xl overflow-hidden">
+      <GsapSection id="demo" className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <GsapScrubScale initialScale={0.93} targetScale={1.0} initialRotateX={6} start="top 90%" end="top 30%">
+          <div className="rounded-3xl border border-primary/25 bg-surface/85 backdrop-blur-2xl shadow-2xl overflow-hidden hover:border-primary/45 transition-colors">
             {/* Window Chrome Header */}
             <div className="px-5 py-4 border-b border-line flex items-center justify-between bg-surface-hover/90">
               <div className="flex items-center gap-2">
@@ -262,7 +274,7 @@ export const Home = () => {
                 <div className="w-3 h-3 rounded-full bg-warning" />
                 <div className="w-3 h-3 rounded-full bg-success" />
                 <span className="text-xs font-semibold text-fg-secondary ml-2">
-                  Nexora AI Playground — Gemini 3.8 Flash
+                  Nexora AI Playground — Gemini 3.8 Flash Live Stream
                 </span>
               </div>
 
@@ -289,25 +301,24 @@ export const Home = () => {
               <p className="text-xs font-semibold text-fg-muted mb-3">
                 Click a starter prompt to preview live rendering:
               </p>
-              <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <GsapStagger stagger={0.08} childSelector=".starter-chip" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {starters.map((s, idx) => (
-                  <RevealItem key={idx} variant="fadeUp" whileHover={{ y: -2 }}>
-                    <button
-                      type="button"
-                      title={s.prompt}
-                      onClick={() => handleStarterClick(s.prompt)}
-                      className="w-full min-h-[92px] p-3.5 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group flex flex-col justify-between"
-                    >
-                      <p className="font-bold text-fg group-hover:text-primary-text">
-                        {s.title}
-                      </p>
-                      <p className="text-xs text-fg-muted line-clamp-2 mt-1 leading-snug break-words">
-                        {s.prompt}
-                      </p>
-                    </button>
-                  </RevealItem>
+                  <button
+                    key={idx}
+                    type="button"
+                    title={s.prompt}
+                    onClick={() => handleStarterClick(s.prompt)}
+                    className="starter-chip w-full min-h-[92px] p-3.5 rounded-xl text-left bg-surface border border-line hover:border-primary/50 hover:shadow-md transition-all text-xs cursor-pointer group flex flex-col justify-between"
+                  >
+                    <p className="font-bold text-fg group-hover:text-primary-text">
+                      {s.title}
+                    </p>
+                    <p className="text-xs text-fg-muted line-clamp-2 mt-1 leading-snug break-words">
+                      {s.prompt}
+                    </p>
+                  </button>
                 ))}
-              </RevealStack>
+              </GsapStagger>
             </div>
 
             {/* Simulated Chat Dialogue */}
@@ -358,14 +369,15 @@ export const Home = () => {
               </Link>
             </div>
           </div>
-      </Reveal>
+        </GsapScrubScale>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
-          CORE FEATURES GRID
+          CORE FEATURES GRID (With GSAP ScrollTrigger Stagger)
           ══════════════════════════════════════════════ */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <GsapSection id="features" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="absolute inset-0 -mx-4 sm:-mx-6 lg:-mx-8 bg-canvas/90 dark:bg-canvas/95 backdrop-blur-xl -z-10 pointer-events-none rounded-3xl" aria-hidden="true" />
-        <Reveal variant="fadeUp" className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Engineered for Developers & Teams
           </h2>
@@ -375,93 +387,95 @@ export const Home = () => {
           <p className="text-sm sm:text-base text-fg-secondary mt-3">
             No convoluted setups. Connect, stream, code, and share instantly.
           </p>
-        </Reveal>
+        </div>
 
-        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <GsapStagger
+          stagger={0.11}
+          y={50}
+          childSelector=".feature-card"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {FEATURES.map((feat, idx) => (
-            <RevealItem
+            <div
               key={idx}
-              variant="fadeUp"
-              whileHover={{ y: -4 }}
-              className="h-full"
+              className="feature-card h-full p-7 rounded-2xl bg-surface border border-line hover:border-primary/50 hover:shadow-2xl transition-all duration-300 group flex flex-col justify-between"
             >
-              <div className="h-full p-7 rounded-2xl bg-surface border border-line hover:border-primary/40 hover:shadow-xl transition-all duration-200 group flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center group-hover:scale-110 transition-transform">
-                      {feat.icon}
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">
-                      {feat.badge}
-                    </span>
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-line-strong flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                    {feat.icon}
                   </div>
-                  <h4 className="text-lg font-bold text-fg mb-2 group-hover:text-primary-text transition-colors">
-                    {feat.title}
-                  </h4>
-                  <p className="text-sm text-fg-secondary leading-relaxed">
-                    {feat.desc}
-                  </p>
+                  <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-text border border-line-strong">
+                    {feat.badge}
+                  </span>
                 </div>
+                <h4 className="text-lg font-bold text-fg mb-2 group-hover:text-primary-text transition-colors">
+                  {feat.title}
+                </h4>
+                <p className="text-sm text-fg-secondary leading-relaxed">
+                  {feat.desc}
+                </p>
               </div>
-            </RevealItem>
+            </div>
           ))}
-        </RevealStack>
-      </section>
+        </GsapStagger>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
-          TESTIMONIALS SECTION
+          TESTIMONIALS SECTION (With GSAP ScrollTrigger Stagger)
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
-        <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-14">
+      <GsapSection id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Loved by Developers
           </h2>
           <h3 className="text-3xl font-extrabold text-fg">
             Trusted by creators across the world
           </h3>
-        </Reveal>
+        </div>
 
-        <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <GsapStagger
+          stagger={0.12}
+          y={40}
+          childSelector=".testimonial-card"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
           {TESTIMONIALS.map((t, idx) => (
-            <RevealItem
+            <div
               key={idx}
-              variant="fadeUp"
-              whileHover={{ y: -4 }}
-              className="h-full"
+              className="testimonial-card h-full p-7 rounded-2xl bg-surface/85 border border-line shadow-sm hover:border-primary/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="h-full p-7 rounded-2xl bg-surface/80 border border-line shadow-sm hover:border-primary/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="flex gap-1 text-warning-text mb-4">
-                    {[...Array(t.rating)].map((_, i) => (
-                      <FiStar key={i} className="w-4 h-4 fill-warning-text" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-fg-secondary italic leading-relaxed mb-6">
-                    "{t.quote}"
-                  </p>
+              <div>
+                <div className="flex gap-1 text-warning-text mb-4">
+                  {[...Array(t.rating)].map((_, i) => (
+                    <FiStar key={i} className="w-4 h-4 fill-warning-text" />
+                  ))}
                 </div>
-                <div className="flex items-center gap-3 pt-4 border-t border-line">
-                  <img
-                    src={t.avatar}
-                    alt={t.author}
-                    className="w-10 h-10 rounded-full object-cover border border-primary/30"
-                  />
-                  <div>
-                    <p className="text-sm font-bold text-fg">{t.author}</p>
-                    <p className="text-xs text-fg-muted">{t.role}</p>
-                  </div>
+                <p className="text-sm text-fg-secondary italic leading-relaxed mb-6">
+                  "{t.quote}"
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-line">
+                <img
+                  src={t.avatar}
+                  alt={t.author}
+                  className="w-10 h-10 rounded-full object-cover border border-primary/30"
+                />
+                <div>
+                  <p className="text-sm font-bold text-fg">{t.author}</p>
+                  <p className="text-xs text-fg-muted">{t.role}</p>
                 </div>
               </div>
-            </RevealItem>
+            </div>
           ))}
-        </RevealStack>
-      </section>
+        </GsapStagger>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
-          FINAL CALL TO ACTION
+          FINAL CALL TO ACTION (With GSAP Section Entrance)
           ══════════════════════════════════════════════ */}
-      <Reveal as="section" className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
-        <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-brand-violet/20 via-brand-indigo/20 to-brand-cyan/20 border border-primary/30 shadow-2xl relative overflow-hidden">
+      <GsapSection id="cta" className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+        <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-brand-violet/20 via-brand-indigo/20 to-brand-cyan/20 border border-primary/35 shadow-2xl relative overflow-hidden">
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-fg tracking-tight mb-4">
               Supercharge your workflow today
@@ -495,7 +509,7 @@ export const Home = () => {
             </div>
           </div>
         </div>
-      </Reveal>
+      </GsapSection>
     </PageLayout>
   );
 };

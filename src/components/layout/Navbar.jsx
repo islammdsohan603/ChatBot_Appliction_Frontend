@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion, useReducedMotion } from "framer-motion";
@@ -10,6 +10,7 @@ import {
 } from "react-icons/hi2";
 import ThemeToggle from "../ui/ThemeToggle";
 import { MOTION_CONFIG } from "../../lib/motion";
+import { gsap } from "../../lib/gsap";
 
 /**
  * Global responsive navigation bar
@@ -18,6 +19,7 @@ import { MOTION_CONFIG } from "../../lib/motion";
  * - Nav links appear with a stagger after navbar slides down
  * - Active link pill uses layoutId="activeNavPill" so it glides smoothly between links
  * - Button micro-interactions: whileHover scale 1.03 with lift, whileTap scale 0.97
+ * - Bottom-border GSAP ScrollTrigger scrub progress bar
  */
 export const Navbar = () => {
   const { isAuthenticated } = useSelector((s) => s.user);
@@ -25,12 +27,36 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const progressBarRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // GSAP ScrollTrigger scrub progress bar attached to bottom edge of navbar
+  useEffect(() => {
+    if (!progressBarRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        progressBarRef.current,
+        { scaleX: 0, transformOrigin: "left center" },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            start: 0,
+            end: () => document.documentElement.scrollHeight - window.innerHeight,
+            scrub: 0.2,
+          },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, [location.pathname]);
 
   useEffect(() => {
     setIsOpen(false);
@@ -260,6 +286,14 @@ export const Navbar = () => {
             </div>
           </motion.div>
         )}
+      </div>
+
+      {/* ── Scroll Progress Line directly under the Navbar ── */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary/10 overflow-hidden pointer-events-none">
+        <div
+          ref={progressBarRef}
+          className="h-full w-full bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan shadow-[0_0_12px_rgba(129,140,248,0.8)]"
+        />
       </div>
     </motion.nav>
   );

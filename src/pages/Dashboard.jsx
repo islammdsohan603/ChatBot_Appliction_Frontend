@@ -26,7 +26,7 @@ import {
 import { PageLayout } from "../components/layout/PageLayout";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorState } from "../components/common/ErrorState";
-import { Reveal, RevealStack, RevealItem, CountUp } from "../components/motion";
+import { Reveal, RevealStack, RevealItem, CountUp, GsapStagger } from "../components/motion";
 import { motion } from "framer-motion";
 import { buttonMotion, cardHoverMotion } from "../lib/motion";
 import PreviousChatViewer from "../components/chat/PreviousChatViewer";
@@ -640,12 +640,13 @@ export const Dashboard = () => {
             {/* ══════════════════════════════════════════════
                 4-CARD KPI METRICS GRID
                 ══════════════════════════════════════════════ */}
-            <RevealStack
-              stagger={0.08}
-              amount={0.15}
+            <GsapStagger
+              stagger={0.09}
+              y={35}
+              childSelector=".kpi-card"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10"
             >
-              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+              <div className="kpi-card p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-fg-muted">
                     Total Conversations
@@ -661,9 +662,9 @@ export const Dashboard = () => {
                   <FiTrendingUp className="w-3 h-3" />
                   Active thread sessions
                 </p>
-              </RevealItem>
+              </div>
 
-              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+              <div className="kpi-card p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-fg-muted">
                     Total Messages
@@ -678,9 +679,9 @@ export const Dashboard = () => {
                 <p className="text-[11px] text-fg-muted mt-1">
                   Prompts + Streamed replies
                 </p>
-              </RevealItem>
+              </div>
 
-              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+              <div className="kpi-card p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-fg-muted">
                     Estimated Tokens
@@ -695,9 +696,9 @@ export const Dashboard = () => {
                 <p className="text-[11px] text-primary-text font-medium mt-1">
                   Gemini 3.8 Flash quota
                 </p>
-              </RevealItem>
+              </div>
 
-              <RevealItem className="p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 transition-all">
+              <div className="kpi-card p-6 rounded-2xl bg-surface border border-line shadow-sm hover:border-primary/40 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-fg-muted">
                     Storage Allocated
@@ -712,8 +713,8 @@ export const Dashboard = () => {
                 <p className="text-[11px] text-fg-muted mt-1">
                   MongoDB Atlas encrypted
                 </p>
-              </RevealItem>
-            </RevealStack>
+              </div>
+            </GsapStagger>
 
             {/* ══════════════════════════════════════════════
                 7-DAY ACTIVITY CHART & QUICK LAUNCHERS

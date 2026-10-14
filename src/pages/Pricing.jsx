@@ -23,6 +23,8 @@ import {
   Reveal,
   RevealStack,
   RevealItem,
+  GsapSection,
+  GsapStagger,
 } from "../components/motion";
 import { setUserData } from "../../redux/userSlice";
 
@@ -172,7 +174,20 @@ export const Pricing = () => {
         const res = await api.get("/api/pricing/plans");
         const planList = res.data?.plans || res.data;
         if (Array.isArray(planList) && planList.length > 0) {
-          setPlans(planList);
+          // Merge with fallback plans to guarantee all 3 tiers (free, pro, enterprise) are always displayed
+          const planMap = new Map();
+          FALLBACK_PLANS.forEach((p) => planMap.set(p.slug, p));
+          planList.forEach((p) => {
+            if (p?.slug) {
+              planMap.set(p.slug, { ...planMap.get(p.slug), ...p });
+            }
+          });
+          const ordered = ["free", "pro", "enterprise"]
+            .filter((slug) => planMap.has(slug))
+            .map((slug) => planMap.get(slug));
+          setPlans(ordered.length >= 3 ? ordered : FALLBACK_PLANS);
+        } else {
+          setPlans(FALLBACK_PLANS);
         }
       } catch {
         setPlans(FALLBACK_PLANS);
@@ -309,26 +324,25 @@ export const Pricing = () => {
       {/* ══════════════════════════════════════════════
           PRICING CARDS (Staggered with popular plan scaled up)
           ══════════════════════════════════════════════ */}
-      <section className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <GsapSection id="pricing-cards" className="py-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {isLoading ? (
           <LoadingSpinner label="Loading plans..." />
         ) : (
-          <RevealStack stagger={0.12} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <GsapStagger stagger={0.12} y={50} childSelector=".pricing-card-col" className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             {plans.map((plan, idx) => {
               const price = isYearly ? Math.round(plan.priceYearly / 12) : plan.priceMonthly;
               const isCurrent = currentTier === plan.slug;
               const isSubmitting = subscribingSlug === plan.slug;
 
               return (
-                <RevealItem
+                <div
                   key={plan.slug}
-                  variant={plan.isPopular ? "scaleIn" : "fadeUp"}
-                  className="h-full flex flex-col"
+                  className="pricing-card-col h-full flex flex-col pt-4"
                 >
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.25 }}
-                    className={`h-full relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between overflow-hidden ${
+                    className={`h-full relative p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between ${
                       isSubmitting
                         ? "bg-surface border-2 border-primary shadow-2xl shadow-primary/40 ring-4 ring-primary/20 scale-[1.02]"
                         : plan.isPopular
@@ -338,13 +352,14 @@ export const Pricing = () => {
                   >
                     {/* Subscribing loading bar indicator */}
                     {isSubmitting && (
-                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan animate-pulse" />
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan animate-pulse rounded-t-3xl" />
                     )}
 
-                    {/* Highlight pill */}
+                    {/* Highlight pill - positioned above card with guaranteed visibility across all devices */}
                     {plan.highlightBadge && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-gradient-to-r from-brand-violet to-brand-indigo text-primary-contrast shadow-md">
-                        {plan.highlightBadge}
+                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30 px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-gradient-to-r from-brand-violet via-brand-indigo to-brand-cyan text-primary-contrast shadow-lg shadow-primary/35 border border-primary-contrast/25 whitespace-nowrap flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary-contrast animate-ping" />
+                        <span>{plan.highlightBadge}</span>
                       </div>
                     )}
 
@@ -447,17 +462,17 @@ export const Pricing = () => {
                       </button>
                     )}
                   </motion.div>
-                </RevealItem>
+                </div>
               );
             })}
-          </RevealStack>
+          </GsapStagger>
         )}
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           FEATURE COMPARISON MATRIX
           ══════════════════════════════════════════════ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <GsapSection id="comparison" className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Detailed Breakdown
@@ -523,12 +538,12 @@ export const Pricing = () => {
             </table>
           </div>
         </Reveal>
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           FREQUENTLY ASKED QUESTIONS (ACCORDION)
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
+      <GsapSection id="faq" className="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-line">
         <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Got Questions?
@@ -576,12 +591,12 @@ export const Pricing = () => {
             );
           })}
         </RevealStack>
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           CUSTOM ENTERPRISE BANNER
           ══════════════════════════════════════════════ */}
-      <Reveal as="section" className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+      <GsapSection id="enterprise" className="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
         <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-violet/15 to-brand-cyan/15 border border-primary/25 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
           <div>
             <h4 className="text-xl sm:text-2xl font-bold text-fg mb-1">
@@ -600,7 +615,7 @@ export const Pricing = () => {
             </Link>
           </motion.div>
         </div>
-      </Reveal>
+      </GsapSection>
     </PageLayout>
   );
 };

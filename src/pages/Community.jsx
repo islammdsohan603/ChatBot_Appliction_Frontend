@@ -26,6 +26,8 @@ import {
   Reveal,
   RevealStack,
   RevealItem,
+  GsapSection,
+  GsapStagger,
 } from "../components/motion";
 
 const SERVER_URL =
@@ -260,7 +262,7 @@ export const Community = () => {
       {/* ══════════════════════════════════════════════
           COMMUNITY STATS BANNER
           ══════════════════════════════════════════════ */}
-      <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <GsapSection id="community-stats" className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <RevealStack stagger={0.08} amount={0.15} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Active Developers", value: stats?.activeMembers || "1,250+" },
@@ -280,12 +282,12 @@ export const Community = () => {
             </RevealItem>
           ))}
         </RevealStack>
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           MAIN CONTENT: DISCUSSIONS FEED & SEARCH
           ══════════════════════════════════════════════ */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <GsapSection id="discussions" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <Reveal variant="fadeUp" delay={0.08}>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
             {/* Category tabs */}
@@ -409,12 +411,12 @@ export const Community = () => {
             })}
           </RevealStack>
         )}
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           HALL OF FAME: TOP CONTRIBUTORS
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
+      <GsapSection id="contributors" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
         <Reveal variant="fadeUp" className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs font-bold uppercase tracking-wider text-primary-text mb-2">
             Hall of Fame
@@ -460,12 +462,12 @@ export const Community = () => {
             </RevealItem>
           ))}
         </RevealStack>
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           SOCIAL CHANNELS
           ══════════════════════════════════════════════ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
+      <GsapSection id="channels" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-line">
         <RevealStack stagger={0.1} amount={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SOCIAL_CHANNELS.map((ch, idx) => (
             <RevealItem key={idx} variant="scaleIn" whileHover={{ y: -4 }} className="h-full">
@@ -498,7 +500,7 @@ export const Community = () => {
             </RevealItem>
           ))}
         </RevealStack>
-      </section>
+      </GsapSection>
 
       {/* ══════════════════════════════════════════════
           CREATE DISCUSSION MODAL

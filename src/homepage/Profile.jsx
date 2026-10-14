@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { EditProfile } from "../components/models/EditProfile";
 import { Reveal, CountUp } from "../components/motion";
+import ScrollProgress from "../components/ui/ScrollProgress";
 import { motion } from "framer-motion";
 import { buttonMotion } from "../lib/motion";
 
@@ -141,6 +142,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-canvas font-inter text-fg transition-colors duration-200">
+      <ScrollProgress />
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div

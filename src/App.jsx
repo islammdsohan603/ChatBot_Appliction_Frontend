@@ -20,6 +20,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
 import ChatLayout from "./components/chat/ChatLayout";
 import useCurrentUser from "./customHooks/getCurrentUser";
+import useSmoothScroll from "./customHooks/useSmoothScroll";
 import RouteTransitionWrapper from "./components/ui/RouteTransitionWrapper";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
 import {
@@ -63,6 +64,9 @@ const PublicRoute = ({ children }) => {
 function App() {
   // Initialize user fetch on app load
   useCurrentUser();
+
+  // Initialize global Lenis smooth momentum scroll synchronized with GSAP ScrollTrigger
+  useSmoothScroll();
 
   const [currentTheme, setCurrentTheme] = useState(() => getInitialTheme());
 

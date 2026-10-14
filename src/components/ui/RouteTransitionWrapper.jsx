@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MOTION_CONFIG } from "../../lib/motion";
 
+import { refreshScrollTrigger } from "../../lib/gsap";
+
 /**
  * RouteTransitionWrapper
  *
@@ -14,9 +16,13 @@ const RouteTransitionWrapper = ({ children }) => {
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
 
-  // Scroll to top on route change smoothly
+  // Scroll to top on route change smoothly and refresh GSAP ScrollTrigger
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    const timer = setTimeout(() => {
+      refreshScrollTrigger();
+    }, 100);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   if (shouldReduceMotion) {

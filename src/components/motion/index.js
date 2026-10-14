@@ -25,3 +25,10 @@ export { RevealStack, RevealItem, RevealGroup } from "./RevealStack";
 export { default as PageTransition, PageTransitionWrapper } from "./PageTransition";
 export { default as AnimatedText } from "./AnimatedText";
 export { default as CountUp } from "./CountUp";
+export {
+  GsapSection,
+  GsapStagger,
+  GsapParallax,
+  GsapScrubScale,
+  GsapRevealText,
+} from "./GsapScroll";
