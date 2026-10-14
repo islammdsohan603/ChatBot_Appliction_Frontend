@@ -46,7 +46,7 @@ const DEFAULT_SETTINGS = {
   customAbout: "",
   customResponseStyle: "Be concise, friendly, and provide helpful code examples when asked.",
   memoryEnabled: true,
-  defaultModel: "gemini-3.5-flash",
+  defaultModel: "gemini-flash-lite-latest",
   googleApiKey: "",
   openaiApiKey: "",
   chatHistory: true,
@@ -446,10 +446,10 @@ const Settings = () => {
                       onChange={(e) => updateSetting("defaultModel", e.target.value)}
                       className="px-3 py-2 rounded-xl bg-surface-hover border border-line-strong text-xs text-fg outline-none focus:border-primary/50 cursor-pointer"
                     >
-                      <option value="gemini-3.5-flash">Gemini 3.5 Flash (Fast & Stable - Recommended)</option>
-                      <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (High Speed)</option>
-                      <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
-                      <option value="gemini-flash-latest">Gemini Flash Latest</option>
+                      <option value="gemini-flash-lite-latest">Gemini Flash Lite (Ultra-Fast & Instant - Recommended)</option>
+                      <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite (High Speed)</option>
+                      <option value="gemini-3.6-flash">Gemini 3.6 Flash (High Reasoning)</option>
+                      <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
                     </select>
                   </SettingRow>
 

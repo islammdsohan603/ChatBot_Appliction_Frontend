@@ -97,7 +97,7 @@ export const AiChatBox = ({
   onNewChat,
   onDeleteConversation,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-3.8-flash",
+  model = "gemini-flash-lite-latest",
   className = "",
 }) => {
   const shouldReduceMotion = useReducedMotion();
@@ -120,11 +120,17 @@ export const AiChatBox = ({
         localStorage.getItem("nexora_user_settings") || "{}",
       );
       if (saved.defaultModel && saved.defaultModel.startsWith("gemini")) {
+        if (
+          saved.defaultModel === "gemini-3.8-flash" ||
+          saved.defaultModel === "gemini-2.5-flash"
+        ) {
+          return "gemini-flash-lite-latest";
+        }
         return saved.defaultModel;
       }
-      return "gemini-3.8-flash";
+      return "gemini-flash-lite-latest";
     } catch {
-      return "gemini-3.8-flash";
+      return "gemini-flash-lite-latest";
     }
   });
 
@@ -556,9 +562,15 @@ export const AiChatBox = ({
                         </div>
                       ) : (
                         msg.isStreaming && (
-                          <span className="inline-flex items-center gap-1.5 text-fg-muted text-xs">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
-                            Generating response...
+                          <span className="inline-flex items-center gap-2 text-fg-muted text-xs py-1">
+                            <span className="flex gap-1 items-center">
+                              <span className="w-2 h-2 rounded-full bg-brand-violet animate-bounce [animation-delay:-0.3s]" />
+                              <span className="w-2 h-2 rounded-full bg-brand-indigo animate-bounce [animation-delay:-0.15s]" />
+                              <span className="w-2 h-2 rounded-full bg-brand-cyan animate-bounce" />
+                            </span>
+                            <span className="font-medium bg-gradient-to-r from-brand-violet to-brand-cyan bg-clip-text text-transparent">
+                              Responding instantly...
+                            </span>
                           </span>
                         )
                       )

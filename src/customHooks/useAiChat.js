@@ -10,7 +10,7 @@ const DEFAULT_SERVER_URL = API_BASE_URL;
 export const useAiChat = ({
   conversationId = null,
   systemInstruction = "You are Nexora AI, a brilliant, helpful, and concise AI assistant.",
-  model = "gemini-3.5-flash",
+  model = "gemini-flash-lite-latest",
   onSessionCreated,
   onConversationUpdated,
   onError,
@@ -214,9 +214,12 @@ export const useAiChat = ({
         }
 
         const effectiveModel =
-          model === "gemini-2.0-flash" || model === "gemini-1.5-flash"
-            ? "gemini-3.5-flash"
-            : model || "gemini-3.5-flash";
+          model === "gemini-3.8-flash" ||
+          model === "gemini-2.0-flash" ||
+          model === "gemini-1.5-flash" ||
+          model === "gemini-2.5-flash"
+            ? "gemini-flash-lite-latest"
+            : model || "gemini-flash-lite-latest";
 
         const response = await fetch(`${DEFAULT_SERVER_URL}/api/conversations/stream`, {
           method: "POST",
@@ -286,6 +289,12 @@ export const useAiChat = ({
             }
 
             if (parsed) {
+              if (parsed.type === "connected") {
+                setIsLoading(false);
+                setIsStreaming(true);
+                continue;
+              }
+
               if (parsed.type === "session_created" && parsed.conversation) {
                 // Instantly update parent/sidebar and URL without wiping streaming state
                 activeSessionIdRef.current = parsed.conversation._id;
